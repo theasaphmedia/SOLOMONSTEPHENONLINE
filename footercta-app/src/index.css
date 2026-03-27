@@ -1,0 +1,16 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: 240 10% 10%;
+  --gold: 45 90% 60%;
+  --hero-fg: 0 0% 100%;
+  --hero-bg: 240 10% 5%;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
