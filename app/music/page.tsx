@@ -1,232 +1,349 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Footer from '@/components/Footer'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import '../inner-animations.css'
-import '../mobile.css'
-import { usePageReveal } from '../components/usePageReveal'
+import Footer from '@/components/Footer'
 
-const CHANNEL_ID  = 'UCE-vJlarsrIpRFoZcxVMFfA'
-const VIDEO_ID    = 'TnEp0kiJBfI'
-const CHANNEL_URL = `https://www.youtube.com/channel/${CHANNEL_ID}`
+const FEATURED_ID = 'TnEp0kiJBfI'
+const CHANNEL_URL = 'https://www.youtube.com/channel/UCE-vJlarsrIpRFoZcxVMFfA'
 
-function MusicCard({ track }: { track: { id:string; title:string; subtitle:string; year:string; desc:string; scripture:string; lyric?:string } }) {
-  const [ready, setReady] = useState(false)
-  return (
-    <div className="rv-scale song-card-wrap"
-      style={{ background:'rgba(255,255,255,0.02)', border:'1px solid rgba(201,168,76,0.12)', borderRadius:'20px', overflow:'hidden', transition:'border-color 0.4s, box-shadow 0.4s, transform 0.4s' }}
-      onMouseEnter={(e) => { const el=e.currentTarget; el.style.borderColor='rgba(201,168,76,0.35)'; el.style.boxShadow='0 20px 52px rgba(201,168,76,0.08)'; el.style.transform='translateY(-4px)' }}
-      onMouseLeave={(e) => { const el=e.currentTarget; el.style.borderColor='rgba(201,168,76,0.12)'; el.style.boxShadow='none'; el.style.transform='none' }}
-    >
-      <div style={{ position:'relative', paddingTop:'56.25%', background:'#0a1a0a', cursor:'pointer' }} onClick={() => setReady(true)}>
-        {!ready ? (
-          <>
-            <img src={`https://img.youtube.com/vi/${track.id}/hqdefault.jpg`} alt={track.title} style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', opacity:0.55 }} />
-            <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,rgba(6,14,6,0.5) 0%,rgba(6,14,6,0.15) 100%)' }} />
-            <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
-              <div style={{ width:'52px', height:'52px', borderRadius:'50%', background:'rgba(201,168,76,0.15)', border:'2px solid rgba(201,168,76,0.45)', display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(8px)' }}>
-                <div style={{ width:0, height:0, borderTop:'10px solid transparent', borderBottom:'10px solid transparent', borderLeft:'16px solid #C9A84C', marginLeft:'4px' }} />
-              </div>
-            </div>
-            {/* Lyric hover reveal */}
-            {track.lyric && (
-              <div className="song-card-lyric">
-                <p style={{ fontFamily:'Cormorant Garamond, serif', fontStyle:'italic', fontSize:'13px', color:'rgba(255,255,255,0.7)', lineHeight:1.6, margin:0 }}>&ldquo;{track.lyric}&rdquo;</p>
-              </div>
-            )}
-          </>
-        ) : (
-          <iframe src={`https://www.youtube.com/embed/${track.id}?autoplay=1&rel=0&modestbranding=1`}
-            title={track.title} frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
-        )}
-      </div>
-      <div style={{ padding:'24px' }}>
-        <div style={{ color:'rgba(201,168,76,0.5)', fontFamily:'Inter, sans-serif', fontSize:'8px', letterSpacing:'0.3em', textTransform:'uppercase', marginBottom:'8px' }}>{track.year}</div>
-        <div className="font-display" style={{ fontSize:'22px', fontWeight:600, color:'white', lineHeight:1, marginBottom:'4px' }}>{track.title}</div>
-        <div style={{ color:'rgba(201,168,76,0.6)', fontFamily:'Cormorant Garamond, serif', fontStyle:'italic', fontSize:'14px', marginBottom:'14px' }}>{track.subtitle}</div>
-        <div style={{ height:'1px', background:'linear-gradient(90deg,rgba(201,168,76,0.2),transparent)', marginBottom:'14px' }} />
-        <p style={{ color:'rgba(255,255,255,0.35)', fontFamily:'Inter, sans-serif', fontSize:'12px', lineHeight:1.75, marginBottom:'16px' }}>{track.desc}</p>
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-          <span style={{ color:'rgba(201,168,76,0.35)', fontFamily:'Inter, sans-serif', fontSize:'10px', fontStyle:'italic' }}>{track.scripture}</span>
-          <Link href={`https://www.youtube.com/watch?v=${track.id}`} target="_blank"
-            style={{ color:'rgba(201,168,76,0.7)', fontFamily:'Inter, sans-serif', fontSize:'10px', letterSpacing:'0.1em', textDecoration:'none', transition:'color 0.2s' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color='#C9A84C' }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color='rgba(201,168,76,0.7)' }}>
-            Watch
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
-}
+const tracks = [
+  { id: 'TnEp0kiJBfI', title: 'CROSSOVER',         year: '2024', scripture: 'Psalm 23',          desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
+  { id: 'cB0LxEjVaIs', title: 'The Mighty God',     year: '2023', scripture: 'Isaiah 9:6',         desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
+  { id: 'lDIjB11ueYM', title: 'AIKU',               year: '2023', scripture: 'Revelation 1:17–18', desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
+  { id: 'aU0TFLxplck', title: 'Awesome God',        year: '2022', scripture: 'Psalm 48:1',         desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
+  { id: 'q1-eDXBpMkY', title: 'Alagbada Ina',       year: '2022', scripture: 'Exodus 3:2',         desc: 'The God clothed in fire — a Yoruba-infused anthem drawing from the burning bush encounter.' },
+  { id: 'Ao_ZC3oHi9c', title: 'There Is No One',    year: '2021', scripture: 'Isaiah 46:9',        desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.' },
+]
 
 export default function MusicPage() {
-  usePageReveal()
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [playerReady, setPlayerReady] = useState(false)
+  const [playing, setPlaying] = useState<string | null>(null)
+  const [featuredReady, setFeaturedReady] = useState(false)
+  const [hovered, setHovered] = useState<number | null>(null)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('is-revealed')),
-      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) }
+      }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     )
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el))
-
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    let animId:number, W=0, H=0
-    const pts: { x:number;y:number;vx:number;vy:number;r:number;op:number;angle:number;speed:number }[] = []
-    const resize = () => {
-      W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight; pts.length=0
-      for(let i=0;i<30;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,r:Math.random()*1.5+0.5,op:Math.random()*0.25+0.05,angle:Math.random()*Math.PI*2,speed:Math.random()*0.005+0.002})
-    }
-    const draw = () => {
-      ctx.clearRect(0,0,W,H)
-      pts.forEach((p,i) => {
-        p.angle+=p.speed; p.x+=p.vx+Math.sin(p.angle)*0.12; p.y+=p.vy
-        if(p.x<0||p.x>W) p.vx*=-1; if(p.y<0||p.y>H) p.vy*=-1
-        for(let j=i+1;j<pts.length;j++){const ex=pts[j].x-p.x,ey=pts[j].y-p.y,ed=Math.sqrt(ex*ex+ey*ey);if(ed<100){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(201,168,76,${(1-ed/100)*0.06})`;ctx.lineWidth=0.5;ctx.stroke()}}
-        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2)
-        ctx.fillStyle=`rgba(201,168,76,${p.op+Math.sin(p.angle*2)*0.04})`; ctx.fill()
-      })
-      animId=requestAnimationFrame(draw)
-    }
-    resize(); draw()
-    window.addEventListener('resize', resize)
-    return () => { obs.disconnect(); cancelAnimationFrame(animId); window.removeEventListener('resize', resize) }
+    document.querySelectorAll('.rv').forEach(el => obs.observe(el))
+    return () => obs.disconnect()
   }, [])
 
   return (
-    <main style={{ background:'#060e06', minHeight:'100vh', overflowX:'hidden' }} className="page-entry">
+    <main style={{ background: '#060c06', overflowX: 'hidden' }}>
       <style>{`
-        @keyframes goldPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.75)} }
-        .featured-track-grid { display:grid; grid-template-columns:1fr; }
-        @media(min-width:768px) { .featured-track-grid { grid-template-columns:1fr 1fr; min-height:380px; } }
-        .featured-video-panel { position:relative; background:#0a1a0a; overflow:hidden; min-height:240px; }
-        @media(min-width:768px) { .featured-video-panel { min-height:unset; } }
-        .featured-info-panel { padding:22px 18px; display:flex; flex-direction:column; justify-content:center; gap:16px; }
-        @media(min-width:768px) { .featured-info-panel { padding:40px 36px; } }
-        .more-music-grid { display:grid; grid-template-columns:1fr; gap:20px; }
-        @media(min-width:600px) { .more-music-grid { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); } }
+        .rv { opacity:0; transform:translateY(36px); transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+        .rv.is-visible { opacity:1; transform:none; }
+        .rv.d1{transition-delay:.1s} .rv.d2{transition-delay:.2s} .rv.d3{transition-delay:.3s}
 
-        /* CSS Waveform */
-        @keyframes waveBar1 { 0%,100%{transform:scaleY(0.25)} 30%{transform:scaleY(1)} 60%{transform:scaleY(0.5)} }
-        @keyframes waveBar2 { 0%,100%{transform:scaleY(0.6)} 20%{transform:scaleY(0.2)} 50%{transform:scaleY(1)} 80%{transform:scaleY(0.4)} }
-        @keyframes waveBar3 { 0%,100%{transform:scaleY(0.4)} 40%{transform:scaleY(1)} 70%{transform:scaleY(0.3)} }
-        @keyframes waveBar4 { 0%,100%{transform:scaleY(0.9)} 25%{transform:scaleY(0.3)} 55%{transform:scaleY(0.8)} 85%{transform:scaleY(0.2)} }
-        @keyframes waveBar5 { 0%,100%{transform:scaleY(0.3)} 35%{transform:scaleY(0.8)} 65%{transform:scaleY(0.15)} }
-        .wave-bar { display:inline-block; width:3px; border-radius:2px; transform-origin:bottom; background:linear-gradient(to top,rgba(201,168,76,0.6),rgba(201,168,76,0.15)); }
-        .wave-bar:nth-child(5n+1) { animation:waveBar1 1.4s ease-in-out infinite; }
-        .wave-bar:nth-child(5n+2) { animation:waveBar2 1.1s ease-in-out infinite; }
-        .wave-bar:nth-child(5n+3) { animation:waveBar3 1.7s ease-in-out infinite; }
-        .wave-bar:nth-child(5n+4) { animation:waveBar4 0.95s ease-in-out infinite; }
-        .wave-bar:nth-child(5n+5) { animation:waveBar5 1.3s ease-in-out infinite; }
+        /* Word clip */
+        .wc{display:inline-block;overflow:hidden;}
+        .wi{display:inline-block;animation:wi 1s cubic-bezier(0.16,1,0.3,1) both;}
+        @keyframes wi{from{transform:translateY(110%)}to{transform:translateY(0)}}
 
-        /* Song card lyric overlay */
-        .song-card-lyric { position:absolute; bottom:0; left:0; right:0; padding:16px; background:linear-gradient(to top,rgba(5,9,10,0.97) 0%,rgba(5,9,10,0.7) 60%,transparent); transform:translateY(100%); transition:transform 0.45s cubic-bezier(0.22,1,0.36,1); pointer-events:none; }
-        .song-card-wrap:hover .song-card-lyric { transform:translateY(0); }
+        /* Track row */
+        .track-row {
+          display: grid;
+          grid-template-columns: clamp(28px,4vw,52px) 1fr clamp(80px,10vw,160px);
+          align-items: center;
+          gap: clamp(16px,3vw,40px);
+          padding: clamp(22px,2.5vw,32px) clamp(24px,4vw,56px);
+          border-top: 1px solid rgba(201,168,76,0.07);
+          cursor: pointer;
+          position: relative;
+          transition: background 0.45s cubic-bezier(0.16,1,0.3,1);
+          text-decoration: none;
+        }
+        .track-row:last-child { border-bottom: 1px solid rgba(201,168,76,0.07); }
+        .track-row::before {
+          content: '';
+          position: absolute;
+          left: 0; top: 0; bottom: 0;
+          width: 2px;
+          background: linear-gradient(to bottom, #C9A84C, rgba(201,168,76,0.2));
+          transform: scaleY(0);
+          transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+          transform-origin: top;
+        }
+        .track-row.active, .track-row:hover { background: rgba(201,168,76,0.03); }
+        .track-row.active::before, .track-row:hover::before { transform: scaleY(1); }
+
+        .track-play-icon {
+          width: clamp(28px,4vw,44px);
+          height: clamp(28px,4vw,44px);
+          border: 1px solid rgba(201,168,76,0.25);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          transition: border-color 0.3s, background 0.3s;
+        }
+        .track-row:hover .track-play-icon,
+        .track-row.active .track-play-icon {
+          border-color: rgba(201,168,76,0.6);
+          background: rgba(201,168,76,0.08);
+        }
+
+        /* Platform link */
+        .plat-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 14px 28px;
+          border: 1px solid rgba(201,168,76,0.14);
+          color: rgba(245,240,232,0.55);
+          font-family: Inter,sans-serif;
+          font-size: 11px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: border-color 0.35s, color 0.35s, background 0.35s;
+        }
+        .plat-link:hover {
+          border-color: rgba(201,168,76,0.4);
+          color: #C9A84C;
+          background: rgba(201,168,76,0.04);
+        }
+
+        @media(max-width:640px){
+          .track-row { grid-template-columns: clamp(24px,4vw,40px) 1fr; }
+          .track-scripture { display:none; }
+        }
       `}</style>
 
-      <section style={{ position:'relative', minHeight:'55vh', overflow:'hidden', display:'flex', alignItems:'center' }}>
-        <canvas ref={canvasRef} style={{ position:'absolute', inset:0, width:'100%', height:'100%', zIndex:0 }} />
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 100% at 70% 50%,rgba(201,168,76,0.05) 0%,transparent 65%)', zIndex:1 }} />
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 20% 50%,rgba(26,46,26,0.4) 0%,transparent 70%)', zIndex:1 }} />
-        <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'120px', background:'linear-gradient(to top,#060e06,transparent)', zIndex:2 }} />
-        <div style={{ position:'relative', zIndex:10, width:'100%', paddingTop:'140px', paddingBottom:'48px', paddingLeft:'clamp(24px,4vw,56px)', paddingRight:'clamp(24px,4vw,56px)' }}>
-          <div className="animate-fade-up" style={{ animationDelay:'0.1s', animationFillMode:'both', display:'inline-flex', alignItems:'center', gap:'10px', background:'rgba(201,168,76,0.06)', border:'1px solid rgba(201,168,76,0.15)', borderRadius:'999px', padding:'8px 20px', marginBottom:'24px' }}>
-            <span style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#C9A84C', display:'inline-block', animation:'goldPulse 2s ease-in-out infinite' }} />
-            <span style={{ color:'rgba(201,168,76,0.7)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.4em', textTransform:'uppercase' }}>Sacred Music</span>
+      {/* ════════════════════════════════════
+          HERO
+      ════════════════════════════════════ */}
+      <section style={{ minHeight: '100svh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,4vw,56px)', paddingTop: '160px', background: '#060c06', position: 'relative', overflow: 'hidden' }}>
+        {/* Background texture - giant text */}
+        <div aria-hidden style={{ position: 'absolute', right: '-5vw', top: '50%', transform: 'translateY(-55%)', fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(200px,28vw,480px)', fontWeight: 700, color: 'rgba(201,168,76,0.025)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', letterSpacing: '-12px' }}>SOUND</div>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 60% 70% at 20% 60%, rgba(26,46,26,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: '900px' }}>
+          <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', marginBottom: '40px' }}>
+            <span className="wc"><span className="wi" style={{ animationDelay: '0.05s' }}>The Music of Solomon Stephen</span></span>
+          </p>
+
+          <div style={{ marginBottom: '40px', lineHeight: 0.88 }}>
+            <div className="wc" style={{ display: 'block' }}>
+              <span className="wi font-display" style={{ fontSize: 'clamp(56px,8vw,120px)', fontWeight: 300, color: '#F5F0E8', letterSpacing: '-3px', animationDelay: '0.18s' }}>Sounds of</span>
+            </div>
+            <div className="wc" style={{ display: 'block' }}>
+              <span className="wi font-display" style={{ fontSize: 'clamp(56px,8vw,120px)', fontWeight: 700, fontStyle: 'italic', letterSpacing: '-3px', animationDelay: '0.3s', background: 'linear-gradient(135deg,#E8C96A 0%,#C9A84C 45%,#D4B85E 72%,#a8873a 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Heaven.</span>
+            </div>
           </div>
-          <div className="animate-fade-up" style={{ animationDelay:'0.2s', animationFillMode:'both' }}>
-            <div className="font-display" style={{ fontSize:'clamp(36px,5.5vw,82px)', fontWeight:300, color:'rgba(255,255,255,0.9)', lineHeight:0.92, letterSpacing:'-2px', marginBottom:'4px' }}>Music That Moves</div>
-            <div className="font-display text-gradient-gold" style={{ fontSize:'clamp(36px,5.5vw,82px)', fontWeight:700, fontStyle:'italic', lineHeight:0.95, letterSpacing:'-2px' }}>The Soul.</div>
-          </div>
-          <div className="animate-fade-up" style={{ animationDelay:'0.3s', animationFillMode:'both', display:'flex', alignItems:'center', gap:'14px', marginTop:'20px', flexWrap:'wrap', justifyContent:'flex-start' }}>
-            {['Sacred Music','Live Worship','Prophetic Sound'].map((r,i,a) => (
-              <span key={r} style={{ display:'flex', alignItems:'center', gap:'14px' }}>
-                <span style={{ color:'rgba(201,168,76,0.6)', fontFamily:'Inter, sans-serif', fontSize:'10px', letterSpacing:'0.25em', textTransform:'uppercase' }}>{r}</span>
-                {i < a.length-1 && <span style={{ color:'rgba(201,168,76,0.2)', fontSize:'16px' }}>·</span>}
-              </span>
-            ))}
-          </div>
-          <div className="animate-fade-up" style={{ animationDelay:'0.4s', animationFillMode:'both', marginTop:'28px' }}>
-            <Link href={CHANNEL_URL} target="_blank" className="btn-gold-pill" style={{ fontSize:'11px' }}>Subscribe on YouTube</Link>
+
+          <div style={{ width: '48px', height: '1px', background: 'linear-gradient(90deg,#C9A84C,transparent)', marginBottom: '32px', animation: 'wi 0.7s 0.44s both' }} />
+
+          <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '15px', lineHeight: 1.9, color: 'rgba(245,240,232,0.38)', maxWidth: '480px', marginBottom: '52px', animation: 'wi 0.9s 0.5s both' }}>
+            Every song is an invitation — into the presence of God, into a deeper understanding of who He is and who you are in Him.
+          </p>
+
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', animation: 'wi 0.9s 0.6s both' }}>
+            <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="btn-gold-pill">Watch on YouTube</a>
+            <Link href="#tracklist" className="btn-outline-pill">See All Songs</Link>
           </div>
         </div>
+
+        {/* Scroll nudge */}
+        <div style={{ position: 'absolute', bottom: '36px', right: 'clamp(24px,4vw,56px)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.28)' }}>Scroll</span>
+          <div style={{ width: '1px', height: '40px', background: 'linear-gradient(to bottom,rgba(201,168,76,0.4),transparent)', animation: 'scrollp 2s ease-in-out infinite' }} />
+        </div>
+        <style>{`@keyframes scrollp{0%,100%{opacity:.35}50%{opacity:.9}}`}</style>
       </section>
 
-      <section style={{ padding:'clamp(24px,4vw,56px)' }} className="reveal">
-        <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'24px' }}>
-          <div style={{ height:'1px', width:'28px', background:'rgba(201,168,76,0.5)' }} />
-          <span style={{ color:'rgba(201,168,76,0.5)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.35em', textTransform:'uppercase' }}>Latest Release</span>
-          <div style={{ height:'1px', flex:1, background:'linear-gradient(to right,rgba(201,168,76,0.2),transparent)' }} />
+      {/* ════════════════════════════════════
+          FEATURED — immersive video section
+      ════════════════════════════════════ */}
+      <section style={{ background: '#040a04', borderTop: '1px solid rgba(201,168,76,0.05)', padding: 'clamp(80px,10vw,140px) 0' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)', marginBottom: 'clamp(40px,5vw,64px)' }}>
+          <div className="rv" style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '18px' }}>
+            <div style={{ width: '28px', height: '1px', background: 'rgba(201,168,76,0.35)' }} />
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>Featured</span>
+          </div>
+          <h2 className="font-display rv d1" style={{ fontSize: 'clamp(36px,4.5vw,68px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-1.5px', color: '#F5F0E8' }}>
+            CROSSOVER<br />
+            <span style={{ fontStyle: 'italic', fontWeight: 700, color: 'rgba(201,168,76,0.85)' }}>Official Video</span>
+          </h2>
         </div>
-        <div style={{ background:'rgba(255,255,255,0.02)', border:'1px solid rgba(201,168,76,0.15)', borderRadius:'24px', overflow:'hidden', transition:'border-color 0.4s, box-shadow 0.4s' }}
-          onMouseEnter={(e) => { e.currentTarget.style.borderColor='rgba(201,168,76,0.35)'; e.currentTarget.style.boxShadow='0 24px 60px rgba(201,168,76,0.08)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.borderColor='rgba(201,168,76,0.15)'; e.currentTarget.style.boxShadow='none' }}>
-          <div style={{ height:'2px', background:'linear-gradient(to right,transparent,#C9A84C,transparent)' }} />
-          <div className="featured-track-grid">
-            <div className="featured-video-panel">
-              <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at center,rgba(201,168,76,0.06) 0%,transparent 70%)', zIndex:1, pointerEvents:'none' }} />
-              {!playerReady ? (
-                <div style={{ position:'absolute', inset:0, cursor:'pointer', zIndex:2, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'12px' }} onClick={() => setPlayerReady(true)}>
-                  <img src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`} alt="Rivers of Joy" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', opacity:0.6 }} onError={(e) => { (e.target as HTMLImageElement).src=`https://img.youtube.com/vi/${VIDEO_ID}/hqdefault.jpg` }} />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,rgba(6,14,6,0.6) 0%,rgba(6,14,6,0.2) 100%)' }} />
-                  <div style={{ position:'relative', zIndex:3, width:'64px', height:'64px', borderRadius:'50%', background:'rgba(201,168,76,0.15)', border:'2px solid rgba(201,168,76,0.5)', display:'flex', alignItems:'center', justifyContent:'center', backdropFilter:'blur(8px)', transition:'all 0.25s' }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background='rgba(201,168,76,0.35)'; e.currentTarget.style.transform='scale(1.08)' }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background='rgba(201,168,76,0.15)'; e.currentTarget.style.transform='scale(1)' }}>
-                    <div style={{ width:0, height:0, borderTop:'12px solid transparent', borderBottom:'12px solid transparent', borderLeft:'20px solid #C9A84C', marginLeft:'4px' }} />
+
+        {/* Video — full width, cinematic */}
+        <div className="rv d1" style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setFeaturedReady(true)}>
+          {!featuredReady ? (
+            <div style={{ position: 'relative', paddingTop: '42.85%', background: '#040a04', overflow: 'hidden' }}>
+              <img
+                src={`https://img.youtube.com/vi/${FEATURED_ID}/maxresdefault.jpg`}
+                alt="CROSSOVER — Solomon Stephen"
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }}
+              />
+              {/* Cinematic letterbox overlay */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,rgba(4,10,4,0.55) 0%,transparent 25%,transparent 75%,rgba(4,10,4,0.7) 100%)' }} />
+              {/* Play button */}
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                  <div style={{ width: '72px', height: '72px', border: '1px solid rgba(201,168,76,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(6,12,6,0.7)', backdropFilter: 'blur(12px)', transition: 'all 0.3s' }}>
+                    <div style={{ width: 0, height: 0, borderTop: '13px solid transparent', borderBottom: '13px solid transparent', borderLeft: '22px solid #C9A84C', marginLeft: '6px' }} />
                   </div>
-                  <div style={{ position:'absolute', bottom:'14px', left:'14px', zIndex:3, display:'flex', alignItems:'center', gap:'8px', background:'rgba(0,0,0,0.7)', backdropFilter:'blur(8px)', border:'1px solid rgba(201,168,76,0.2)', borderRadius:'8px', padding:'5px 12px' }}>
-                    <span style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#ef4444', display:'inline-block', animation:'goldPulse 1.5s ease-in-out infinite' }} />
-                    <span style={{ color:'rgba(255,255,255,0.8)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.15em', textTransform:'uppercase' }}>Live Recording · MDWE</span>
-                  </div>
-                  <span style={{ position:'relative', zIndex:3, color:'rgba(255,255,255,0.5)', fontFamily:'Inter, sans-serif', fontSize:'11px', letterSpacing:'0.1em' }}>Tap to play</span>
+                  <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)' }}>Play</span>
                 </div>
-              ) : (
-                <iframe width="100%" height="100%" src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1`} title="Rivers of Joy" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen style={{ position:'absolute', inset:0, width:'100%', height:'100%', zIndex:2 }} />
-              )}
-            </div>
-            <div className="featured-info-panel">
-              {/* Decorative CSS waveform */}
-              <div style={{ display:'flex', alignItems:'flex-end', gap:'3px', height:'32px', marginBottom:'20px', opacity:0.7 }}>
-                {Array.from({length:18}).map((_,i) => (
-                  <div key={i} className="wave-bar" style={{ height:`${12 + Math.abs(Math.sin(i*0.8))*20}px`, animationDelay:`${i*0.08}s` }} />
-                ))}
               </div>
-              <div>
-                <div className="font-display" style={{ fontSize:'clamp(22px,3vw,38px)', fontWeight:300, color:'#F5F0E8', lineHeight:1, marginBottom:'5px', letterSpacing:'-0.5px' }}>Rivers of Joy</div>
-                <div style={{ color:'rgba(201,168,76,0.65)', fontStyle:'italic', fontFamily:'Cormorant Garamond, serif', fontSize:'15px', marginBottom:'16px' }}>Solomon Stephen</div>
-                <div style={{ height:'1px', background:'linear-gradient(90deg,rgba(201,168,76,0.25),transparent)', marginBottom:'16px' }} />
-                <p style={{ color:'rgba(245,240,232,0.5)', fontFamily:'Inter, sans-serif', fontSize:'13px', lineHeight:1.8, marginBottom:'16px' }}>
-                  There are moments in God&apos;s presence that cannot be scripted — only surrendered to. A live spontaneous prophetic worship experience from Solomon Stephen at MDWE (Mid Day Worship Experience). &ldquo;Rivers of Joy&rdquo; is a flowing encounter of joy, thanksgiving, and heartfelt praise — a river of worship rising from the Spirit within. Jesus said in John 7:38.
-                </p>
+              {/* Title overlay bottom-left */}
+              <div style={{ position: 'absolute', bottom: '32px', left: 'clamp(24px,4vw,56px)' }}>
+                <div style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '6px' }}>Solomon Stephen · 2024</div>
+                <div className="font-display" style={{ fontSize: 'clamp(24px,3vw,44px)', fontWeight: 700, color: '#F5F0E8', letterSpacing: '-1px' }}>CROSSOVER</div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div style={{ position: 'relative', paddingTop: '42.85%', background: '#000' }}>
+              <iframe
+                src={`https://www.youtube.com/embed/${FEATURED_ID}?autoplay=1&rel=0&modestbranding=1`}
+                title="CROSSOVER — Solomon Stephen"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+              />
+            </div>
+          )}
         </div>
       </section>
 
-      <section style={{ padding:'0 clamp(24px,4vw,56px) clamp(32px,5vw,80px)' }}>
-        <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'28px' }} className="rv">
-          <div style={{ height:'1px', width:'28px', background:'rgba(201,168,76,0.5)' }} />
-          <span style={{ color:'rgba(201,168,76,0.5)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.35em', textTransform:'uppercase' }}>More Music</span>
-          <div style={{ height:'1px', flex:1, background:'linear-gradient(to right,rgba(201,168,76,0.2),transparent)' }} />
+      {/* ════════════════════════════════════
+          TRACKLIST — editorial rows
+      ════════════════════════════════════ */}
+      <section id="tracklist" style={{ background: '#060c06', borderTop: '1px solid rgba(201,168,76,0.05)' }}>
+        <div style={{ padding: 'clamp(80px,10vw,140px) clamp(24px,4vw,56px)', paddingBottom: '0' }}>
+          <div className="rv" style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '18px' }}>
+            <div style={{ width: '28px', height: '1px', background: 'rgba(201,168,76,0.35)' }} />
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>Discography</span>
+          </div>
+          <h2 className="font-display rv d1" style={{ fontSize: 'clamp(36px,4.5vw,68px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-1.5px', color: '#F5F0E8', marginBottom: '60px' }}>
+            The Songs.<br />
+            <span style={{ fontStyle: 'italic', fontWeight: 700, color: 'rgba(201,168,76,0.85)' }}>The Encounters.</span>
+          </h2>
         </div>
-        <div className="more-music-grid">
+
+        {/* Track rows */}
+        <div>
+          {tracks.map((t, i) => (
+            <div
+              key={t.id}
+              className={`track-row rv${playing === t.id ? ' active' : ''}`}
+              style={{ transitionDelay: `${i * 0.05}s` }}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => setPlaying(playing === t.id ? null : t.id)}
+            >
+              {/* Number / play icon */}
+              <div className="track-play-icon">
+                {playing === t.id ? (
+                  /* Pause bars */
+                  <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
+                    <div style={{ width: '3px', height: '12px', background: '#C9A84C', borderRadius: '1px' }} />
+                    <div style={{ width: '3px', height: '12px', background: '#C9A84C', borderRadius: '1px' }} />
+                  </div>
+                ) : (
+                  <div style={{ width: 0, height: 0, borderTop: '6px solid transparent', borderBottom: '6px solid transparent', borderLeft: `10px solid ${hovered === i ? '#C9A84C' : 'rgba(201,168,76,0.5)'}`, marginLeft: '2px', transition: 'border-left-color 0.3s' }} />
+                )}
+              </div>
+
+              {/* Track info */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(10px,2vw,24px)', flexWrap: 'wrap' }}>
+                  <span className="font-display" style={{ fontSize: 'clamp(18px,2.2vw,28px)', fontWeight: 600, color: playing === t.id ? '#C9A84C' : '#F5F0E8', letterSpacing: '-0.3px', transition: 'color 0.3s', whiteSpace: 'nowrap' }}>{t.title}</span>
+                  <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.35)' }}>{t.year}</span>
+                </div>
+                <p style={{ fontFamily: 'Inter,sans-serif', fontSize: 'clamp(12px,1vw,14px)', color: 'rgba(245,240,232,0.28)', lineHeight: 1.7, margin: 0, maxWidth: '600px' }}>{t.desc}</p>
+
+                {/* Embedded player — expands inline */}
+                {playing === t.id && (
+                  <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(201,168,76,0.08)' }}>
+                    <div style={{ position: 'relative', paddingTop: '56.25%', background: '#040a04' }}>
+                      <iframe
+                        src={`https://www.youtube.com/embed/${t.id}?autoplay=1&rel=0&modestbranding=1`}
+                        title={t.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Scripture — right column */}
+              <div className="track-scripture" style={{ textAlign: 'right' }}>
+                <span style={{ fontFamily: 'Cormorant Garamond,serif', fontStyle: 'italic', fontSize: 'clamp(13px,1.1vw,15px)', color: 'rgba(201,168,76,0.3)', whiteSpace: 'nowrap' }}>{t.scripture}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ padding: '0 clamp(24px,4vw,56px)', paddingTop: 'clamp(48px,6vw,80px)', paddingBottom: 'clamp(80px,10vw,140px)' }}>
+          <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" className="btn-outline-pill">
+            More on YouTube ↗
+          </a>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════
+          STREAMING
+      ════════════════════════════════════ */}
+      <section style={{ background: '#040a04', borderTop: '1px solid rgba(201,168,76,0.05)', padding: 'clamp(80px,10vw,140px) clamp(24px,4vw,56px)' }}>
+        <div className="rv" style={{ marginBottom: '18px' }}>
+          <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>Listen Everywhere</span>
+        </div>
+        <h2 className="font-display rv d1" style={{ fontSize: 'clamp(32px,4vw,60px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-1.5px', color: '#F5F0E8', marginBottom: '48px' }}>
+          Find the Music<br />
+          <span style={{ fontStyle: 'italic', fontWeight: 700, color: 'rgba(201,168,76,0.85)' }}>Wherever You Are.</span>
+        </h2>
+
+        <div className="rv d2" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
           {[
-            { id:'dnGEWG_A3GA', title:'Alaabo Mi',  subtitle:'My Protector',          year:'Gospel',                    desc:"Alaabo mi means God my protector — a song delving into God's protective revelation, resonating with Psalm 91.", scripture:'Psalm 91',             lyric:'You are my fortress, my shield and my refuge — no evil shall come near.' },
-            { id:'c8KAM_l151s', title:'Crossover',  subtitle:'From Darkness to Light', year:'Gospel',                    desc:'Through the finished work of Christ on the Cross we are translated from darkness to light.', scripture:'Colossians 1:13',       lyric:'From darkness into His marvellous light — the Cross is our passage.' },
-            { id:'EPA7cFLHg2c', title:'Aiku',        subtitle:'The Immortal One',       year:"Gospel · Prod. O'keys Music", desc:'Aiku — the Immortal One. A song heralding the encounter with the resurrected Jesus.', scripture:'1 Corinthians 15:55', lyric:'Death has no sting, the grave has no victory — He lives forevermore.' },
-          ].map((track) => <MusicCard key={track.id} track={track} />)}
+            { name: 'YouTube',         href: CHANNEL_URL },
+            { name: 'Spotify',         href: 'https://open.spotify.com/artist/solomon-stephen' },
+            { name: 'Apple Music',     href: 'https://music.apple.com' },
+            { name: 'Audiomack',       href: 'https://audiomack.com' },
+            { name: 'Boomplay',        href: 'https://www.boomplaymusic.com' },
+          ].map(p => (
+            <a key={p.name} href={p.href} target="_blank" rel="noopener noreferrer" className="plat-link">
+              {p.name} ↗
+            </a>
+          ))}
         </div>
-        <div style={{ marginTop:'40px', paddingBottom:'8px' }}>
-          <Link href={CHANNEL_URL} target="_blank" className="btn-gold-pill" style={{ fontSize:'12px' }}>Watch More on YouTube</Link>
+      </section>
+
+      {/* ════════════════════════════════════
+          CTA
+      ════════════════════════════════════ */}
+      <section style={{ padding: 'clamp(100px,13vw,180px) clamp(24px,4vw,56px)', background: '#1A2E1A', position: 'relative', overflow: 'hidden', borderTop: '1px solid rgba(201,168,76,0.06)' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 75% at 50% 50%,rgba(201,168,76,0.09) 0%,transparent 65%)', pointerEvents: 'none' }} />
+        {(['top-left','top-right','bottom-left','bottom-right'] as const).map(pos => {
+          const [v, h] = pos.split('-') as ['top'|'bottom','left'|'right']
+          return <div key={pos} style={{ position: 'absolute', [v]: '36px', [h]: '36px', width: '44px', height: '44px', [`border${v[0].toUpperCase()+v.slice(1)}`]: '1px solid rgba(201,168,76,0.14)', [`border${h[0].toUpperCase()+h.slice(1)}`]: '1px solid rgba(201,168,76,0.14)' }} />
+        })}
+        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+          <div className="rv" style={{ marginBottom: '24px' }}>
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>The Worship Nation</span>
+          </div>
+          <h2 className="font-display rv d1" style={{ fontSize: 'clamp(44px,6.5vw,96px)', fontWeight: 300, lineHeight: 0.88, letterSpacing: '-2.5px', color: '#F5F0E8', marginBottom: '32px' }}>
+            Come Into<br />
+            <span style={{ fontStyle: 'italic', fontWeight: 700, background: 'linear-gradient(135deg,#E8C96A,#C9A84C)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>His Presence.</span>
+          </h2>
+          <div className="rv d2" style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent)', marginBottom: '32px' }} />
+          <p className="rv d2" style={{ fontFamily: 'Inter,sans-serif', fontSize: '15px', lineHeight: 1.95, color: 'rgba(245,240,232,0.32)', marginBottom: '52px' }}>
+            Join a live gathering. Experience the sound that is shifting atmospheres across Nigeria and beyond.
+          </p>
+          <div className="rv d3" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/events" className="btn-gold-pill" style={{ padding: '17px 48px', fontSize: '10px', letterSpacing: '0.16em' }}>Join a Gathering</Link>
+            <Link href="/contact" className="btn-outline-pill" style={{ padding: '17px 48px', fontSize: '10px', letterSpacing: '0.16em' }}>Get In Touch</Link>
+          </div>
         </div>
       </section>
 

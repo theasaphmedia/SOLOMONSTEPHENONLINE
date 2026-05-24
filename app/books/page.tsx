@@ -1,409 +1,271 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import Footer from '@/components/Footer'
-import Link from 'next/link'
+import { useEffect } from 'react'
 import Image from 'next/image'
-import '../inner-animations.css'
-import '../mobile.css'
-import { usePageReveal } from '@/components/usePageReveal'
+import Link from 'next/link'
+import Footer from '@/components/Footer'
 
 const books = [
   {
     num: '01',
     title: 'The Cost of Ignorance',
-    subtitle: null,
     tag: 'Theology',
     year: '2023',
-    desc: 'A prophetic call to pursue knowledge of God with intentionality and urgency.',
-    pull: '"Ignorance is not bliss — it is costly."',
-    body: 'This book confronts the dangerous comfort of spiritual ignorance and calls believers to a higher standard of knowing God. Drawing from deep biblical study and personal encounter, Solomon delivers a clarion call to the body of Christ.',
-    link: 'https://selar.com/v8561k6070',
-    badge: 'Available Now',
-    img: '/images/book-cost-of-ignorance.png',
     scripture: 'Hosea 4:6',
+    pull: 'Ignorance is not bliss — it is costly.',
+    body: 'This book confronts the dangerous comfort of spiritual ignorance and calls believers to a higher standard of knowing God. Drawing from deep biblical study and personal encounter, Solomon delivers a clarion call to the body of Christ to pursue truth with urgency and intention.',
+    link: 'https://selar.com/v8561k6070',
+    img: '/images/book-cost-of-ignorance.png',
   },
   {
     num: '02',
-    title: 'Sons, Not Slaves',
-    subtitle: 'March Volume',
+    title: 'Sons, Not Slaves — March',
     tag: 'Devotional',
     year: '31-Day Journey',
-    desc: 'A 31-day devotional journey into the identity of the believer as a son of God.',
-    pull: '"You were never meant to serve from fear — but from love."',
-    body: "Each day draws from Hebrew and Greek word studies to anchor you in the truth of who you are in Christ. Encounter the Father's heart, understand your covenant rights as a son, and walk into a new dimension of intimacy with God.",
-    link: 'https://selar.com/41x076wbk1',
-    badge: 'March Volume',
-    img: '/images/book-sons-not-slaves-march.png',
     scripture: 'Romans 8:15',
+    pull: 'You were never meant to serve from fear — but from love.',
+    body: 'A 31-day devotional journey into the identity of the believer as a son of God. Each day draws from Hebrew and Greek word studies to anchor you in the truth of who you are in Christ. Encounter the Father\'s heart and walk into a new dimension of intimacy.',
+    link: 'https://selar.com/41x076wbk1',
+    img: '/images/book-sons-not-slaves-march.png',
   },
   {
     num: '03',
-    title: 'Sons, Not Slaves',
-    subtitle: 'April Volume',
+    title: 'Sons, Not Slaves — April',
     tag: 'Devotional',
     year: '31-Day Journey',
-    desc: 'Continuing the journey — deeper into sonship, freedom, and covenant relationship.',
-    pull: '"The deeper you go into sonship, the freer you become."',
-    body: 'Building on the March foundation, the April volume goes deeper into the practical outworking of sonship — freedom from fear, boldness in prayer, and the fullness of your inheritance in Christ.',
-    link: 'https://selar.com/5ep1bv5156',
-    badge: 'April Volume',
-    img: '/images/book-sons-not-slaves-april.png',
     scripture: 'Galatians 4:7',
+    pull: 'You are an heir — not a servant. Walk like it.',
+    body: 'The April volume continues the journey of sonship — going deeper into covenant identity, spiritual inheritance, and the posture of a son who understands his position before the Father. An essential companion to the March volume.',
+    link: 'https://selar.com/8z43781b2n',
+    img: '/images/book-sons-not-slaves-april.png',
+  },
+  {
+    num: '04',
+    title: 'Go In This Thy Might',
+    tag: 'Discipleship',
+    year: '2024',
+    scripture: 'Judges 6:14',
+    pull: 'God does not call the qualified — He qualifies the called.',
+    body: 'Like Gideon, many believers are hiding when they should be rising. This book is a direct challenge to every believer sitting beneath their potential — an invitation to step into the fullness of what God has commissioned them for.',
+    link: 'https://selar.com/books',
+    img: '/images/solomon-cream-suit-books.png',
   },
 ]
 
-function BookRow({ book, index }: { book: typeof books[0]; index: number }) {
-  const isEven = index % 2 === 0
-  const rowRef = useRef<HTMLDivElement>(null)
-
+export default function BooksPage() {
   useEffect(() => {
-    const el = rowRef.current
-    if (!el) return
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { el.classList.add('book-row-visible'); obs.disconnect() } },
-      { threshold: 0.12 }
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) }
+      }),
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     )
-    obs.observe(el)
+    document.querySelectorAll('.rv').forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
 
   return (
-    <div
-      ref={rowRef}
-      className="book-row-entry"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr',
-        gap: '0',
-        marginBottom: '2px',
-        position: 'relative',
-      }}
-    >
+    <main style={{ background: '#060c06', overflowX: 'hidden' }}>
       <style>{`
-        .book-row-entry { opacity: 0; transform: translateY(40px); transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
-        .book-row-visible { opacity: 1 !important; transform: translateY(0) !important; }
-        @media (min-width: 768px) {
-          .book-editorial-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; min-height: 560px; }
+        .rv{opacity:0;transform:translateY(36px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+        .rv.is-visible{opacity:1;transform:none;}
+        .rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.22s}.rv.d3{transition-delay:.32s}
+
+        .wc{display:inline-block;overflow:hidden;}
+        .wi{display:inline-block;animation:wi 1s cubic-bezier(0.16,1,0.3,1) both;}
+        @keyframes wi{from{transform:translateY(110%)}to{transform:translateY(0)}}
+
+        /* Book feature */
+        .book-feature {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          border-top: 1px solid rgba(201,168,76,0.07);
+          min-height: clamp(480px,60vw,700px);
+        }
+        .book-feature.reverse { direction: rtl; }
+        .book-feature.reverse > * { direction: ltr; }
+        .book-img-wrap { position: relative; overflow: hidden; }
+        .book-content {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          padding: clamp(48px,7vw,100px) clamp(32px,4.5vw,72px);
+        }
+        .get-book-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 14px 32px;
+          border: 1px solid rgba(201,168,76,0.3);
+          color: rgba(201,168,76,0.8);
+          font-family: Inter,sans-serif;
+          font-size: 10px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: border-color 0.35s, color 0.35s, background 0.35s;
+          align-self: flex-start;
+        }
+        .get-book-link:hover {
+          border-color: rgba(201,168,76,0.7);
+          color: #C9A84C;
+          background: rgba(201,168,76,0.04);
+        }
+        @media(max-width:768px){
+          .book-feature, .book-feature.reverse {
+            grid-template-columns: 1fr;
+            direction: ltr;
+            min-height: auto;
+          }
+          .book-img-wrap { min-height: 60vw; }
         }
       `}</style>
 
-      <div
-        className="book-editorial-grid"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          border: '1px solid rgba(201,168,76,0.1)',
-          borderRadius: '28px',
-          overflow: 'hidden',
-          background: 'rgba(26,46,26,0.15)',
-        }}
-      >
-        {/* Ambient glow */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(ellipse 50% 60% at ${isEven ? '25%' : '75%'} 50%, rgba(201,168,76,0.07) 0%, transparent 70%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }} />
+      {/* ════════════════════════════════════
+          HERO
+      ════════════════════════════════════ */}
+      <section style={{ minHeight: '100svh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,4vw,56px)', paddingTop: '160px', background: '#060c06', position: 'relative', overflow: 'hidden' }}>
+        {/* BG: decorative oversized text */}
+        <div aria-hidden style={{ position: 'absolute', right: '-4vw', top: '50%', transform: 'translateY(-52%)', fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(160px,22vw,380px)', fontWeight: 700, color: 'rgba(201,168,76,0.022)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', letterSpacing: '-8px' }}>WORD</div>
+        {/* Photo, bleeding from right */}
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: '40%', overflow: 'hidden', zIndex: 1 }}>
+          <Image src="/images/solomon-cream-suit-books.png" alt="" fill style={{ objectFit: 'cover', objectPosition: '50% 20%' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right,#060c06 0%,rgba(6,12,6,0.6) 40%,transparent 80%)' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(to top,#060c06,transparent)' }} />
+        </div>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, #060c06 55%, transparent 80%)', zIndex: 2, pointerEvents: 'none' }} />
 
-        {/* Cover panel */}
-        <div
-          style={{
-            order: isEven ? 0 : 1,
-            position: 'relative',
-            background: 'rgba(10,20,10,0.6)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '64px 40px',
-            zIndex: 1,
-          }}
-        >
-          {/* Background ambient for this book */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: `radial-gradient(ellipse 80% 80% at 50% 50%, rgba(201,168,76,0.09) 0%, transparent 65%)`,
-            pointerEvents: 'none',
-          }} />
-          {/* Number watermark */}
-          <div style={{
-            position: 'absolute',
-            top: '20px',
-            left: '24px',
-            fontFamily: 'Cormorant Garamond, serif',
-            fontSize: '80px',
-            fontWeight: 700,
-            color: 'rgba(201,168,76,0.05)',
-            lineHeight: 1,
-            userSelect: 'none',
-          }}>{book.num}</div>
+        <div style={{ position: 'relative', zIndex: 10, maxWidth: '800px' }}>
+          <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', marginBottom: '40px' }}>
+            <span className="wc"><span className="wi" style={{ animationDelay: '0.05s' }}>Published Works · Solomon Stephen</span></span>
+          </p>
 
-          {/* 3D tilt book cover */}
-          <div
-            style={{ position: 'relative', zIndex: 1, transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1)', transformStyle: 'preserve-3d' }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = isEven
-                ? 'perspective(900px) rotateY(-12deg) rotateX(4deg) scale(1.04)'
-                : 'perspective(900px) rotateY(12deg) rotateX(4deg) scale(1.04)'
-            }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'perspective(900px) rotateY(0deg) rotateX(0deg) scale(1)' }}
-          >
-            <div style={{
-              width: '220px',
-              height: '308px',
-              borderRadius: '8px',
-              overflow: 'hidden',
-              boxShadow: '0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,168,76,0.18)',
-              position: 'relative',
-            }}>
-              <Image src={book.img} alt={book.title} fill sizes="220px" style={{ objectFit: 'cover' }} />
+          <div style={{ marginBottom: '40px', lineHeight: 0.88 }}>
+            <div className="wc" style={{ display: 'block' }}>
+              <span className="wi font-display" style={{ fontSize: 'clamp(52px,7.5vw,110px)', fontWeight: 300, color: '#F5F0E8', letterSpacing: '-3px', animationDelay: '0.18s' }}>Words That</span>
             </div>
-            {/* Badge */}
-            <div style={{
-              position: 'absolute',
-              top: '-12px',
-              right: '-12px',
-              background: 'linear-gradient(135deg, #E8C96A, #C9A84C)',
-              borderRadius: '999px',
-              padding: '5px 14px',
-              boxShadow: '0 4px 20px rgba(201,168,76,0.45)',
-            }}>
-              <span style={{ color: '#060e06', fontFamily: 'Inter, sans-serif', fontSize: '9px', fontWeight: 800, letterSpacing: '0.08em' }}>{book.badge}</span>
+            <div className="wc" style={{ display: 'block' }}>
+              <span className="wi font-display" style={{ fontSize: 'clamp(52px,7.5vw,110px)', fontWeight: 700, fontStyle: 'italic', letterSpacing: '-3px', animationDelay: '0.3s', background: 'linear-gradient(135deg,#E8C96A 0%,#C9A84C 45%,#D4B85E 72%,#a8873a 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Transform.</span>
             </div>
           </div>
-        </div>
 
-        {/* Info panel */}
-        <div
-          style={{
-            order: isEven ? 1 : 0,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            padding: 'clamp(40px,6vw,72px) clamp(32px,5vw,64px)',
-            zIndex: 1,
-            position: 'relative',
-          }}
-        >
-          <div style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '9px',
-            letterSpacing: '0.35em',
-            textTransform: 'uppercase',
-            color: 'rgba(201,168,76,0.6)',
-            marginBottom: '16px',
-          }}>{book.tag} · {book.year}</div>
+          <div style={{ width: '48px', height: '1px', background: 'linear-gradient(90deg,#C9A84C,transparent)', marginBottom: '32px', animation: 'wi 0.7s 0.44s both' }} />
 
-          <div
-            className="font-display"
-            style={{
-              fontSize: 'clamp(30px,3.5vw,52px)',
-              fontWeight: 300,
-              color: '#F5F0E8',
-              lineHeight: 0.95,
-              letterSpacing: '-1px',
-              marginBottom: book.subtitle ? '6px' : '0',
-            }}
-          >{book.title}</div>
+          <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '15px', lineHeight: 1.95, color: 'rgba(245,240,232,0.38)', maxWidth: '460px', marginBottom: '52px', animation: 'wi 0.9s 0.5s both' }}>
+            Rooted in biblical Hebrew and Greek. Written for believers who are ready to go deeper — beyond the surface of faith, into the foundation of truth.
+          </p>
 
-          {book.subtitle && (
-            <div className="font-display" style={{ fontSize: '20px', fontWeight: 300, fontStyle: 'italic', color: 'rgba(201,168,76,0.65)', marginBottom: '0' }}>{book.subtitle}</div>
-          )}
-
-          {/* Pull quote */}
-          <div style={{
-            margin: '28px 0',
-            padding: '20px 24px',
-            borderLeft: '3px solid #C9A84C',
-            background: 'rgba(201,168,76,0.04)',
-            borderRadius: '0 12px 12px 0',
-          }}>
-            <p className="font-display" style={{ fontSize: '17px', fontStyle: 'italic', fontWeight: 300, color: 'rgba(245,240,232,0.75)', lineHeight: 1.65, margin: 0 }}>{book.pull}</p>
-            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', color: 'rgba(201,168,76,0.4)', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '10px', marginBottom: 0 }}>{book.scripture}</p>
-          </div>
-
-          <div style={{ height: '1px', background: 'linear-gradient(90deg, rgba(201,168,76,0.2), transparent)', marginBottom: '20px' }} />
-
-          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: 'rgba(245,240,232,0.42)', lineHeight: 1.85, marginBottom: '32px' }}>{book.body}</p>
-
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <Link href={book.link} target="_blank" className="btn-gold-pill" style={{ fontSize: '12px' }}>Get This Book</Link>
-            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', color: 'rgba(201,168,76,0.35)', fontStyle: 'italic' }}>via Selar</span>
-          </div>
-        </div>
-
-        {/* Top line accent */}
-        <div style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.5), transparent)',
-          zIndex: 2,
-          pointerEvents: 'none',
-        }} />
-      </div>
-    </div>
-  )
-}
-
-export default function BooksPage() {
-  usePageReveal()
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const animRef = useRef<number>(0)
-  const [visibleQuotes, setVisibleQuotes] = useState<{ id: number; quote: string; book: string; x: number; y: number; visible: boolean }[]>([])
-
-  const allQuotes = [
-    { quote: 'Ignorance is not bliss — it is costly.', book: 'The Cost of Ignorance' },
-    { quote: 'You cannot walk in what you do not know.', book: 'The Cost of Ignorance' },
-    { quote: 'You were never meant to serve from fear — but from love.', book: 'Sons, Not Slaves' },
-    { quote: 'The Father is not looking for servants. He is looking for sons.', book: 'Sons, Not Slaves' },
-    { quote: 'Sonship is not a title — it is an identity.', book: 'Sons, Not Slaves' },
-    { quote: 'You are not a beggar at the throne — you are an heir.', book: 'Sons, Not Slaves' },
-  ]
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    let W = 0, H = 0, mx = -999, my = -999
-
-    type Pt = { x: number; y: number; vx: number; vy: number; r: number; op: number; angle: number; speed: number; gold: boolean }
-    let pts: Pt[] = []
-
-    const resize = () => {
-      W = canvas.width = canvas.offsetWidth
-      H = canvas.height = canvas.offsetHeight
-      pts = []
-      for (let i = 0; i < 40; i++) pts.push({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 1.5 + 0.4, op: Math.random() * 0.22 + 0.05, angle: Math.random() * Math.PI * 2, speed: Math.random() * 0.005 + 0.002, gold: Math.random() > 0.35 })
-    }
-
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H)
-      if (mx > 0) {
-        const mg = ctx.createRadialGradient(mx, my, 0, mx, my, 140)
-        mg.addColorStop(0, 'rgba(201,168,76,0.07)'); mg.addColorStop(1, 'transparent')
-        ctx.fillStyle = mg; ctx.fillRect(0, 0, W, H)
-      }
-      pts.forEach((p, i) => {
-        const dx = p.x - mx, dy = p.y - my
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < 80 && mx > 0) { p.vx += (dx / dist) * 0.4; p.vy += (dy / dist) * 0.4 }
-        p.angle += p.speed; p.x += p.vx + Math.sin(p.angle) * 0.15; p.y += p.vy
-        p.vx *= 0.97; p.vy *= 0.97
-        if (p.x < 0 || p.x > W) p.vx *= -1
-        if (p.y < 0 || p.y > H) p.vy *= -1
-        for (let j = i + 1; j < pts.length; j++) {
-          const ex = pts[j].x - p.x, ey = pts[j].y - p.y, ed = Math.sqrt(ex * ex + ey * ey)
-          if (ed < 90) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(pts[j].x, pts[j].y); ctx.strokeStyle = `rgba(201,168,76,${(1 - ed / 90) * 0.06})`; ctx.lineWidth = 0.5; ctx.stroke() }
-        }
-        const pulse = p.op + Math.sin(p.angle * 2) * 0.04
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
-        ctx.fillStyle = p.gold ? `rgba(201,168,76,${pulse})` : `rgba(80,140,80,${pulse * 0.45})`
-        ctx.fill()
-      })
-      animRef.current = requestAnimationFrame(draw)
-    }
-
-    const onMove = (e: MouseEvent) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top }
-    const onLeave = () => { mx = -999; my = -999 }
-    canvas.addEventListener('mousemove', onMove)
-    canvas.addEventListener('mouseleave', onLeave)
-    resize(); draw()
-    window.addEventListener('resize', resize)
-
-    let quoteId = Date.now()
-    const positions = [{ x: 55, y: 12 }, { x: 60, y: 36 }, { x: 52, y: 58 }, { x: 68, y: 20 }, { x: 57, y: 70 }]
-    let posIndex = 0, quoteIndex = 0
-    const spawnQuote = () => {
-      const pos = positions[posIndex % positions.length]
-      const q = allQuotes[quoteIndex % allQuotes.length]
-      const id = quoteId++; posIndex++; quoteIndex++
-      setVisibleQuotes((prev) => [...prev.slice(-4), { id, quote: q.quote, book: q.book, x: pos.x + (Math.random() * 5 - 2.5), y: pos.y + (Math.random() * 5 - 2.5), visible: true }])
-      setTimeout(() => setVisibleQuotes((prev) => prev.map((q) => q.id === id ? { ...q, visible: false } : q)), 4000)
-      setTimeout(() => setVisibleQuotes((prev) => prev.filter((q) => q.id !== id)), 4800)
-    }
-    spawnQuote()
-    const interval = setInterval(spawnQuote, 2400)
-
-    return () => {
-      cancelAnimationFrame(animRef.current); window.removeEventListener('resize', resize)
-      canvas.removeEventListener('mousemove', onMove); canvas.removeEventListener('mouseleave', onLeave)
-      clearInterval(interval)
-    }
-  }, [])
-
-  return (
-    <main style={{ background: '#060e06', minHeight: '100vh', overflowX: 'hidden' }} className="page-entry">
-      <style>{`
-        @keyframes goldPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.75)} }
-        @media (min-width: 768px) {
-          .book-editorial-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; min-height: 520px; }
-        }
-      `}</style>
-
-      {/* HERO */}
-      <section style={{ position: 'relative', minHeight: '60vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-        <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 80% at 25% 50%, rgba(26,46,26,0.35) 0%, transparent 70%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '200px', background: 'linear-gradient(to top, #060e06, transparent)', zIndex: 2 }} />
-
-        {/* Floating quote cards */}
-        {visibleQuotes.map((q) => (
-          <div key={q.id} style={{ position: 'absolute', left: `${q.x}%`, top: `${q.y}%`, zIndex: 5, maxWidth: '220px', padding: '14px 18px', background: 'rgba(6,14,6,0.8)', backdropFilter: 'blur(12px)', border: '1px solid rgba(201,168,76,0.16)', borderRadius: '12px', borderLeft: '3px solid rgba(201,168,76,0.55)', opacity: q.visible ? 1 : 0, transform: q.visible ? 'translateY(0) scale(1)' : 'translateY(10px) scale(0.96)', transition: 'opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1)', pointerEvents: 'none' }}>
-            <p className="font-display" style={{ fontSize: '12px', fontStyle: 'italic', fontWeight: 300, color: 'rgba(245,240,232,0.75)', lineHeight: 1.6, marginBottom: '8px' }}>&ldquo;{q.quote}&rdquo;</p>
-            <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '8px', color: 'rgba(201,168,76,0.5)', letterSpacing: '0.15em', textTransform: 'uppercase', margin: 0 }}>{q.book}</p>
-          </div>
-        ))}
-
-        <div style={{ position: 'relative', zIndex: 10, width: '100%', paddingTop: '160px', paddingBottom: '100px', paddingLeft: 'clamp(24px,4vw,56px)', paddingRight: 'clamp(24px,4vw,56px)' }}>
-          <div className="animate-fade-up" style={{ animationDelay: '0.1s', animationFillMode: 'both', display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.15)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#C9A84C', display: 'inline-block', animation: 'goldPulse 2s ease-in-out infinite' }} />
-            <span style={{ color: 'rgba(201,168,76,0.7)', fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase' }}>Published Works</span>
-          </div>
-          <div className="animate-fade-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
-            <div className="font-display" style={{ fontSize: 'clamp(38px,5.5vw,82px)', fontWeight: 300, color: '#F5F0E8', lineHeight: 0.92, letterSpacing: '-2px' }}>Words That</div>
-            <div className="font-display text-gradient-gold" style={{ fontSize: 'clamp(38px,5.5vw,82px)', fontWeight: 700, fontStyle: 'italic', lineHeight: 0.95, letterSpacing: '-2px' }}>Transform.</div>
-          </div>
-          <div className="animate-fade-up" style={{ animationDelay: '0.34s', animationFillMode: 'both', display: 'flex', alignItems: 'center', gap: '14px', marginTop: '28px', flexWrap: 'wrap' }}>
-            {['Theology', 'Devotional', 'Biblical Word Studies'].map((r, i, a) => (
-              <span key={r} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                <span style={{ color: 'rgba(201,168,76,0.55)', fontFamily: 'Inter, sans-serif', fontSize: '10px', letterSpacing: '0.25em', textTransform: 'uppercase' }}>{r}</span>
-                {i < a.length - 1 && <span style={{ color: 'rgba(201,168,76,0.2)' }}>·</span>}
-              </span>
-            ))}
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', animation: 'wi 0.9s 0.6s both' }}>
+            <a href="https://selar.com" target="_blank" rel="noopener noreferrer" className="btn-gold-pill">Get the Books</a>
+            <Link href="/contact" className="btn-outline-pill">Bulk Orders</Link>
           </div>
         </div>
       </section>
 
-      {/* EDITORIAL BOOK LIST */}
-      <section style={{ padding: '0 clamp(24px,4vw,56px) clamp(60px,6vw,100px)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {books.map((book, index) => (
-          <BookRow key={book.num} book={book} index={index} />
+      {/* ════════════════════════════════════
+          BOOK FEATURES — alternating full-width panels
+      ════════════════════════════════════ */}
+      <section style={{ background: '#040a04', borderTop: '1px solid rgba(201,168,76,0.05)' }}>
+        <div style={{ padding: 'clamp(80px,10vw,130px) clamp(24px,4vw,56px) 0' }}>
+          <div className="rv" style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '18px' }}>
+            <div style={{ width: '28px', height: '1px', background: 'rgba(201,168,76,0.35)' }} />
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>The Library</span>
+          </div>
+          <h2 className="font-display rv d1" style={{ fontSize: 'clamp(36px,4.5vw,68px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-1.5px', color: '#F5F0E8', marginBottom: '72px' }}>
+            Four Books.<br />
+            <span style={{ fontStyle: 'italic', fontWeight: 700, color: 'rgba(201,168,76,0.85)' }}>One Foundation.</span>
+          </h2>
+        </div>
+
+        {books.map((book, i) => (
+          <div key={book.num} className={`book-feature rv${i % 2 === 1 ? ' reverse' : ''}`} style={{ transitionDelay: `${i * 0.08}s`, background: i % 2 === 1 ? 'rgba(255,255,255,0.008)' : 'transparent' }}>
+
+            {/* Book image */}
+            <div className="book-img-wrap">
+              <Image
+                src={book.img}
+                alt={book.title}
+                fill
+                style={{ objectFit: 'cover', objectPosition: 'center top' }}
+              />
+              <div style={{ position: 'absolute', inset: 0, background: i % 2 === 0
+                ? 'linear-gradient(to right, transparent 40%, #040a04 100%)'
+                : 'linear-gradient(to left, transparent 40%, #040a04 100%)'
+              }} />
+            </div>
+
+            {/* Book content */}
+            <div className="book-content">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '28px' }}>
+                <span className="font-display" style={{ fontSize: 'clamp(60px,7vw,100px)', fontWeight: 700, color: 'rgba(201,168,76,0.06)', lineHeight: 1, letterSpacing: '-3px' }}>{book.num}</span>
+                <div>
+                  <div style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.38em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '4px' }}>{book.tag} · {book.year}</div>
+                  <div style={{ fontFamily: 'Cormorant Garamond,serif', fontStyle: 'italic', fontSize: '13px', color: 'rgba(201,168,76,0.35)' }}>{book.scripture}</div>
+                </div>
+              </div>
+
+              <h2 className="font-display" style={{ fontSize: 'clamp(26px,3vw,46px)', fontWeight: 300, lineHeight: 1, letterSpacing: '-0.8px', color: '#F5F0E8', marginBottom: '20px' }}>{book.title}</h2>
+
+              <div style={{ width: '36px', height: '1px', background: 'rgba(201,168,76,0.25)', marginBottom: '24px' }} />
+
+              <blockquote style={{ margin: '0 0 24px', padding: '0 0 0 18px', borderLeft: '2px solid rgba(201,168,76,0.2)' }}>
+                <p className="font-display" style={{ fontStyle: 'italic', fontSize: 'clamp(16px,1.5vw,22px)', color: 'rgba(245,240,232,0.5)', lineHeight: 1.5, fontWeight: 300, margin: 0 }}>
+                  &ldquo;{book.pull}&rdquo;
+                </p>
+              </blockquote>
+
+              <p style={{ fontFamily: 'Inter,sans-serif', fontSize: 'clamp(13px,1.1vw,15px)', color: 'rgba(245,240,232,0.32)', lineHeight: 1.9, marginBottom: '36px' }}>{book.body}</p>
+
+              <a href={book.link} target="_blank" rel="noopener noreferrer" className="get-book-link">
+                Get This Book ↗
+              </a>
+            </div>
+          </div>
         ))}
       </section>
 
-      {/* SHOW LOVE CTA */}
-      <section style={{ padding: '0 clamp(24px,4vw,56px) clamp(60px,6vw,100px)' }}>
-        <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', padding: 'clamp(48px,6vw,80px) clamp(32px,5vw,64px)', border: '1px solid rgba(201,168,76,0.12)', background: 'rgba(26,46,26,0.2)', transition: 'border-color 0.4s, box-shadow 0.4s' }}
-          onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(201,168,76,0.28)'; el.style.boxShadow = '0 20px 60px rgba(201,168,76,0.07)' }}
-          onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(201,168,76,0.12)'; el.style.boxShadow = 'none' }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 80% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%)' }} />
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(to right,transparent,#C9A84C,transparent)' }} />
-          <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-            <div style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(201,168,76,0.5)', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '20px' }}>Support the Ministry</div>
-            <div className="font-display" style={{ fontSize: 'clamp(28px,3.5vw,52px)', fontWeight: 300, color: '#F5F0E8', lineHeight: 0.95, letterSpacing: '-1px', marginBottom: '28px' }}>
-              Blessed by the <span className="text-gradient-gold" style={{ fontWeight: 700, fontStyle: 'italic' }}>Ministry?</span>
-            </div>
-            <div style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent)', maxWidth: '140px', margin: '0 auto 24px' }} />
-            <p style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(245,240,232,0.35)', fontSize: '14px', lineHeight: 1.85, marginBottom: '40px', maxWidth: '480px', margin: '0 auto 40px' }}>
-              If Solomon&apos;s books, music, or teaching have blessed you, you can show love and support the ministry through Selar.
-            </p>
-            <Link href="https://selar.com/showlove/solomonstephen" target="_blank" className="btn-gold-pill" style={{ fontSize: '12px' }}>Show Love on Selar</Link>
+      {/* ════════════════════════════════════
+          PULL QUOTE
+      ════════════════════════════════════ */}
+      <section style={{ padding: 'clamp(100px,13vw,180px) clamp(24px,4vw,56px)', background: '#060c06', borderTop: '1px solid rgba(201,168,76,0.05)', position: 'relative', overflow: 'hidden' }}>
+        <div aria-hidden style={{ position: 'absolute', top: '-60px', left: '-10px', fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(220px,28vw,450px)', fontWeight: 700, color: 'rgba(201,168,76,0.022)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none' }}>&ldquo;</div>
+        <div className="rv" style={{ position: 'relative', zIndex: 1, maxWidth: '1100px' }}>
+          <p className="font-display" style={{ fontSize: 'clamp(32px,5vw,84px)', fontWeight: 300, fontStyle: 'italic', color: '#F5F0E8', lineHeight: 1.08, letterSpacing: '-2px' }}>
+            God does not call the qualified —{' '}
+            <span style={{ background: 'linear-gradient(135deg,#E8C96A,#C9A84C,#D4B85E)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontWeight: 700 }}>He qualifies the called.</span>{' '}
+            And every season of preparation is a seed for a harvest you cannot yet see.
+          </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '48px' }}>
+            <div style={{ width: '40px', height: '1px', background: 'rgba(201,168,76,0.4)' }} />
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>Solomon Stephen</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════
+          CTA
+      ════════════════════════════════════ */}
+      <section style={{ padding: 'clamp(100px,13vw,180px) clamp(24px,4vw,56px)', background: '#1A2E1A', position: 'relative', overflow: 'hidden', borderTop: '1px solid rgba(201,168,76,0.06)' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 75% at 50% 50%,rgba(201,168,76,0.09) 0%,transparent 65%)', pointerEvents: 'none' }} />
+        {(['top-left','top-right','bottom-left','bottom-right'] as const).map(pos => {
+          const [v, h] = pos.split('-') as ['top'|'bottom','left'|'right']
+          return <div key={pos} style={{ position: 'absolute', [v]: '36px', [h]: '36px', width: '44px', height: '44px', [`border${v[0].toUpperCase()+v.slice(1)}`]: '1px solid rgba(201,168,76,0.14)', [`border${h[0].toUpperCase()+h.slice(1)}`]: '1px solid rgba(201,168,76,0.14)' }} />
+        })}
+        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
+          <div className="rv" style={{ marginBottom: '24px' }}>
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>Published Works</span>
+          </div>
+          <h2 className="font-display rv d1" style={{ fontSize: 'clamp(44px,6.5vw,96px)', fontWeight: 300, lineHeight: 0.88, letterSpacing: '-2.5px', color: '#F5F0E8', marginBottom: '32px' }}>
+            Truth That<br />
+            <span style={{ fontStyle: 'italic', fontWeight: 700, background: 'linear-gradient(135deg,#E8C96A,#C9A84C)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Sets You Free.</span>
+          </h2>
+          <div className="rv d2" style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent)', marginBottom: '32px' }} />
+          <p className="rv d2" style={{ fontFamily: 'Inter,sans-serif', fontSize: '15px', lineHeight: 1.95, color: 'rgba(245,240,232,0.32)', marginBottom: '52px' }}>
+            Order your copies today. Available for individuals, churches, and bulk orders.
+          </p>
+          <div className="rv d3" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <a href="https://selar.com" target="_blank" rel="noopener noreferrer" className="btn-gold-pill" style={{ padding: '17px 52px', fontSize: '10px', letterSpacing: '0.16em' }}>Order Now</a>
+            <Link href="/contact" className="btn-outline-pill" style={{ padding: '17px 52px', fontSize: '10px', letterSpacing: '0.16em' }}>Bulk Orders</Link>
           </div>
         </div>
       </section>

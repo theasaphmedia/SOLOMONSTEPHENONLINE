@@ -1,261 +1,288 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Footer from '@/components/Footer'
+import Image from 'next/image'
 import Link from 'next/link'
+import Footer from '@/components/Footer'
 
-/* ── Collapsible map ─────────────────────────────────────────────────── */
-function CollapsibleMap() {
-  const [open, setOpen] = useState(false)
-  return (
-    <div style={{ border: '1px solid rgba(201,168,76,0.1)', marginBottom: '32px', overflow: 'hidden' }}>
-      <div style={{ padding: '20px 24px' }}>
-        <p style={{ color: 'rgba(201,168,76,0.55)', fontSize: '8.5px', letterSpacing: '0.32em', textTransform: 'uppercase', marginBottom: '6px', fontFamily: 'Inter, sans-serif' }}>Visit TWN Studios</p>
-        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '14px', fontWeight: 500, marginBottom: '3px', fontFamily: 'Inter, sans-serif' }}>Kenny T. Kay Building (Green Tall Building)</p>
-        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px', marginBottom: '16px', fontFamily: 'Inter, sans-serif' }}>Beside Azkol Fuel Station, Langbasa Road, Ajah, Lagos</p>
-        <button onClick={() => setOpen(!open)}
-          style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'transparent', border: '1px solid rgba(201,168,76,0.2)', padding: '8px 18px', cursor: 'pointer', transition: 'all 0.25s' }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.5)' }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(201,168,76,0.2)' }}
-        >
-          <span style={{ color: '#C9A84C', fontSize: '9px', letterSpacing: '0.22em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif' }}>{open ? 'Hide Map' : 'View on Map'}</span>
-          <span style={{ color: '#C9A84C', fontSize: '12px', transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s', display: 'inline-block' }}>▾</span>
-        </button>
-      </div>
-      <div style={{ maxHeight: open ? '280px' : '0', overflow: 'hidden', transition: 'max-height 0.45s cubic-bezier(0.16,1,0.3,1)' }}>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.1675887445563!2d3.5813646750302173!3d6.500457123430608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bfbc825df64c1%3A0xdbfac0f53ff1fdf2!2sTWN%20STUDIOS!5e0!3m2!1sen!2sng!4v1775255468341!5m2!1sen!2sng"
-          width="100%" height="260" style={{ border: 0, display: 'block' }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-      </div>
-    </div>
-  )
-}
+const inquiries = [
+  { num: '01', label: 'Ministry & Speaking', desc: 'Invite Solomon to minister, speak, or lead worship at your event, conference, or church.' },
+  { num: '02', label: 'Studio Bookings',     desc: 'Schedule a recording, mixing, production, video, or event hosting session at TWN Studios.' },
+  { num: '03', label: 'Book Orders',         desc: 'Bulk orders for churches, groups, or personal orders of any published titles.' },
+  { num: '04', label: 'General Enquiries',   desc: 'Any other questions, partnership opportunities, or media requests.' },
+]
 
-/* ── Success overlay ─────────────────────────────────────────────────── */
-function SuccessState({ onReset }: { onReset: () => void }) {
-  return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 9000, background: 'rgba(5,9,10,0.97)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
-      <div style={{ marginBottom: 32 }}>
-        <svg width="88" height="88" viewBox="0 0 88 88" fill="none">
-          <circle className="check-circle" cx="44" cy="44" r="36" stroke="#C9A84C" strokeWidth="1.5" fill="none" />
-          <path className="check-mark" d="M28 44 L40 56 L60 34" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-        </svg>
-      </div>
-      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.38em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.55)', marginBottom: 16 }}>Message Sent</p>
-      <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 'clamp(30px,4vw,52px)', fontWeight: 300, color: '#fff', lineHeight: 1, textAlign: 'center', marginBottom: 16 }}>
-        We&apos;ll be in touch.
-      </h2>
-      <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 14, color: 'rgba(255,255,255,0.35)', marginBottom: 40, textAlign: 'center', maxWidth: 340, lineHeight: 1.8 }}>
-        Thank you for reaching out. We typically respond within 24–48 hours.
-      </p>
-      <button onClick={onReset} className="btn-outline-pill" style={{ fontSize: '10px' }}>
-        Send Another Message
-      </button>
-    </div>
-  )
-}
+type FieldName = 'name' | 'email' | 'subject' | 'message'
 
-/* ── Field wrapper component ─────────────────────────────────────────── */
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label className="field-label">{label}</label>
-      <div className="field-wrapper">
-        {children}
-        <div className="field-underline" />
-      </div>
-    </div>
-  )
+type FormData = {
+  name:    string
+  email:   string
+  subject: string
+  message: string
 }
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
-  const [form, setForm] = useState({ firstName: '', lastName: '', email: '', subject: '', message: '' })
-  const [charCount, setCharCount] = useState(0)
-  const MAX_CHARS = 1000
+  const [form, setForm]   = useState<FormData>({ name: '', email: '', subject: '', message: '' })
+  const [sent, setSent]   = useState(false)
+  const [focus, setFocus] = useState<FieldName | null>(null)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('is-revealed')),
+      entries => entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) }
+      }),
       { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     )
-    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el))
+    document.querySelectorAll('.rv').forEach(el => obs.observe(el))
     return () => obs.disconnect()
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setStatus('sending')
     try {
-      const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
-      setStatus(res.ok ? 'sent' : 'error')
-    } catch { setStatus('error') }
+      await fetch('/api/contact', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(form),
+      })
+    } catch {}
+    setSent(true)
   }
 
+  const fieldStyle = (name: FieldName): React.CSSProperties => ({
+    width:           '100%',
+    background:      'transparent',
+    border:          'none',
+    borderBottom:    `1px solid ${focus === name ? 'rgba(201,168,76,0.6)' : 'rgba(201,168,76,0.15)'}`,
+    padding:         '14px 0',
+    color:           '#F5F0E8',
+    fontFamily:      'Inter,sans-serif',
+    fontSize:        '15px',
+    outline:         'none',
+    transition:      'border-color 0.35s',
+    display:         'block',
+  })
+
   return (
-    <main style={{ background: '#05090a', minHeight: '100vh', overflowX: 'hidden' }} className="page-enter">
-
-      {status === 'sent' && <SuccessState onReset={() => { setStatus('idle'); setForm({ firstName: '', lastName: '', email: '', subject: '', message: '' }); setCharCount(0) }} />}
-
+    <main style={{ background: '#060c06', overflowX: 'hidden' }}>
       <style>{`
-        .contact-grid {
+        .rv{opacity:0;transform:translateY(36px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+        .rv.is-visible{opacity:1;transform:none;}
+        .rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.22s}.rv.d3{transition-delay:.32s}
+
+        .wc{display:inline-block;overflow:hidden;}
+        .wi{display:inline-block;animation:wi 1s cubic-bezier(0.16,1,0.3,1) both;}
+        @keyframes wi{from{transform:translateY(110%)}to{transform:translateY(0)}}
+
+        /* Textarea override */
+        textarea { resize: vertical; min-height: 100px; }
+        ::placeholder { color: rgba(245,240,232,0.2); }
+
+        /* Inquiry row */
+        .inq-row {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 80px;
-          align-items: start;
+          grid-template-columns: clamp(32px,4vw,52px) 1fr;
+          gap: clamp(18px,3vw,36px);
+          padding: clamp(24px,3vw,36px) 0;
+          border-top: 1px solid rgba(201,168,76,0.07);
+          cursor: default;
+          transition: background 0.35s;
         }
-        @media (max-width: 900px) {
-          .contact-grid { grid-template-columns: 1fr !important; gap: 52px !important; }
-        }
-        select.field-line option { background: #060e06; color: #fff; }
+        .inq-row:last-child { border-bottom: 1px solid rgba(201,168,76,0.07); }
+        .inq-row:hover { background: rgba(201,168,76,0.02); }
+
+        /* Contact grid */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px,7vw,100px); align-items: start; }
+        @media(max-width:768px) { .contact-grid { grid-template-columns: 1fr; } }
       `}</style>
 
-      {/* Hero */}
-      <section style={{ minHeight: '52vh', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', paddingBottom: '80px' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 80% at 30% 60%, rgba(26,46,26,0.55) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.25),transparent)' }} />
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '160px clamp(24px,4vw,56px) 0', position: 'relative', zIndex: 2 }}>
-          <p className="section-label animate-fade-up" style={{ animationDelay: '0.1s', animationFillMode: 'both', display: 'block', marginBottom: 24 }}>Get In Touch</p>
-          <h1 className="font-display animate-fade-up" style={{ fontSize: 'clamp(36px,5vw,80px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-2px', color: '#fff', marginBottom: 28, animationDelay: '0.2s', animationFillMode: 'both' }}>
-            Let&apos;s Create<br />
-            <span className="text-gradient-gold" style={{ fontWeight: 700, fontStyle: 'italic' }}>Something Together</span>
-          </h1>
-          <div className="animate-fade-up" style={{ animationDelay: '0.35s', animationFillMode: 'both', display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-            {['Studio Booking', 'Ministry Collaboration', 'General Enquiry'].map((r, i, a) => (
-              <span key={r} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <span style={{ color: 'rgba(201,168,76,0.6)', fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif' }}>{r}</span>
-                {i < a.length - 1 && <span style={{ color: 'rgba(201,168,76,0.2)' }}>·</span>}
-              </span>
-            ))}
+      {/* ════════════════════════════════════
+          HERO — split: photo left, headline right
+      ════════════════════════════════════ */}
+      <section style={{ minHeight: '100svh', display: 'grid', gridTemplateColumns: '1fr 1fr', position: 'relative', overflow: 'hidden' }}>
+
+        {/* Photo — bleeds to left edge */}
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          <Image
+            src="/images/gallery-solomon-standing-deep.jpg"
+            alt="Solomon Stephen"
+            fill priority
+            style={{ objectFit: 'cover', objectPosition: '50% 20%' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, transparent 40%, #060c06 100%), linear-gradient(to bottom, #060c06 0%, transparent 15%, transparent 80%, #060c06 100%)' }} />
+        </div>
+
+        {/* Text */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: 'clamp(24px,4vw,56px)', paddingTop: '140px', paddingBottom: 'clamp(60px,8vw,100px)', background: '#060c06' }}>
+          <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', marginBottom: '40px' }}>
+            <span className="wc"><span className="wi" style={{ animationDelay: '0.05s' }}>Get In Touch</span></span>
+          </p>
+
+          <div style={{ marginBottom: '40px', lineHeight: 0.88 }}>
+            <div className="wc" style={{ display: 'block' }}>
+              <span className="wi font-display" style={{ fontSize: 'clamp(48px,6.5vw,100px)', fontWeight: 300, color: '#F5F0E8', letterSpacing: '-2.5px', animationDelay: '0.18s' }}>Let&apos;s Build</span>
+            </div>
+            <div className="wc" style={{ display: 'block' }}>
+              <span className="wi font-display" style={{ fontSize: 'clamp(48px,6.5vw,100px)', fontWeight: 700, fontStyle: 'italic', letterSpacing: '-2.5px', animationDelay: '0.3s', background: 'linear-gradient(135deg,#E8C96A 0%,#C9A84C 45%,#D4B85E 72%,#a8873a 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Something Eternal.</span>
+            </div>
           </div>
+
+          <div style={{ width: '48px', height: '1px', background: 'linear-gradient(90deg,#C9A84C,transparent)', marginBottom: '32px', animation: 'wi 0.7s 0.44s both' }} />
+
+          <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '14px', lineHeight: 1.9, color: 'rgba(245,240,232,0.38)', maxWidth: '380px', animation: 'wi 0.9s 0.5s both' }}>
+            Whether you&apos;re reaching out for ministry, studio, books, or partnership — the door is open.
+          </p>
+        </div>
+
+        {/* Mobile: full-cover background */}
+        <style>{`@media(max-width:860px){
+          section:first-of-type { grid-template-columns:1fr !important; }
+          section:first-of-type > div:first-child { position:absolute; inset:0; width:100%; z-index:0; }
+          section:first-of-type > div:last-child { position:relative; z-index:10; background:linear-gradient(to top,#060c06 50%,transparent) !important; padding-top:160px !important; }
+        }`}</style>
+      </section>
+
+      {/* ════════════════════════════════════
+          INQUIRY TYPES
+      ════════════════════════════════════ */}
+      <section style={{ background: '#040a04', borderTop: '1px solid rgba(201,168,76,0.05)', padding: 'clamp(80px,10vw,140px) clamp(24px,4vw,56px)' }}>
+        <div className="rv" style={{ marginBottom: '18px' }}>
+          <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>What Can We Help With?</span>
+        </div>
+        <h2 className="font-display rv d1" style={{ fontSize: 'clamp(36px,4.5vw,68px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-1.5px', color: '#F5F0E8', marginBottom: '64px' }}>
+          Choose Your<br />
+          <span style={{ fontStyle: 'italic', fontWeight: 700, color: 'rgba(201,168,76,0.85)' }}>Enquiry.</span>
+        </h2>
+
+        <div className="rv d2">
+          {inquiries.map((inq, i) => (
+            <div key={inq.num} className="inq-row" style={{ transitionDelay: `${i * 0.06}s` }}>
+              <span className="font-display" style={{ fontSize: 'clamp(20px,2.2vw,30px)', fontWeight: 300, color: 'rgba(201,168,76,0.28)', lineHeight: 1, paddingTop: '2px' }}>{inq.num}</span>
+              <div>
+                <h3 className="font-display" style={{ fontSize: 'clamp(20px,2.2vw,32px)', fontWeight: 300, color: '#F5F0E8', marginBottom: '8px', letterSpacing: '-0.3px', lineHeight: 1 }}>{inq.label}</h3>
+                <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '14px', color: 'rgba(245,240,232,0.3)', lineHeight: 1.8, margin: 0 }}>{inq.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <div style={{ height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.12),transparent)' }} />
+      {/* ════════════════════════════════════
+          FORM + DIRECT CONTACT
+      ════════════════════════════════════ */}
+      <section style={{ background: '#060c06', borderTop: '1px solid rgba(201,168,76,0.05)', padding: 'clamp(80px,10vw,140px) clamp(24px,4vw,56px)' }}>
+        <div className="contact-grid">
 
-      {/* Main content */}
-      <section style={{ padding: 'clamp(80px,8vw,140px) 0' }}>
-        <div className="container-custom">
-          <div className="contact-grid reveal">
-
-            {/* Left: info */}
-            <div>
-              <h2 className="font-display" style={{ fontSize: 'clamp(22px,2.5vw,38px)', fontWeight: 300, lineHeight: 1.0, color: '#fff', marginBottom: 20 }}>
-                How Can We <span className="text-gradient-gold" style={{ fontStyle: 'italic' }}>Help?</span>
+          {/* Left: Form */}
+          <div className="rv">
+            <div style={{ marginBottom: '48px' }}>
+              <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', display: 'block', marginBottom: '16px' }}>Send a Message</span>
+              <h2 className="font-display" style={{ fontSize: 'clamp(30px,3.5vw,52px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-1.5px', color: '#F5F0E8' }}>
+                Start the<br /><span style={{ fontStyle: 'italic', fontWeight: 700, color: 'rgba(201,168,76,0.85)' }}>Conversation.</span>
               </h2>
-              <div style={{ width: 40, height: 1, background: 'rgba(201,168,76,0.35)', marginBottom: 24 }} />
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 15, lineHeight: 1.9, color: 'rgba(255,255,255,0.5)', marginBottom: 36 }}>
-                Whether you&apos;re looking to book a studio session, collaborate on ministry, request a speaking engagement, or simply connect — we&apos;d love to hear from you.
-              </p>
+            </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 36 }}>
-                {[
-                  { title: 'Studio Booking', desc: 'Recording, mixing, mastering, video, live streaming, event hosting' },
-                  { title: 'Ministry Collaboration', desc: 'Speaking engagements, worship leading, ministry partnerships' },
-                  { title: 'General Enquiry', desc: 'Books, teachings, TWN gatherings, and everything else' },
-                ].map((item, i) => (
-                  <div key={item.title} style={{ padding: '18px 20px', border: '1px solid rgba(201,168,76,0.08)', borderTop: i === 0 ? '1px solid rgba(201,168,76,0.08)' : 'none', transition: 'border-color 0.3s, background 0.3s' }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.22)'; (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.03)' }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.08)'; (e.currentTarget as HTMLElement).style.background = 'transparent' }}
-                  >
-                    <p style={{ fontFamily: 'Inter, sans-serif', color: '#C9A84C', fontSize: 12, fontWeight: 600, marginBottom: 4, letterSpacing: '0.04em' }}>{item.title}</p>
-                    <p style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(255,255,255,0.35)', fontSize: 13, lineHeight: 1.65 }}>{item.desc}</p>
-                  </div>
-                ))}
+            {sent ? (
+              <div style={{ padding: 'clamp(40px,5vw,64px) 0' }}>
+                <div style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(40px,5vw,72px)', fontWeight: 300, fontStyle: 'italic', color: 'rgba(201,168,76,0.8)', lineHeight: 1, marginBottom: '20px' }}>
+                  Received.
+                </div>
+                <div style={{ width: '40px', height: '1px', background: 'rgba(201,168,76,0.35)', marginBottom: '20px' }} />
+                <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '15px', color: 'rgba(245,240,232,0.4)', lineHeight: 1.9 }}>
+                  Thank you for reaching out. We&apos;ll be in touch within 24–48 hours.
+                </p>
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '8px' }}>Full Name</label>
+                  <input
+                    type="text" required placeholder="Your name"
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    onFocus={() => setFocus('name')} onBlur={() => setFocus(null)}
+                    style={fieldStyle('name')}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '8px' }}>Email Address</label>
+                  <input
+                    type="email" required placeholder="your@email.com"
+                    value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    onFocus={() => setFocus('email')} onBlur={() => setFocus(null)}
+                    style={fieldStyle('email')}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '8px' }}>Subject</label>
+                  <input
+                    type="text" required placeholder="How can we help?"
+                    value={form.subject}
+                    onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
+                    onFocus={() => setFocus('subject')} onBlur={() => setFocus(null)}
+                    style={fieldStyle('subject')}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: 'block', fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '8px' }}>Message</label>
+                  <textarea
+                    required placeholder="Tell us more..."
+                    value={form.message}
+                    onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                    onFocus={() => setFocus('message')} onBlur={() => setFocus(null)}
+                    style={{ ...fieldStyle('message'), lineHeight: 1.8 }}
+                  />
+                </div>
+                <div>
+                  <button type="submit" className="btn-gold-pill" style={{ padding: '17px 52px', fontSize: '10px', letterSpacing: '0.18em', cursor: 'pointer', border: 'none', width: '100%', display: 'block', textAlign: 'center' }}>
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
 
-              <CollapsibleMap />
+          {/* Right: Direct contact info */}
+          <div className="rv d2">
+            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', display: 'block', marginBottom: '48px' }}>Direct Contact</span>
 
-              <div>
-                <p className="section-label" style={{ marginBottom: 14 }}>Connect On Social</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                  {[
-                    { label: 'Instagram', href: 'https://instagram.com/thesolomonsteph' },
-                    { label: 'YouTube', href: 'https://youtube.com/@thesolomonsteph' },
-                    { label: 'Facebook', href: 'https://facebook.com/thesolomonsteph' },
-                    { label: 'TikTok', href: 'https://tiktok.com/@thesolomonsteph' },
-                  ].map((s) => (
-                    <Link key={s.label} href={s.href} target="_blank"
-                      style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(201,168,76,0.65)', fontSize: 11, padding: '7px 16px', border: '1px solid rgba(201,168,76,0.15)', textDecoration: 'none', letterSpacing: '0.06em', transition: 'all 0.25s' }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.45)'; (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.15)'; (e.currentTarget as HTMLElement).style.color = 'rgba(201,168,76,0.65)' }}
-                    >
-                      {s.label}
-                    </Link>
-                  ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              {[
+                { label: 'Email',    value: 'theasaphmedia@gmail.com',    href: 'mailto:theasaphmedia@gmail.com' },
+                { label: 'WhatsApp', value: 'Chat with us',               href: 'https://wa.me/2349018880200'    },
+                { label: 'YouTube',  value: 'The Worship Nation Channel', href: 'https://www.youtube.com/channel/UCE-vJlarsrIpRFoZcxVMFfA' },
+                { label: 'Instagram', value: '@solomonstephenonline',     href: 'https://instagram.com/solomonstephenonline' },
+              ].map((item, i) => (
+                <a key={item.label} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer"
+                  style={{ display: 'block', padding: 'clamp(22px,3vw,32px) 0', borderTop: '1px solid rgba(201,168,76,0.07)', textDecoration: 'none', transition: 'background 0.3s' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.paddingLeft = '12px'}
+                  onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.paddingLeft = '0'}
+                >
+                  <div style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '6px', transition: 'inherit' }}>{item.label}</div>
+                  <div style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(16px,1.8vw,22px)', fontWeight: 300, color: 'rgba(245,240,232,0.7)', letterSpacing: '-0.3px' }}>{item.value}</div>
+                </a>
+              ))}
+
+              {/* Studio location */}
+              <div style={{ padding: 'clamp(22px,3vw,32px) 0', borderTop: '1px solid rgba(201,168,76,0.07)', borderBottom: '1px solid rgba(201,168,76,0.07)' }}>
+                <div style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)', marginBottom: '6px' }}>Studio Location</div>
+                <div className="font-display" style={{ fontSize: 'clamp(16px,1.8vw,22px)', fontWeight: 300, color: 'rgba(245,240,232,0.7)' }}>
+                  Kenny T. Kay Building<br />
+                  <span style={{ fontStyle: 'italic', color: 'rgba(201,168,76,0.6)' }}>Langbasa Road, Ajah, Lagos</span>
                 </div>
               </div>
             </div>
 
-            {/* Right: form */}
-            <div style={{ border: '1px solid rgba(201,168,76,0.1)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ height: 1, background: 'linear-gradient(90deg,transparent,#C9A84C,transparent)' }} />
-              <div style={{ padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,56px)' }}>
-                <h3 className="font-display" style={{ fontSize: 'clamp(22px,2.2vw,32px)', fontWeight: 300, color: '#fff', marginBottom: 36 }}>
-                  Send A <span className="text-gradient-gold" style={{ fontStyle: 'italic' }}>Message</span>
-                </h3>
-
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-                    <Field label="First Name">
-                      <input type="text" placeholder="John" required className="field-line"
-                        value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} />
-                    </Field>
-                    <Field label="Last Name">
-                      <input type="text" placeholder="Doe" required className="field-line"
-                        value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
-                    </Field>
-                  </div>
-
-                  <Field label="Email Address">
-                    <input type="email" placeholder="you@example.com" required className="field-line"
-                      value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-                  </Field>
-
-                  <Field label="Subject">
-                    <select required className="field-line" style={{ cursor: 'pointer' }}
-                      value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })}>
-                      <option value="">Select a subject</option>
-                      <option value="studio">Studio Booking</option>
-                      <option value="ministry">Ministry Collaboration</option>
-                      <option value="speaking">Speaking Engagement</option>
-                      <option value="books">Books & Teaching</option>
-                      <option value="general">General Enquiry</option>
-                    </select>
-                  </Field>
-
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
-                      <label className="field-label">Message</label>
-                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, color: charCount > MAX_CHARS * 0.85 ? 'rgba(201,168,76,0.7)' : 'rgba(255,255,255,0.2)' }}>
-                        {charCount}/{MAX_CHARS}
-                      </span>
-                    </div>
-                    <div className="field-wrapper">
-                      <textarea placeholder="Tell us how we can help you..." rows={5} required className="field-line"
-                        style={{ resize: 'none' }}
-                        value={form.message}
-                        onChange={(e) => { setForm({ ...form, message: e.target.value }); setCharCount(e.target.value.length) }}
-                        maxLength={MAX_CHARS}
-                      />
-                      <div className="field-underline" />
-                    </div>
-                  </div>
-
-                  <button type="submit" disabled={status === 'sending'} className="btn-gold-pill"
-                    style={{ width: '100%', justifyContent: 'center', opacity: status === 'sending' ? 0.7 : 1, cursor: status === 'sending' ? 'not-allowed' : 'pointer', marginTop: 4 }}>
-                    {status === 'sending' ? 'Sending...' : 'Send Message'}
-                  </button>
-
-                  {status === 'error' && (
-                    <p style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(239,68,68,0.75)', fontSize: 13 }}>
-                      Something went wrong. Please try again.
-                    </p>
-                  )}
-                  <p style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(255,255,255,0.2)', fontSize: 11, textAlign: 'center' }}>
-                    We typically respond within 24–48 hours.
-                  </p>
-                </form>
-              </div>
+            {/* Photo accent */}
+            <div style={{ marginTop: '48px', position: 'relative', height: 'clamp(180px,25vw,300px)', overflow: 'hidden' }}>
+              <Image
+                src="/images/gallery-solomon-profile-bw.jpg"
+                alt="Solomon Stephen"
+                fill
+                                style={{ objectFit: 'cover', objectPosition: '50% 20%' }}
+              />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(6,12,6,0.3) 0%,transparent 60%,rgba(6,12,6,0.5) 100%)' }} />
             </div>
           </div>
         </div>
