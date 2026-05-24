@@ -83,7 +83,7 @@ export default function HomePage() {
 
         /* ── Word reveal ── */
         @keyframes wordUp { from{opacity:0;transform:translateY(100%);} to{opacity:1;transform:translateY(0);} }
-        .word-clip { overflow:hidden; display:inline-block; }
+        .word-clip { overflow:hidden; display:block; }
         .word-inner { display:inline-block; animation:wordUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards; opacity:0; }
 
         /* ── Ken Burns ── */
@@ -383,12 +383,4 @@ export default function HomePage() {
             <div style={{display:'flex',justifyContent:'center',gap:14,flexWrap:'wrap'}}>
               <Link href="/events"  className="btn-gold-pill" style={{fontSize:'11px'}}>Join a Gathering</Link>
               <Link href="/contact" className="btn-outline-pill" style={{fontSize:'11px'}}>Get In Touch</Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+         
