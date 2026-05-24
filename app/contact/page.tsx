@@ -134,7 +134,7 @@ export default function ContactPage() {
 
       {/* Main content */}
       <section style={{ padding: 'clamp(80px,8vw,140px) 0' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(24px,4vw,56px)' }}>
+        <div className="container-custom">
           <div className="contact-grid reveal">
 
             {/* Left: info */}

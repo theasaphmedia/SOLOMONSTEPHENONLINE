@@ -251,7 +251,7 @@ export default function TAIDigitalPage() {
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '200px', background: 'linear-gradient(to top,#060010,transparent)', zIndex: 2, pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(to right,transparent,rgba(124,58,237,0.4),transparent)', zIndex: 3 }} />
 
-        <div style={{ position: 'relative', zIndex: 10, width: '100%', maxWidth: '1280px', margin: '0 auto', padding: 'clamp(140px,12vw,180px) 32px clamp(80px,8vw,120px)' }}>
+        <div style={{ position: 'relative', zIndex: 10, width: '100%', padding: 'clamp(140px,12vw,180px) clamp(24px,4vw,56px) clamp(80px,8vw,120px)' }}>
           <div className="tai-hero-grid">
 
             {/* LEFT — Logo lockup */}
@@ -366,7 +366,7 @@ export default function TAIDigitalPage() {
 
       {/* SERVICES */}
       <section style={{ padding: 'clamp(60px,8vw,120px) 0', background: '#060010' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)' }}>
           <div className="tai-section-grid tai-reveal" style={{ marginBottom: '56px' }}>
             <div>
               <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(124,58,237,0.6)', marginBottom: '16px' }}>What We Do</p>
@@ -401,7 +401,7 @@ export default function TAIDigitalPage() {
 
       {/* PORTFOLIO */}
       <section style={{ padding: 'clamp(60px,8vw,120px) 0', borderTop: '1px solid rgba(124,58,237,0.08)', background: '#060010' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '48px' }}>
             <div style={{ height: '1px', width: '28px', background: 'rgba(124,58,237,0.5)' }} />
             <span style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(124,58,237,0.5)', fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase' }}>Selected Work</span>
@@ -441,7 +441,7 @@ export default function TAIDigitalPage() {
 
       {/* STATS */}
       <section style={{ padding: 'clamp(40px,6vw,80px) 0', borderTop: '1px solid rgba(124,58,237,0.08)', background: 'linear-gradient(145deg,#080010 0%,#1A001A 60%,#0a000a 100%)' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)' }}>
           <div className="tai-reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'center' }}>
             {[
               { num: '10+', label: 'Years in Ministry' },
@@ -460,7 +460,7 @@ export default function TAIDigitalPage() {
 
       {/* PROCESS */}
       <section style={{ padding: 'clamp(60px,8vw,120px) 0', borderTop: '1px solid rgba(124,58,237,0.08)' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)' }}>
           <div className="tai-hero-grid">
             <div className="tai-reveal">
               <p className="process-heading-animate" style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(124,58,237,0.6)', marginBottom: '16px', animationDelay: '0.0s' }}>How We Work</p>
@@ -488,7 +488,7 @@ export default function TAIDigitalPage() {
 
       {/* CTA */}
       <section style={{ padding: 'clamp(60px,8vw,120px) 0', borderTop: '1px solid rgba(124,58,237,0.08)' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)' }}>
           <div className="tai-section-grid tai-reveal">
             <div>
               <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: 'rgba(124,58,237,0.6)', marginBottom: '20px' }}>Ready to Build?</p>
@@ -526,7 +526,7 @@ export default function TAIDigitalPage() {
 
       {/* Footer strip */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.04)', padding: '20px 0' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
           <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.12)', textTransform: 'uppercase', margin: 0 }}>© 2026 TAI Digital · The Asaph Innovations · Lagos, Nigeria</p>
           <a href="mailto:theasaphinnovations@gmail.com"
             style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', color: 'rgba(167,139,250,0.25)', textDecoration: 'none', letterSpacing: '0.05em', transition: 'color 0.2s' }}

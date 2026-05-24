@@ -180,7 +180,7 @@ export default function GalleryPage() {
       </section>
 
       {/* Masonry grid */}
-      <section style={{ padding: '0 clamp(16px,3vw,40px) 100px', maxWidth: 1280, margin: '0 auto' }}>
+      <section style={{ padding: '0 clamp(24px,4vw,56px) 100px' }}>
         <div style={{ columns: 3, columnGap: 10, opacity: visible ? 1 : 0, transform: visible ? 'none' : 'translateY(8px)', transition: 'opacity 0.22s, transform 0.22s' }}
           className="masonry-responsive"
         >

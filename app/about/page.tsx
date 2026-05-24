@@ -328,9 +328,9 @@ export default function AboutPage() {
 
           /* Text: centred vertically */
           .about-hero-text {
-            padding: 0 60px 0 120px;
+            padding: 0 clamp(24px,4vw,56px);
             justify-content: center;
-            max-width: 48%;
+            max-width: 52%;
           }
           .about-hero-buttons {
             position: absolute;
