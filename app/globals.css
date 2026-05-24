@@ -300,8 +300,6 @@ body::after {
 .section-padding { padding: 120px 0; }
 .container-custom,
 .page-w {
-  max-width: 1320px;
-  margin: 0 auto;
   padding: 0 clamp(24px, 4vw, 56px);
 }
 

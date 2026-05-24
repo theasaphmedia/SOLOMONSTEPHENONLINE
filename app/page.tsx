@@ -67,8 +67,6 @@ export default function HomePage() {
       <style>{`
         /* ── Consistent page container ── */
         .page-w {
-          max-width: 1320px;
-          margin: 0 auto;
           padding: 0 clamp(24px, 4vw, 56px);
         }
 
@@ -383,4 +381,12 @@ export default function HomePage() {
             <div style={{display:'flex',justifyContent:'center',gap:14,flexWrap:'wrap'}}>
               <Link href="/events"  className="btn-gold-pill" style={{fontSize:'11px'}}>Join a Gathering</Link>
               <Link href="/contact" className="btn-outline-pill" style={{fontSize:'11px'}}>Get In Touch</Link>
-         
+                     </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}
