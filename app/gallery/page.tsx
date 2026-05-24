@@ -194,7 +194,7 @@ export default function GalleryPage() {
         </div>
 
         {/* Instagram CTA */}
-        <div style={{ marginTop: 64, padding: 'clamp(28px,4vw,48px) clamp(20px,4vw,56px)', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(201,168,76,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+        <div style={{ marginTop: 64, padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,56px)', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(201,168,76,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
           <div>
             <div style={{ height: 1, width: 40, background: 'rgba(201,168,76,0.4)', marginBottom: 16 }} />
             <p className="font-display" style={{ fontSize: 'clamp(18px,2.5vw,28px)', color: '#fff', fontWeight: 300, marginBottom: 6 }}>More moments on Instagram</p>

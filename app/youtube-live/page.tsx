@@ -293,7 +293,7 @@ export default function YouTubeLiveArchivePage() {
       `}</style>
 
       {/* Hero */}
-      <section style={{ padding: 'clamp(120px,12vw,160px) clamp(24px,5vw,80px) clamp(40px,6vw,60px)' }}>
+      <section style={{ padding: 'clamp(120px,12vw,160px) clamp(24px,4vw,56px) clamp(40px,6vw,60px)' }}>
         <div style={{ marginBottom: '14px' }}>
           <span style={{ color: '#C9A84C', fontSize: '11px', letterSpacing: '0.35em', textTransform: 'uppercase', fontWeight: 600 }}>
             YouTube Archive
@@ -309,7 +309,7 @@ export default function YouTubeLiveArchivePage() {
 
       {/* Tabs */}
       {!loading && !error && availableTabs.length > 0 && (
-        <div style={{ padding: '0 clamp(24px,5vw,80px) 40px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px) 40px' }}>
           <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', scrollbarWidth: 'none', paddingBottom: '4px' }}>
             {availableTabs.map((tab) => (
               <button
@@ -335,7 +335,7 @@ export default function YouTubeLiveArchivePage() {
 
       {/* Loading */}
       {loading && (
-        <div style={{ padding: '0 clamp(24px,5vw,80px) 60px', display: 'flex', flexDirection: 'column', gap: '48px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px) 60px', display: 'flex', flexDirection: 'column', gap: '48px' }}>
           {[1, 2, 3].map((i) => (
             <div key={i}>
               <div style={{ height: '28px', width: '120px', background: 'rgba(255,255,255,0.06)', borderRadius: '4px', marginBottom: '20px', animation: 'pulse 1.6s ease-in-out infinite' }} />
@@ -347,7 +347,7 @@ export default function YouTubeLiveArchivePage() {
 
       {/* Error */}
       {!loading && error && (
-        <div style={{ padding: 'clamp(36px,6vw,80px) clamp(24px,5vw,80px)', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontFamily: 'Inter,sans-serif' }}>
+        <div style={{ padding: 'clamp(36px,6vw,80px) clamp(24px,4vw,56px)', textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontFamily: 'Inter,sans-serif' }}>
           <p style={{ marginBottom: '18px' }}>{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -360,7 +360,7 @@ export default function YouTubeLiveArchivePage() {
 
       {/* Month groups */}
       {!loading && !error && (
-        <div style={{ padding: '0 clamp(24px,5vw,80px)', display: 'flex', flexDirection: 'column', gap: '52px', paddingBottom: '80px' }}>
+        <div style={{ padding: '0 clamp(24px,4vw,56px)', display: 'flex', flexDirection: 'column', gap: '52px', paddingBottom: '80px' }}>
           {visibleMonths.length === 0 && (
             <div style={{ padding: '60px 0', textAlign: 'center', color: 'rgba(255,255,255,0.25)', fontFamily: 'Inter,sans-serif', fontSize: '13px', letterSpacing: '0.1em' }}>
               No recordings yet for this gathering — check back after the next session.

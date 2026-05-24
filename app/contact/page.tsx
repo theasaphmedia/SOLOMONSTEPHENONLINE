@@ -189,7 +189,7 @@ export default function ContactPage() {
             {/* Right: form */}
             <div style={{ border: '1px solid rgba(201,168,76,0.1)', position: 'relative', overflow: 'hidden' }}>
               <div style={{ height: 1, background: 'linear-gradient(90deg,transparent,#C9A84C,transparent)' }} />
-              <div style={{ padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,48px)' }}>
+              <div style={{ padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,56px)' }}>
                 <h3 className="font-display" style={{ fontSize: 'clamp(22px,2.2vw,32px)', fontWeight: 300, color: '#fff', marginBottom: 36 }}>
                   Send A <span className="text-gradient-gold" style={{ fontStyle: 'italic' }}>Message</span>
                 </h3>

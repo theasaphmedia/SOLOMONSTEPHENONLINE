@@ -78,7 +78,7 @@ export default function TeachingPage() {
 
           <div className="glass rounded-3xl card-hover" style={{ marginBottom: '80px', overflow: 'hidden' }}>
             <div className="h-[2px]" style={{ background: 'linear-gradient(to right,transparent,#C9A84C,transparent)' }} />
-            <div style={{ padding: 'clamp(28px,4vw,48px) clamp(20px,4vw,56px)' }}>
+            <div style={{ padding: 'clamp(28px,4vw,48px) clamp(24px,4vw,56px)' }}>
               <div className="grid lg:grid-cols-2 gap-14 items-center">
                 <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/9' }}>
                   <iframe width="100%" height="100%" src="https://www.youtube.com/embed/TnEp0kiJBfI"
@@ -129,7 +129,7 @@ export default function TeachingPage() {
             ))}
           </div>
 
-          <div className="glass rounded-3xl card-hover rv" style={{ padding: 'clamp(36px,5vw,64px) clamp(20px,4vw,48px)', overflow: 'hidden' }}>
+          <div className="glass rounded-3xl card-hover rv" style={{ padding: 'clamp(36px,5vw,64px) clamp(24px,4vw,56px)', overflow: 'hidden' }}>
             <div className="h-[2px]" style={{ background: 'linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent)', marginBottom: '36px' }} />
             <h3 className="font-display text-white font-light" style={{ fontSize: 'clamp(22px,3vw,44px)', lineHeight: 1.0, marginBottom: '20px' }}>
               Go Deeper With The <span className="text-gradient-gold font-semibold">Books</span>

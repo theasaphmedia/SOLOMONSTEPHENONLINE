@@ -160,7 +160,7 @@ export default function MusicPage() {
         </div>
       </section>
 
-      <section style={{ padding:'clamp(24px,4vw,60px)' }} className="reveal">
+      <section style={{ padding:'clamp(24px,4vw,56px)' }} className="reveal">
         <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'24px' }}>
           <div style={{ height:'1px', width:'28px', background:'rgba(201,168,76,0.5)' }} />
           <span style={{ color:'rgba(201,168,76,0.5)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.35em', textTransform:'uppercase' }}>Latest Release</span>
