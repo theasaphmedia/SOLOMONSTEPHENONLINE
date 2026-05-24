@@ -212,7 +212,7 @@ export default function StudiosPage() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 60% at 75% 40%, rgba(201,168,76,0.04) 0%, transparent 60%)', zIndex: 2 }} />
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '200px', background: 'linear-gradient(to top, #060e06, transparent)', zIndex: 3 }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent)', zIndex: 3 }} />
-        <div style={{ position: 'relative', zIndex: 10, width: '100%', paddingTop: 'clamp(100px,12vw,160px)', paddingBottom: 'clamp(60px,8vw,120px)', paddingLeft: 'clamp(20px,5vw,80px)', paddingRight: 'clamp(20px,5vw,80px)' }}>
+        <div style={{ position: 'relative', zIndex: 10, width: '100%', paddingTop: 'clamp(100px,12vw,160px)', paddingBottom: 'clamp(60px,8vw,120px)', paddingLeft: 'clamp(24px,4vw,56px)', paddingRight: 'clamp(24px,4vw,56px)' }}>
           <div className="animate-fade-up" style={{ animationDelay: '0.1s', animationFillMode: 'both', display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.15)', borderRadius: '999px', padding: '8px 20px', marginBottom: '36px' }}>
             <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#C9A84C', display: 'inline-block', animation: 'studioPulse 2s ease-in-out infinite' }} />
             <span style={{ color: 'rgba(201,168,76,0.7)', fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase' }}>TWN Studios · Ajah, Lagos</span>
@@ -245,7 +245,7 @@ export default function StudiosPage() {
       </div>
 
       {/* ── SERVICES ── */}
-      <section id="services" style={{ padding: 'clamp(60px,8vw,120px) clamp(24px,5vw,80px)' }} className="rv">
+      <section id="services" style={{ padding: 'clamp(60px,8vw,120px) clamp(24px,4vw,56px)' }} className="rv">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
           <div style={{ height: '1px', width: '28px', background: 'rgba(201,168,76,0.5)' }} />
           <span style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(201,168,76,0.5)', fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase' }}>What We Offer</span>
@@ -271,7 +271,7 @@ export default function StudiosPage() {
       </section>
 
       {/* ── BUILT FOR ── */}
-      <section style={{ padding: '0 clamp(24px,5vw,80px) clamp(60px,8vw,100px)' }} className="rv">
+      <section style={{ padding: '0 clamp(24px,4vw,56px) clamp(60px,8vw,100px)' }} className="rv">
         <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(201,168,76,0.1)', borderRadius: '20px', padding: 'clamp(32px,4vw,48px) clamp(20px,3vw,40px)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(to right,transparent,#C9A84C,transparent)' }} />
           <div style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(201,168,76,0.5)', fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase', marginBottom: '20px' }}>Built For</div>
@@ -292,7 +292,7 @@ export default function StudiosPage() {
       </section>
 
       {/* ── FIND THE STUDIO ── */}
-      <section style={{ padding: '0 clamp(24px,5vw,80px) clamp(60px,8vw,100px)' }} className="rv">
+      <section style={{ padding: '0 clamp(24px,4vw,56px) clamp(60px,8vw,100px)' }} className="rv">
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '40px' }}>
           <div style={{ height: '1px', width: '28px', background: 'rgba(201,168,76,0.5)' }} />
           <span style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(201,168,76,0.5)', fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase' }}>Find The Studio</span>
@@ -382,7 +382,7 @@ export default function StudiosPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section id="studio-cta" style={{ padding: 'clamp(60px,8vw,120px) clamp(24px,5vw,80px)', position: 'relative', overflow: 'hidden' }} className="rv">
+      <section id="studio-cta" style={{ padding: 'clamp(60px,8vw,120px) clamp(24px,4vw,56px)', position: 'relative', overflow: 'hidden' }} className="rv">
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 100% at 50% 50%, rgba(201,168,76,0.045) 0%, transparent 70%)' }} />
         <div style={{ position: 'relative', zIndex: 10, textAlign: 'center' }}>
           <div style={{ fontFamily: 'Inter, sans-serif', color: 'rgba(201,168,76,0.5)', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', marginBottom: '20px' }}>TWN Studios</div>

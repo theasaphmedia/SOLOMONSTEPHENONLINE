@@ -113,7 +113,7 @@ export default function ContactPage() {
       <section style={{ minHeight: '52vh', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', paddingBottom: '80px' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 80% at 30% 60%, rgba(26,46,26,0.55) 0%, transparent 70%)' }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.25),transparent)' }} />
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '160px clamp(24px,5vw,80px) 0', position: 'relative', zIndex: 2 }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '160px clamp(24px,4vw,56px) 0', position: 'relative', zIndex: 2 }}>
           <p className="section-label animate-fade-up" style={{ animationDelay: '0.1s', animationFillMode: 'both', display: 'block', marginBottom: 24 }}>Get In Touch</p>
           <h1 className="font-display animate-fade-up" style={{ fontSize: 'clamp(36px,5vw,80px)', fontWeight: 300, lineHeight: 0.92, letterSpacing: '-2px', color: '#fff', marginBottom: 28, animationDelay: '0.2s', animationFillMode: 'both' }}>
             Let&apos;s Create<br />
@@ -134,7 +134,7 @@ export default function ContactPage() {
 
       {/* Main content */}
       <section style={{ padding: 'clamp(80px,8vw,140px) 0' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(24px,5vw,80px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(24px,4vw,56px)' }}>
           <div className="contact-grid reveal">
 
             {/* Left: info */}

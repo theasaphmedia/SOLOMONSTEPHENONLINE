@@ -360,7 +360,7 @@ export default function BooksPage() {
           </div>
         ))}
 
-        <div style={{ position: 'relative', zIndex: 10, width: '100%', paddingTop: '160px', paddingBottom: '100px', paddingLeft: 'clamp(24px,5vw,80px)', paddingRight: 'clamp(24px,5vw,80px)' }}>
+        <div style={{ position: 'relative', zIndex: 10, width: '100%', paddingTop: '160px', paddingBottom: '100px', paddingLeft: 'clamp(24px,4vw,56px)', paddingRight: 'clamp(24px,4vw,56px)' }}>
           <div className="animate-fade-up" style={{ animationDelay: '0.1s', animationFillMode: 'both', display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(201,168,76,0.06)', border: '1px solid rgba(201,168,76,0.15)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
             <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#C9A84C', display: 'inline-block', animation: 'goldPulse 2s ease-in-out infinite' }} />
             <span style={{ color: 'rgba(201,168,76,0.7)', fontFamily: 'Inter, sans-serif', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase' }}>Published Works</span>
@@ -381,14 +381,14 @@ export default function BooksPage() {
       </section>
 
       {/* EDITORIAL BOOK LIST */}
-      <section style={{ padding: '0 clamp(24px,5vw,80px) clamp(60px,6vw,100px)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <section style={{ padding: '0 clamp(24px,4vw,56px) clamp(60px,6vw,100px)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {books.map((book, index) => (
           <BookRow key={book.num} book={book} index={index} />
         ))}
       </section>
 
       {/* SHOW LOVE CTA */}
-      <section style={{ padding: '0 clamp(24px,5vw,80px) clamp(60px,6vw,100px)' }}>
+      <section style={{ padding: '0 clamp(24px,4vw,56px) clamp(60px,6vw,100px)' }}>
         <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '24px', padding: 'clamp(48px,6vw,80px) clamp(32px,5vw,64px)', border: '1px solid rgba(201,168,76,0.12)', background: 'rgba(26,46,26,0.2)', transition: 'border-color 0.4s, box-shadow 0.4s' }}
           onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(201,168,76,0.28)'; el.style.boxShadow = '0 20px 60px rgba(201,168,76,0.07)' }}
           onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(201,168,76,0.12)'; el.style.boxShadow = 'none' }}>

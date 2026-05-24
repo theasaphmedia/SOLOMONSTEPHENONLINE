@@ -137,7 +137,7 @@ export default function MusicPage() {
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 100% at 70% 50%,rgba(201,168,76,0.05) 0%,transparent 65%)', zIndex:1 }} />
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 20% 50%,rgba(26,46,26,0.4) 0%,transparent 70%)', zIndex:1 }} />
         <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'120px', background:'linear-gradient(to top,#060e06,transparent)', zIndex:2 }} />
-        <div style={{ position:'relative', zIndex:10, width:'100%', paddingTop:'140px', paddingBottom:'48px', paddingLeft:'clamp(24px,5vw,80px)', paddingRight:'clamp(24px,5vw,80px)' }}>
+        <div style={{ position:'relative', zIndex:10, width:'100%', paddingTop:'140px', paddingBottom:'48px', paddingLeft:'clamp(24px,4vw,56px)', paddingRight:'clamp(24px,4vw,56px)' }}>
           <div className="animate-fade-up" style={{ animationDelay:'0.1s', animationFillMode:'both', display:'inline-flex', alignItems:'center', gap:'10px', background:'rgba(201,168,76,0.06)', border:'1px solid rgba(201,168,76,0.15)', borderRadius:'999px', padding:'8px 20px', marginBottom:'24px' }}>
             <span style={{ width:'6px', height:'6px', borderRadius:'50%', background:'#C9A84C', display:'inline-block', animation:'goldPulse 2s ease-in-out infinite' }} />
             <span style={{ color:'rgba(201,168,76,0.7)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.4em', textTransform:'uppercase' }}>Sacred Music</span>
@@ -212,7 +212,7 @@ export default function MusicPage() {
         </div>
       </section>
 
-      <section style={{ padding:'0 clamp(24px,5vw,80px) clamp(32px,5vw,80px)' }}>
+      <section style={{ padding:'0 clamp(24px,4vw,56px) clamp(32px,5vw,80px)' }}>
         <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'28px' }} className="rv">
           <div style={{ height:'1px', width:'28px', background:'rgba(201,168,76,0.5)' }} />
           <span style={{ color:'rgba(201,168,76,0.5)', fontFamily:'Inter, sans-serif', fontSize:'9px', letterSpacing:'0.35em', textTransform:'uppercase' }}>More Music</span>

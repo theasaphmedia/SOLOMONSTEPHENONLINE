@@ -298,16 +298,17 @@ body::after {
    LAYOUT
 ═══════════════════════════════════════════════ */
 .section-padding { padding: 120px 0; }
-.container-custom {
+.container-custom,
+.page-w {
   max-width: 1320px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 clamp(24px, 4vw, 56px);
 }
 
 @media (max-width: 1024px) { .section-padding { padding: 88px 0; } }
 @media (max-width: 768px) {
   .section-padding { padding: 64px 0; }
-  .container-custom { padding: 0 20px; }
+  .container-custom, .page-w { padding: 0 clamp(20px, 4vw, 56px); }
 }
 
 /* ═══════════════════════════════════════════════
@@ -949,52 +950,4 @@ span.glass-gold, div.glass-gold { padding: 6px 16px !important; }
 /* Gold fill surface */
 .bg-gold-ultra { background: rgba(201,168,76,0.05); }
 
-/* Highlight span — inline cream highlight for key phrases */
-.highlight-cream {
-  color: #F5F0E8;
-  font-weight: 500;
-}
-
-/* Top gold hairline accent on sections */
-.section-top-line {
-  position: relative;
-}
-.section-top-line::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.35), transparent);
-  pointer-events: none;
-}
-
-/* Full-bleed gold gradient strip */
-.gold-strip {
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #C9A84C 30%, #E8C96A 50%, #C9A84C 70%, transparent 100%);
-  opacity: 0.6;
-}
-
-/* Ambient radial warm glow — drop on a section for depth */
-.ambient-glow-gold {
-  position: relative;
-}
-.ambient-glow-gold::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Field input — warm cream instead of cold white */
-.field-line {
-  color: var(--cream);
-}
-.field-line::placeholder {
-  color: rgba(245,240,232,0.22);
-}
-
-/* text-white override to use cream for softer feel */
-.text-white { color: var(--cream); }
+/* Highlight span — inline cream highlight

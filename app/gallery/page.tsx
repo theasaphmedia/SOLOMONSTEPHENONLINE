@@ -153,7 +153,7 @@ export default function GalleryPage() {
       <section style={{ minHeight: '52vh', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', overflow: 'hidden', paddingBottom: 80 }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 70% at 50% 0%, rgba(201,168,76,0.07) 0%, transparent 65%)' }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.25),transparent)' }} />
-        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '160px clamp(24px,5vw,80px) 0', width: '100%' }}>
+        <div style={{ position: 'relative', zIndex: 2, maxWidth: 1280, margin: '0 auto', padding: '160px clamp(24px,4vw,56px) 0', width: '100%' }}>
           <p className="section-label animate-fade-up" style={{ animationDelay: '0.1s', animationFillMode: 'both', display: 'block', marginBottom: 24 }}>Gallery</p>
           <h1 className="font-display animate-fade-up" style={{ fontSize: 'clamp(40px,5.5vw,82px)', fontWeight: 300, color: 'rgba(255,255,255,0.9)', lineHeight: 0.92, letterSpacing: '-2px', marginBottom: 6, animationDelay: '0.2s', animationFillMode: 'both' }}>
             Moments of
@@ -168,7 +168,7 @@ export default function GalleryPage() {
       </section>
 
       {/* Filters */}
-      <section style={{ padding: '0 clamp(24px,5vw,80px) 36px', maxWidth: 1280, margin: '0 auto' }}>
+      <section style={{ padding: '0 clamp(24px,4vw,56px) 36px', maxWidth: 1280, margin: '0 auto' }}>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {categories.map((cat) => (
             <button key={cat} onClick={() => changeFilter(cat)}

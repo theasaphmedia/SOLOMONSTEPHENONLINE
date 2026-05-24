@@ -516,10 +516,10 @@ export default function AboutPage() {
       </section>
 
       {/* ── FULL-WIDTH PULL QUOTE ── */}
-      <section style={{ padding:'clamp(80px,8vw,120px) clamp(24px,5vw,80px)', background:'#060d0a', borderTop:'1px solid rgba(201,168,76,0.06)', overflow:'hidden', position:'relative' }} className="reveal">
+      <section style={{ padding:'clamp(80px,8vw,120px) clamp(24px,4vw,56px)', background:'#060d0a', borderTop:'1px solid rgba(201,168,76,0.06)', overflow:'hidden', position:'relative' }} className="reveal">
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(201,168,76,0.04) 0%, transparent 70%)', pointerEvents:'none' }} />
         {/* Decorative quote mark */}
-        <div style={{ position:'absolute', top:'-20px', left:'clamp(24px,5vw,80px)', fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(120px,15vw,220px)', fontWeight:700, color:'rgba(201,168,76,0.035)', lineHeight:1, userSelect:'none', pointerEvents:'none' }}>&ldquo;</div>
+        <div style={{ position:'absolute', top:'-20px', left:'clamp(24px,4vw,56px)', fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(120px,15vw,220px)', fontWeight:700, color:'rgba(201,168,76,0.035)', lineHeight:1, userSelect:'none', pointerEvents:'none' }}>&ldquo;</div>
         <div style={{ position:'relative', zIndex:1, maxWidth:'1100px', margin:'0 auto' }}>
           <blockquote style={{ margin:0 }}>
             <p className="font-display" style={{ fontSize:'clamp(28px,4.5vw,68px)', fontWeight:300, fontStyle:'italic', color:'#F5F0E8', lineHeight:1.15, letterSpacing:'-1px', marginBottom:'32px' }}>
@@ -536,7 +536,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── MILESTONE TIMELINE ── */}
-      <section style={{ padding:'clamp(80px,8vw,120px) clamp(24px,5vw,80px)', background:'linear-gradient(180deg,#060d0a 0%,#060e06 100%)', borderTop:'1px solid rgba(201,168,76,0.06)' }} className="reveal">
+      <section style={{ padding:'clamp(80px,8vw,120px) clamp(24px,4vw,56px)', background:'linear-gradient(180deg,#060d0a 0%,#060e06 100%)', borderTop:'1px solid rgba(201,168,76,0.06)' }} className="reveal">
         <div style={{ maxWidth:'960px', margin:'0 auto' }}>
           {/* Header */}
           <div style={{ display:'flex', alignItems:'center', gap:'14px', marginBottom:'64px' }}>
