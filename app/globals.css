@@ -950,4 +950,35 @@ span.glass-gold, div.glass-gold { padding: 6px 16px !important; }
 /* Gold fill surface */
 .bg-gold-ultra { background: rgba(201,168,76,0.05); }
 
-/* Highlight span — inline cream highlight
+/* Highlight span — inline cream highlight */
+.highlight-cream {
+  background: rgba(201,168,76,0.12);
+  color: #C9A84C;
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* Section top gold line */
+.section-top-line {
+  position: relative;
+}
+.section-top-line::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.3), transparent);
+}
+
+/* Gold strip accent */
+.gold-strip {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #C9A84C, #E8C96A);
+  border-radius: 1px;
+}
+
+/* Ambient gold glow */
+.ambient-glow-gold {
+  box-shadow: 0 0 60px rgba(201,168,76,0.08);
+}
