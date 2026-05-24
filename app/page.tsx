@@ -223,7 +223,8 @@ export default function HomePage() {
             style={{objectFit:'cover', objectPosition:'top center'}}
             className="ken-b"
           />
-          <div style={{position:'absolute',left:0,top:0,bottom:0,width:'30%',background:'linear-gradient(to right,#1A2E1A,transparent)',zIndex:1,pointerEvents:'none'}} />
+          {/* Wide left blend — matches hero-left background exactly */}
+          <div style={{position:'absolute',left:0,top:0,bottom:0,width:'45%',background:'linear-gradient(to right,#1A2E1A 0%,#1A2E1A 15%,transparent 100%)',zIndex:1,pointerEvents:'none'}} />
           <div style={{position:'absolute',left:0,right:0,bottom:0,height:'30%',background:'linear-gradient(to top,#060e06,transparent)',zIndex:1,pointerEvents:'none'}} />
         </div>
       </section>
