@@ -118,7 +118,7 @@ export default function Navbar() {
 
         .fs-link {
           display:flex; align-items:center; gap:clamp(16px,3vw,32px);
-          padding:clamp(12px,2.5vw,20px) clamp(24px,4vw,56px);
+          padding:clamp(7px,1.2vw,12px) clamp(24px,4vw,56px);
           text-decoration:none;
           transition:all 0.3s ease;
           position:relative; overflow:hidden;
@@ -142,8 +142,8 @@ export default function Navbar() {
         }
         .fs-link-name {
           font-family:'Cormorant Garamond',serif;
-          font-size:clamp(22px,3.5vw,48px);
-          font-weight:300; color:rgba(245,240,232,0.6);
+          font-size:clamp(18px,2.4vw,36px);
+          font-weight:300; color:rgba(245,240,232,0.65);
           letter-spacing:-0.5px; line-height:1;
           transition:color 0.3s, transform 0.4s cubic-bezier(0.16,1,0.3,1);
         }
