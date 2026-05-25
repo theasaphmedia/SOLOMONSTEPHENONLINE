@@ -273,7 +273,7 @@ export default function Navbar() {
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.35)'}
             >Get In Touch →</Link>
           </div>
-        </div>
+        </nav>
       </div>
     </>
   )
