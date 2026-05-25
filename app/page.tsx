@@ -121,6 +121,8 @@ export default function HomePage() {
         .gathering-row:last-child { border-bottom:1px solid rgba(201,168,76,0.15); }
         .hide-mobile { display:flex; }
         @media(max-width:768px) { .hide-mobile { display:none; } .pillar-grid { grid-template-columns:1fr 1fr !important; } }
+        .cta-outline { display:inline-block;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;padding:16px 48px;border:1px solid rgba(201,168,76,0.45);color:#C9A84C;text-decoration:none;transition:background 0.3s,border-color 0.3s; }
+        .cta-outline:hover { background:rgba(201,168,76,0.08); border-color:#C9A84C; }
       `}</style>
 
       {/* ══════════════ HERO ══════════════ */}
@@ -431,9 +433,12 @@ export default function HomePage() {
           <p className="rv d2" style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,16px)', lineHeight:1.8, color:'rgba(250,247,242,0.55)', marginBottom:'clamp(32px,4vw,56px)' }}>
             Every great work begins with a conversation. Whether ministry, music, studio, or digital — reach out.
           </p>
-          <Link href="/contact" className="rv d3" style={{
-            display:'inline-block', fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.18em', textTransform:'uppercase',
-            padding:'16px 48px', border:'1px solid rgba(201,168,76,0.45)', color:'#C9A84C', textDecoration:'none', transition:'all 0.3s'
-          }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,0.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e
+          <Link href="/contact" className="rv d3 cta-outline">Get In Touch</Link>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}
+                                                                                                       
