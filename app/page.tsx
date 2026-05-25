@@ -106,7 +106,7 @@ export default function HomePage() {
         .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
         .eyebrow-light{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:rgba(201,168,76,0.7);display:flex;align-items:center;gap:12px;}
         .eyebrow-light::before{content:\'\';width:28px;height:1px;background:rgba(201,168,76,0.7);}
-        .slide-img { position:absolute; inset:0; transition:opacity 1.4s cubic-bezier(0.16,1,0.3,1); }
+        .slide-img { position:absolute; transition:opacity 1.4s cubic-bezier(0.16,1,0.3,1); }
         .pillar-card { position:relative; overflow:hidden; aspect-ratio:3/4; cursor:pointer; }
         .pillar-card img { transition:transform 0.9s cubic-bezier(0.16,1,0.3,1); }
         .pillar-card:hover img { transform:scale(1.06); }
@@ -125,18 +125,18 @@ export default function HomePage() {
 
       {/* ══════════════ HERO ══════════════ */}
       <section style={{ height: '100vh', position: 'relative', overflow: 'hidden', background: '#1A2E1A' }}>
-        {/* Slides */}
+        {/* Right-side portrait images — full body visible */}
         {heroSlides.map((s, i) => (
-          <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0 }}>
+          <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0, position:'absolute', right:0, top:0, width:'62%', height:'100%' }}>
             <Image src={s.src} alt="Solomon Stephen" fill priority={i === 0}
-              style={{ objectFit:'cover', objectPosition: s.pos }}
+              style={{ objectFit:'contain', objectPosition:'center bottom' }}
             />
           </div>
         ))}
 
-        {/* Overlays */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(13,27,13,0.75) 0%, rgba(13,27,13,0.3) 60%, transparent 100%)', zIndex:1 }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.6) 0%, transparent 50%)', zIndex:1 }} />
+        {/* Overlays — strong left fade to protect text; subtle bottom */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, #1A2E1A 28%, rgba(26,46,26,0.85) 50%, rgba(26,46,26,0.2) 75%, transparent 100%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.5) 0%, transparent 35%)', zIndex:1 }} />
 
         {/* Content */}
         <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(56px,7vw,96px)' }}>
@@ -436,12 +436,4 @@ export default function HomePage() {
             padding:'16px 48px', border:'1px solid rgba(201,168,76,0.45)', color:'#C9A84C', textDecoration:'none', transition:'all 0.3s'
           }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,0.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.45)' }}
-          >Get In Touch</Link>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e
