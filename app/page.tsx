@@ -5,12 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 
-const heroSlides = [
-  { src: '/images/solomon-green-suit-hero.png',         pos: '65% 12%' },
-  { src: '/images/gallery-solomon-worship-intense.jpg', pos: '58% 12%' },
-  { src: '/images/gallery-solomon-standing-deep.jpg',   pos: '58% 10%' },
-  { src: '/images/gallery-solomon-worship-raise.jpg',   pos: '65% 12%' },
-]
+const HERO_IMG = { src: '/images/solomon-green-suit-hero.png', pos: '60% 10%' }
 
 const stats = [
   { value: 3,    suffix: '',  label: 'Monthly Gatherings' },
@@ -67,7 +62,6 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function HomePage() {
-  const [slide, setSlide] = useState(0)
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
   const [hoveredBook, setHoveredBook] = useState<number | null>(null)
 
@@ -81,10 +75,7 @@ export default function HomePage() {
     )
     document.querySelectorAll('.rv, .rv-left, .rv-right, .rv-scale').forEach(el => obs.observe(el))
 
-    // Hero slideshow
-    const t = setInterval(() => setSlide(s => (s + 1) % heroSlides.length), 5000)
-
-    return () => { obs.disconnect(); clearInterval(t) }
+    return () => { obs.disconnect() }
   }, [])
 
   return (
@@ -129,63 +120,72 @@ export default function HomePage() {
         @media(max-width:768px) {
           .hide-mobile { display:none; }
           .pillar-grid { grid-template-columns:1fr 1fr !important; }
-          .hero-h1 { font-size:clamp(64px,18vw,100px) !important; }
+          .hero-h1 { font-size:clamp(60px,16vw,96px) !important; }
           .hero-sub { display:none; }
-          .slide-dots { bottom:20px; right:16px; }
+          .hero-side-label { display:none; }
+          .gathering-row { grid-template-columns:auto 1fr !important; }
         }
       `}</style>
 
       {/* ══════════════ HERO ══════════════ */}
-      <section style={{ height:'100vh', minHeight:'600px', position:'relative', overflow:'hidden', background:'#1A2E1A' }}>
-        {/* Full-bleed slides */}
-        {heroSlides.map((s, i) => (
-          <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0, position:'absolute', inset:0 }}>
-            <Image src={s.src} alt="Solomon Stephen" fill priority={i === 0}
-              style={{ objectFit:'cover', objectPosition: s.pos }}
-            />
-          </div>
-        ))}
+      <section style={{ height:'100vh', minHeight:'600px', position:'relative', overflow:'hidden', background:'#0D1B0D' }}>
 
-        {/* Gradient — diagonal, strong on left/bottom for text, opens on right/top for image drama */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(115deg, rgba(13,27,13,0.93) 0%, rgba(13,27,13,0.75) 38%, rgba(13,27,13,0.25) 65%, transparent 100%)', zIndex:1 }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.75) 0%, rgba(13,27,13,0.2) 30%, transparent 60%)', zIndex:1 }} />
+        {/* Single hero image — full bleed */}
+        <Image src={HERO_IMG.src} alt="Solomon Stephen" fill priority
+          style={{ objectFit:'cover', objectPosition: HERO_IMG.pos }}
+        />
 
-        {/* Content — bottom-left anchored */}
-        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,5vw,96px) clamp(60px,7vw,100px)' }}>
-          <div className="hero-eyebrow">
-            <span style={{ width:24, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block', flexShrink:0 }} />
+        {/* Layer 1 — bottom vignette (deep, protects text) */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,18,8,0.96) 0%, rgba(8,18,8,0.72) 28%, rgba(8,18,8,0.18) 55%, transparent 80%)', zIndex:1 }} />
+        {/* Layer 2 — left vignette (slim, text anchor) */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(8,18,8,0.70) 0%, rgba(8,18,8,0.30) 35%, transparent 65%)', zIndex:1 }} />
+        {/* Layer 3 — top vignette (subtle, navbar area) */}
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(8,18,8,0.55) 0%, transparent 100%)', zIndex:1 }} />
+
+        {/* Vertical side label — desktop only */}
+        <div className="hero-side-label" style={{ position:'absolute', right:'clamp(20px,2.5vw,40px)', top:'50%', transform:'translateY(-50%) rotate(90deg)', transformOrigin:'center center', zIndex:2, fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.38em', textTransform:'uppercase', color:'rgba(201,168,76,0.45)', whiteSpace:'nowrap' }}>
+          The Worship Nation · Lagos, Nigeria
+        </div>
+
+        {/* Main content — bottom-left */}
+        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'0 clamp(24px,5vw,96px) clamp(56px,7vw,88px)' }}>
+
+          {/* Eyebrow */}
+          <div className="hero-eyebrow" style={{ animationDelay:'0.6s' }}>
+            <span style={{ width:20, height:1, background:'rgba(201,168,76,0.65)', display:'inline-block', flexShrink:0 }} />
             Gospel Minister · Worship Leader · Author
           </div>
 
+          {/* Name */}
           <h1 className="hero-h1">
             <span className="wc"><span className="wi">Solomon</span></span><br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.1s', color:'#C9A84C' }}>Stephen.</span></span>
+            <span className="wc"><span className="wi" style={{ animationDelay:'0.12s', color:'#C9A84C' }}>Stephen.</span></span>
           </h1>
 
+          {/* Divider line */}
+          <div style={{ width:'clamp(48px,6vw,80px)', height:'1px', background:'rgba(201,168,76,0.35)', margin:'clamp(20px,2.5vw,32px) 0' }} />
+
+          {/* Sub-text — hidden on mobile */}
           <p className="hero-sub">
             Founder of The Worship Nation — Lagos, Nigeria.<br />
-            Building encounters with God through worship, music, and the written Word.
+            Encounter. Worship. The written Word.
           </p>
 
-          <div style={{ display:'flex', gap:'14px', flexWrap:'wrap' }}>
-            <Link href="/about" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', padding:'15px 36px', background:'#C9A84C', color:'#0D1B0D', textDecoration:'none', fontWeight:500 }}>
+          {/* CTAs */}
+          <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
+            <Link href="/about" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', padding:'14px 36px', background:'#C9A84C', color:'#0D1B0D', textDecoration:'none', fontWeight:600, display:'inline-block' }}>
               His Story
             </Link>
-            <Link href="/events" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', padding:'15px 36px', border:'1px solid rgba(250,247,242,0.4)', color:'rgba(250,247,242,0.85)', textDecoration:'none' }}>
+            <Link href="/events" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', padding:'14px 36px', border:'1px solid rgba(250,247,242,0.35)', color:'rgba(250,247,242,0.85)', textDecoration:'none', display:'inline-block' }}>
               Join a Gathering
             </Link>
           </div>
-        </div>
 
-        {/* Slide dots — fixed bottom-right */}
-        <div className="slide-dots">
-          {heroSlides.map((_, i) => (
-            <button key={i} onClick={() => setSlide(i)} style={{
-              width:'2px', height: i === slide ? '32px' : '10px',
-              background: i === slide ? '#C9A84C' : 'rgba(250,247,242,0.28)',
-              border:'none', cursor:'pointer', padding:0, transition:'height 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s'
-            }} />
-          ))}
+          {/* Scroll cue */}
+          <div style={{ marginTop:'clamp(32px,4vw,48px)', display:'flex', alignItems:'center', gap:'10px' }}>
+            <div style={{ width:'1px', height:'36px', background:'rgba(201,168,76,0.35)' }} />
+            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.32em', textTransform:'uppercase', color:'rgba(250,247,242,0.3)' }}>Scroll</span>
+          </div>
         </div>
       </section>
 
