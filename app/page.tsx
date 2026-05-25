@@ -23,10 +23,8 @@ const pillars = [
 
 const tracks = [
   { id: 'c8KAM_l151s', title: 'CROSSOVER' },
-  { id: 'cB0LxEjVaIs', title: 'The Mighty God' },
   { id: 'EPA7cFLHg2c', title: 'AIKU' },
   { id: '6TYabI5QCO4', title: 'Awesome God' },
-  { id: 'q1-eDXBpMkY', title: 'Alagbada Ina' },
 ]
 
 const books = [

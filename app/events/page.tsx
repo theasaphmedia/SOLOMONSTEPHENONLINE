@@ -1,196 +1,191 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 import Footer from '@/components/Footer'
+import Link from 'next/link'
+import '../inner-animations.css'
+import '../mobile.css'
+import { usePageReveal } from '@/components/usePageReveal'
 
-const gatherings = [
-  {
-    code: 'MDWE',
-    name: 'Mid Day Worship Experience',
-    when: 'Every Wednesday · 12:00 PM',
-    desc: 'A pause in the middle of the week — a worship and prophetic devotion gathering designed to shift the atmosphere of your days. Come as you are, mid-day, and encounter the God who is always present. MDWE began as a conviction that worship should interrupt the week, not just cap it.',
-    verse: 'Psalm 27:4',
-    verseText: '"One thing have I asked of the LORD, that will I seek after..."',
-    color: '#C9A84C',
-    img: '/images/worship-atmosphere-bg.jpg',
-  },
-  {
-    code: 'TSH',
-    name: 'The Slaughter House',
-    when: 'Last Saturday before the final Sunday',
-    desc: 'A high-intensity gathering of worship, intercession, and consecration. The name is intentional — drawn from the altar, the place where self is surrendered and God moves. TSH is not a comfortable meeting. It is a meeting with fire. Those who come leave different.',
-    verse: 'Romans 12:1',
-    verseText: '"Present your bodies as a living sacrifice, holy and acceptable to God..."',
-    color: '#8A5A2A',
-    img: '/images/worship-interlude-bg.jpg',
-  },
-  {
-    code: 'Synantesis',
-    name: 'The Divine Appointment',
-    when: 'Last Sunday of every month',
-    desc: 'The name is drawn from the Greek word meaning divine appointment — συνάντησις, an arranged meeting. Synantesis is exactly that: a scheduled, intentional, depth-first encounter with God. Deep worship. The weight of the Word. Space to stay as long as He remains.',
-    verse: 'Amos 3:3',
-    verseText: '"Can two walk together, except they be agreed?"',
-    color: '#4A7A6A',
-    img: '/images/gallery-congregation-worship.jpg',
-  },
+const events = [
+  { tag: 'Every Wednesday · Noon', name: 'Mid Day Worship Experience', short: 'MDWE', desc: 'A corporate worship and prophetic devotion encounter designed to shift the atmosphere of your week. Every Wednesday at noon, TWN gathers to press into the presence of God — in song, in prayer, in prophetic declaration.', highlight: 'Every Wednesday at 12:00 PM' },
+  { tag: 'Last Saturday Before Final Sunday', name: 'The Slaughter House', short: 'TSH', desc: 'A high-energy night of worship and declaration in the throne room. Intense. Transformative. Unforgettable. TSH is a consecrated gathering where the atmosphere shifts and chains break.', highlight: 'Last Saturday Before Final Sunday' },
+  { tag: 'Last Sunday of Every Month', name: 'Synantesis', short: 'SYN', desc: 'Encountering Jesus in an atmosphere of Word, prayer, and prophetic ministry. Synantesis — from the Greek meaning "to meet with" — is a sacred gathering where believers come face to face with the living Christ.', highlight: 'Last Sunday of Every Month' },
 ]
 
+function CollapsibleMap({ address }: { address: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="glass rounded-3xl" style={{ overflow:'hidden' }}>
+      <div className="h-[2px]" style={{ background:'linear-gradient(to right,transparent,rgba(201,168,76,0.6),transparent)' }} />
+      <div style={{ padding:'28px 28px 0' }}>
+        <p style={{ color:'#C9A84C', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', fontWeight:500, marginBottom:'8px' }}>Find Us</p>
+        <h3 className="font-display text-white font-light" style={{ fontSize:'clamp(20px,2.5vw,38px)', marginBottom:'6px' }}>
+          TWN <span className="text-gradient-gold font-semibold">Studios</span>
+        </h3>
+        <p style={{ color:'rgba(255,255,255,0.4)', fontSize:'14px', marginBottom:'20px', lineHeight:1.6 }}>{address}</p>
+        <button
+          onClick={() => setOpen(!open)}
+          style={{ display:'flex', alignItems:'center', gap:'8px', background:'rgba(201,168,76,0.06)', border:'1px solid rgba(201,168,76,0.2)', borderRadius:'999px', padding:'9px 18px', cursor:'pointer', marginBottom: open ? '0' : '28px', transition:'all 0.25s' }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background='rgba(201,168,76,0.12)' }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background='rgba(201,168,76,0.06)' }}
+        >
+          <span style={{ color:'#C9A84C', fontSize:'10px', letterSpacing:'0.15em', textTransform:'uppercase', fontFamily:'Inter, sans-serif' }}>{open ? 'Hide Map' : 'Show Map'}</span>
+          <span style={{ color:'#C9A84C', fontSize:'14px', transform: open ? 'rotate(180deg)' : 'none', transition:'transform 0.3s', display:'inline-block' }}>▾</span>
+        </button>
+      </div>
+      <div style={{ maxHeight: open ? '420px' : '0', overflow:'hidden', transition:'max-height 0.45s cubic-bezier(0.16,1,0.3,1)' }}>
+        <div style={{ padding:'16px 0 0' }}>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.1675887445563!2d3.5813646750302173!3d6.500457123430608!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bfbc825df64c1%3A0xdbfac0f53ff1fdf2!2sTWN%20STUDIOS!5e0!3m2!1sen!2sng!4v1775255468341!5m2!1sen!2sng"
+            width="100%" height="320"
+            style={{ border:0, display:'block' }}
+            allowFullScreen loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
+      </div>
+      {!open && <div style={{ height: 4 }} />}
+    </div>
+  )
+}
+
 export default function EventsPage() {
-  const [active, setActive] = useState(0)
+  usePageReveal()
+  const [expandedEvent, setExpandedEvent] = useState<number | null>(null)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) }
-      }),
-      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('is-revealed')),
+      { threshold: 0.08, rootMargin: '0px 0px -60px 0px' }
     )
-    document.querySelectorAll('.rv, .rv-left, .rv-right, .rv-scale').forEach(el => obs.observe(el))
+    document.querySelectorAll('.reveal').forEach((el) => obs.observe(el))
     return () => obs.disconnect()
   }, [])
 
   return (
-    <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
+    <main className="bg-[#060e06] min-h-screen overflow-x-hidden page-entry">
       <style>{`
-        .rv { opacity:0; transform:translateY(32px); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
-        .rv.is-visible { opacity:1; transform:none; }
-        .rv-left { opacity:0; transform:translateX(-40px); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
-        .rv-left.is-visible { opacity:1; transform:none; }
-        .rv-right { opacity:0; transform:translateX(40px); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
-        .rv-right.is-visible { opacity:1; transform:none; }
-        .rv-scale { opacity:0; transform:scale(0.94); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
-        .rv-scale.is-visible { opacity:1; transform:none; }
-        .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s}
-        .wc{display:inline-block;overflow:hidden;vertical-align:bottom;}
-        .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
-        @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
-        .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
-        .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
-        .gathering-tab { display:block; width:100%; text-align:left; background:none; border:none; border-top:1px solid rgba(201,168,76,0.15); padding:clamp(20px,2.5vw,32px) 0; cursor:pointer; transition:background 0.3s; }
-        .gathering-tab:last-child { border-bottom:1px solid rgba(201,168,76,0.15); }
-        .gathering-tab:hover { background:rgba(201,168,76,0.04); }
-        .img-zoom { overflow:hidden; }
-        .img-zoom img { transition:transform 1.2s cubic-bezier(0.16,1,0.3,1); }
-        .img-zoom:hover img { transform:scale(1.04); }
+        .event-card-inner { display:grid; grid-template-columns:1fr; gap:20px; }
+        @media(min-width:768px) { .event-card-inner { grid-template-columns:1fr 1fr; gap:40px; } }
+        .event-card-body { padding:24px 20px; }
+        @media(min-width:768px) { .event-card-body { padding:48px 56px; } }
+        .event-desc-toggle { display:flex; align-items:center; gap:6px; background:none; border:none; padding:0; cursor:pointer; margin-top:8px; color:rgba(201,168,76,0.5); font-family:'Inter',sans-serif; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; }
+        @media(min-width:768px) { .event-desc-toggle { display:none; } }
+        .event-desc-text { overflow:hidden; transition:max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
       `}</style>
 
-      {/* ── Hero ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <Image src="/images/gallery-congregation-worship.jpg" alt="Worship gathering" fill style={{ objectFit:'cover', opacity:0.25, objectPosition:'center' }} priority />
-        </div>
-        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to top, #1A2E1A 40%, rgba(26,46,26,0.4) 80%, transparent)' }} />
-        <div style={{ position:'relative', zIndex:2, maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
-            <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
-            Gatherings
+      <section className="page-hero" style={{ minHeight:'60vh' }}>
+        <div className="page-hero-bg" />
+        <div className="page-hero-orb" style={{ top:'-10%', right:'-8%' }} />
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background:'linear-gradient(to right,transparent,rgba(201,168,76,0.3),transparent)' }} />
+        <div className="container-custom relative z-10" style={{ paddingTop:'160px', paddingBottom:'80px' }}>
+          <div className="badge-pill animate-fade-up" style={{ animationDelay:'0.1s', animationFillMode:'both', display:'inline-flex', marginBottom:'32px' }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />TWN Gatherings
           </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,110px)', fontWeight:400, lineHeight:1, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-0.02em' }}>
-            <span className="wc"><span className="wi">Meeting</span></span>{" "}
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.07s', color:'#C9A84C' }}>God</span></span><br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.14s' }}>Together.</span></span>
+          <h1 className="font-display text-white font-light lg:whitespace-nowrap animate-fade-up" style={{ fontSize:'clamp(28px,4.5vw,66px)', lineHeight:1.0, animationDelay:'0.2s', animationFillMode:'both', marginBottom:'28px' }}>
+            Join The <span className="text-gradient-gold font-semibold">Movement</span>
           </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'rgba(250,247,242,0.6)', maxWidth:'520px' }}>
-            Three recurring gatherings. Three different atmospheres. One conviction — that encounter with God is the birthright of every believer.
+          <p className="animate-fade-up" style={{ animationDelay:'0.35s', animationFillMode:'both' }}>
+            {['MDWE','The Slaughter House','Synantesis'].map((r,i,a) => (
+              <span key={r}>
+                <span style={{ color:'rgba(201,168,76,0.65)', fontSize:'11px', letterSpacing:'0.22em', textTransform:'uppercase' }}>{r}</span>
+                {i < a.length-1 && <span style={{ color:'rgba(201,168,76,0.25)', margin:'0 14px' }}>·</span>}
+              </span>
+            ))}
           </p>
         </div>
       </section>
 
-      {/* ── Tab Selector ── */}
-      <section style={{ padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)', background:'#FAF7F2' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(300px,1fr))', gap:'clamp(40px,5vw,80px)', alignItems:'start' }}>
+      <div className="section-divider" />
 
-          {/* Tab list */}
-          <div className="rv-left">
-            <div className="eyebrow" style={{ marginBottom:'clamp(24px,3vw,40px)' }}>The Gatherings</div>
-            {gatherings.map((g, i) => (
-              <button key={g.code} className="gathering-tab" onClick={() => setActive(i)}
-                style={{ paddingLeft:'8px', paddingRight:'8px', background: active === i ? 'rgba(201,168,76,0.05)' : 'transparent' }}
-              >
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:'16px' }}>
+      <section className="section-padding">
+        <div className="container-custom events-grid">
+          {events.map((event, idx) => (
+            <div key={event.name} className="glass rounded-3xl card-hover rv" style={{ overflow:'hidden' }}>
+              <div className="h-[2px]" style={{ background:'linear-gradient(to right,transparent,rgba(201,168,76,0.6),transparent)' }} />
+              <div className="event-card-body">
+                <div className="event-card-inner">
                   <div>
-                    <div style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(28px,4vw,42px)', fontWeight:400, color: active === i ? '#C9A84C' : '#0D1B0D', lineHeight:1.1, transition:'color 0.35s' }}>{g.code}</div>
-                    <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.1em', color:'#8A9A8A', marginTop:'4px' }}>{g.name}</div>
+                    <div style={{ marginBottom:'16px' }}>
+                      <span style={{ color:'#C9A84C', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', fontWeight:500 }}>{event.tag}</span>
+                      <h2 className="font-display text-white font-light" style={{ fontSize:'clamp(22px,3vw,44px)', lineHeight:1.05, margin:'12px 0 6px' }}>{event.name}</h2>
+                      <p className="font-display font-semibold text-gradient-gold" style={{ fontSize:'clamp(18px,2vw,26px)' }}>{event.short}</p>
+                    </div>
+                    <div className="section-divider" style={{ marginBottom:'16px' }} />
+                    <div className="event-desc-text" style={{ maxHeight: expandedEvent === idx ? '400px' : '0px' }}>
+                      <p style={{ color:'rgba(255,255,255,0.55)', fontSize:'14px', lineHeight:1.85, paddingBottom:'8px' }}>{event.desc}</p>
+                    </div>
+                    <p className="hidden md:block" style={{ color:'rgba(255,255,255,0.55)', fontSize:'14px', lineHeight:1.85 }}>{event.desc}</p>
+                    <button className="event-desc-toggle" onClick={() => setExpandedEvent(expandedEvent === idx ? null : idx)}>
+                      {expandedEvent === idx ? 'Read less ▴' : 'Read more ▾'}
+                    </button>
                   </div>
-                  <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', color: active === i ? '#C9A84C' : '#8A9A8A', transition:'color 0.35s', whiteSpace:'nowrap' }}>
-                    {active === i ? 'Selected' : 'View →'}
+                  <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                    <div className="glass-gold rounded-xl" style={{ padding:'16px 20px' }}>
+                      <p style={{ color:'#C9A84C', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', fontWeight:500, marginBottom:'8px' }}>Schedule</p>
+                      <p className="text-white font-medium" style={{ fontSize:'14px' }}>{event.highlight}</p>
+                    </div>
                   </div>
                 </div>
-                {active === i && <div style={{ height:'1px', background:'#C9A84C', marginTop:'16px', animation:'lineGrow 0.5s cubic-bezier(0.16,1,0.3,1) both' }} />}
-              </button>
-            ))}
-          </div>
-
-          {/* Detail panel */}
-          <div className="rv-right" key={active}>
-            <div className="img-zoom" style={{ borderRadius:'2px', overflow:'hidden', aspectRatio:'16/9', position:'relative', marginBottom:'clamp(24px,3vw,40px)' }}>
-              <Image src={gatherings[active].img} alt={gatherings[active].code} fill style={{ objectFit:'cover' }} />
-              <div style={{ position:'absolute', inset:0, background:'rgba(13,27,13,0.3)' }} />
-              <div style={{ position:'absolute', bottom:'24px', left:'24px' }}>
-                <div style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(36px,6vw,64px)', fontWeight:400, color:'#FAF7F2', lineHeight:1 }}>{gatherings[active].code}</div>
               </div>
             </div>
+          ))}
+        </div>
+      </section>
 
-            <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.18em', textTransform:'uppercase', color:'#C9A84C', marginBottom:'16px' }}>{gatherings[active].when}</div>
-            <h2 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(26px,3.5vw,40px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.2, marginBottom:'20px' }}>{gatherings[active].name}</h2>
-            <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.85, color:'#3D4B3D', marginBottom:'28px' }}>{gatherings[active].desc}</p>
-            <div style={{ borderLeft:'2px solid #C9A84C', paddingLeft:'20px', marginBottom:'clamp(24px,3vw,40px)' }}>
-              <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'#C9A84C', marginBottom:'8px' }}>{gatherings[active].verse}</div>
-              <div style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(16px,2vw,20px)', fontStyle:'italic', color:'#0D1B0D', lineHeight:1.6 }}>{gatherings[active].verseText}</div>
+      <div className="section-divider" />
+
+      <section className="section-padding reveal">
+        <div className="container-custom">
+          <div className="glass rounded-3xl card-hover" style={{ padding: '32px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(201,168,76,0.12)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', alignItems: 'flex-start' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+                <span style={{ color: '#C9A84C', fontSize: '10px', letterSpacing: '0.22em', textTransform: 'uppercase' }}>Missed the stream?</span>
+              </div>
+              <h2 className="font-display text-white font-light" style={{ fontSize: 'clamp(24px,3.5vw,38px)', lineHeight: 1.05 }}>Catch up on past livestreams from TWN.</h2>
+              <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '14px', lineHeight: 1.75, maxWidth: '760px' }}>
+                Watch the best moments from MDWE, The Slaughter House, and Synantesis in one curated archive. Stream here or go straight to YouTube for the full experience.
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                <Link href="/youtube-live" className="btn-gold-pill">Browse Livestream Archive</Link>
+                <Link href="https://youtube.com/@thesolomonsteph" target="_blank" className="btn-outline-pill">Open YouTube Channel</Link>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── All Three at a Glance ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
-        <div style={{ maxWidth:'1100px', margin:'0 auto' }}>
-          <div className="eyebrow rv" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(40px,5vw,72px)' }}>At a Glance</div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px,1fr))', gap:'clamp(24px,4vw,56px)' }}>
-            {gatherings.map((g, i) => (
-              <div key={g.code} className={`rv d${i+1}`} style={{ borderTop:'1px solid rgba(201,168,76,0.15)', paddingTop:'clamp(24px,3vw,40px)' }}>
-                <div style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(40px,6vw,60px)', fontWeight:400, color:'#C9A84C', lineHeight:1, marginBottom:'8px' }}>{g.code}</div>
-                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)', marginBottom:'16px' }}>{g.when}</div>
-                <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'13px', lineHeight:1.8, color:'rgba(250,247,242,0.5)' }}>{g.name}</p>
-              </div>
-            ))}
+      <div className="section-divider" />
+
+      <section className="section-padding rv">
+        <div className="container-custom">
+          <CollapsibleMap address="Kenny T. Kay Building (Green Tall Building), Beside Azkol Fuel Station, Langbasa Road, Ajah, Lagos" />
+        </div>
+      </section>
+
+      <div className="section-divider" />
+
+      <section className="section-padding rv">
+        <div className="container-custom">
+          <div className="glass rounded-3xl card-hover text-center" style={{ padding:'clamp(40px,6vw,64px) clamp(20px,5vw,48px)', overflow:'hidden' }}>
+            <div className="h-[2px]" style={{ background:'linear-gradient(to right,transparent,rgba(201,168,76,0.4),transparent)', marginBottom:'36px' }} />
+            <h3 className="font-display text-white font-light" style={{ fontSize:'clamp(20px,3vw,44px)', lineHeight:1.0, marginBottom:'20px' }}>
+              Come As You Are. <span className="text-gradient-gold font-semibold">Leave Transformed.</span>
+            </h3>
+            <div className="section-divider" style={{ maxWidth:'160px', margin:'0 auto 24px' }} />
+            <p style={{ color:'rgba(255,255,255,0.45)', fontSize:'15px', maxWidth:'440px', margin:'0 auto 36px', lineHeight:1.7 }}>
+              All gatherings are free and open to everyone. Come hungry for God and ready to encounter His presence.
+            </p>
+            <div style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
+              <Link href="/contact" className="btn-gold-pill">Get In Touch</Link>
+              <Link href="/about" className="btn-outline-pill">Learn More About TWN</Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Stay Connected ── */}
-      <section style={{ background:'#F0EBE1', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)', textAlign:'center' }}>
-        <div style={{ maxWidth:'700px', margin:'0 auto' }}>
-          <div className="eyebrow rv" style={{ justifyContent:'center', marginBottom:'clamp(24px,3vw,40px)' }}>Follow the Movement</div>
-          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(32px,5vw,60px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.1, marginBottom:'clamp(20px,2.5vw,32px)' }}>
-            Don't miss what God<br />is <em style={{ color:'#C9A84C' }}>doing here.</em>
-          </h2>
-          <p className="rv d2" style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.8, color:'#3D4B3D', marginBottom:'clamp(32px,4vw,56px)' }}>
-            Follow The Worship Nation on Instagram for meeting announcements, live updates, and moments captured from every gathering.
-          </p>
-          <div style={{ display:'flex', justifyContent:'center', gap:'16px', flexWrap:'wrap' }}>
-            <a href="https://www.instagram.com/theworshipnation_twn" target="_blank" rel="noopener noreferrer" style={{
-              fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase',
-              padding:'14px 32px', background:'#1A2E1A', color:'#FAF7F2', textDecoration:'none', transition:'background 0.3s, transform 0.3s'
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#2A4A2A'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='#1A2E1A'; (e.currentTarget as HTMLElement).style.transform='none' }}
-            >@theworshipnation_twn</a>
-            <a href="https://www.instagram.com/thesolomonsteph" target="_blank" rel="noopener noreferrer" style={{
-              fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase',
-              padding:'14px 32px', border:'1px solid rgba(201,168,76,0.4)', color:'#3D4B3D', textDecoration:'none', transition:'all 0.3s'
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.4)'; (e.currentTarget as HTMLElement).style.color='#3D4B3D' }}
-            >@thesolomonsteph</a>
-          </div>
-        </div>
-      </section>
-
-      <style>{`@keyframes lineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}`}</style>
       <Footer />
     </main>
   )
