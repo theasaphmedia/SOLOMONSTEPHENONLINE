@@ -265,4 +265,16 @@ export default function Navbar() {
               ))}
             </div>
             <Link href="/contact" style={{
-              fontFamily:"'DM S
+              fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:500, letterSpacing:'0.18em',
+              textTransform:'uppercase', color:'#C9A84C', textDecoration:'none',
+              padding:'11px 28px', border:'1px solid rgba(201,168,76,0.35)', transition:'border-color 0.3s',
+            }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = '#C9A84C'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.35)'}
+            >Get In Touch →</Link>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
