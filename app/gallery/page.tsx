@@ -1,172 +1,156 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import Footer from '@/components/Footer'
 
 const photos = [
-  { src: '/images/gallery-solomon-worship-intense.jpg',    alt: 'Solomon Stephen — Worship',          size: 'tall'   },
-  { src: '/images/gallery-congregation-worship.jpg',        alt: 'Congregation in worship',            size: 'wide'   },
-  { src: '/images/gallery-solomon-worship-raise.jpg',       alt: 'Solomon Stephen — Raised in praise', size: 'square' },
-  { src: '/images/gallery-solomon-kneeling-surrender.jpg',  alt: 'Surrender before God',               size: 'tall'   },
-  { src: '/images/gallery-solomon-kneeling-joy.jpg',        alt: 'Joy in His presence',                size: 'square' },
-  { src: '/images/gallery-band-drummer-action.jpg',         alt: 'Band — Drummer',                     size: 'wide'   },
-  { src: '/images/gallery-solomon-standing-deep.jpg',       alt: 'Solomon Stephen — Deep worship',     size: 'square' },
-  { src: '/images/gallery-band-bassist.jpg',                alt: 'Band — Bassist',                     size: 'square' },
-  { src: '/images/gallery-solomon-profile-bw.jpg',          alt: 'Solomon Stephen — Portrait',         size: 'tall'   },
-  { src: '/images/gallery-band-guitarist-seated.jpg',       alt: 'Band — Guitarist',                   size: 'square' },
-  { src: '/images/gallery-band-drummer-focus.jpg',          alt: 'Band — Drummer (focus)',              size: 'square' },
-  { src: '/images/gallery-band-keys-motif.jpg',             alt: 'Band — Keys',                        size: 'wide'   },
+  { src: '/images/gallery-solomon-profile-bw.jpg',      alt: 'Solomon Stephen — profile',        cat: 'Portrait',  span: 'col' },
+  { src: '/images/gallery-solomon-standing-deep.jpg',   alt: 'Solomon in deep worship',          cat: 'Worship',   span: 'row' },
+  { src: '/images/gallery-solomon-worship-intense.jpg', alt: 'Intense worship moment',           cat: 'Worship',   span: '' },
+  { src: '/images/gallery-solomon-worship-raise.jpg',   alt: 'Hands raised in worship',          cat: 'Worship',   span: '' },
+  { src: '/images/gallery-solomon-kneeling-joy.jpg',    alt: 'Kneeling in joy',                  cat: 'Devotional', span: '' },
+  { src: '/images/gallery-solomon-kneeling-surrender.jpg', alt: 'Surrender',                    cat: 'Devotional', span: '' },
+  { src: '/images/gallery-congregation-worship.jpg',    alt: 'Congregation in worship',          cat: 'Gathering',  span: 'wide' },
+  { src: '/images/gallery-band-bassist.jpg',            alt: 'TWN band — bassist',               cat: 'Band',       span: '' },
+  { src: '/images/gallery-band-drummer-action.jpg',     alt: 'Drummer in action',               cat: 'Band',       span: '' },
+  { src: '/images/gallery-band-drummer-focus.jpg',      alt: 'Drummer focused',                 cat: 'Band',       span: '' },
+  { src: '/images/gallery-band-guitarist-seated.jpg',   alt: 'Guitarist seated',                cat: 'Band',       span: '' },
+  { src: '/images/gallery-band-keys-motif.jpg',         alt: 'Keys motif',                       cat: 'Band',       span: '' },
 ]
 
+const cats = ['All', 'Portrait', 'Worship', 'Devotional', 'Gathering', 'Band']
+
 export default function GalleryPage() {
+  const [filter, setFilter] = useState('All')
   const [lightbox, setLightbox] = useState<number | null>(null)
+  const [loaded, setLoaded] = useState<Set<number>>(new Set())
+
+  const filtered = filter === 'All' ? photos : photos.filter(p => p.cat === filter)
 
   useEffect(() => {
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => {
         if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) }
       }),
-      { threshold: 0.05 }
+      { threshold: 0.05, rootMargin: '0px 0px -32px 0px' }
     )
-    document.querySelectorAll('.rv').forEach(el => obs.observe(el))
+    document.querySelectorAll('.rv, .rv-scale').forEach(el => obs.observe(el))
+    return () => obs.disconnect()
+  }, [filter])
 
-    const onKey = (e: KeyboardEvent) => {
-      if (lightbox === null) return
-      if (e.key === 'Escape')      setLightbox(null)
-      if (e.key === 'ArrowRight')  setLightbox(i => i !== null ? (i + 1) % photos.length : null)
-      if (e.key === 'ArrowLeft')   setLightbox(i => i !== null ? (i - 1 + photos.length) % photos.length : null)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => { obs.disconnect(); window.removeEventListener('keydown', onKey) }
-  }, [lightbox])
+  const handleKey = useCallback((e: KeyboardEvent) => {
+    if (lightbox === null) return
+    if (e.key === 'Escape') setLightbox(null)
+    if (e.key === 'ArrowRight') setLightbox(i => i !== null ? (i + 1) % filtered.length : null)
+    if (e.key === 'ArrowLeft')  setLightbox(i => i !== null ? (i - 1 + filtered.length) % filtered.length : null)
+  }, [lightbox, filtered.length])
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [handleKey])
 
   return (
-    <main style={{ background: '#060c06', overflowX: 'hidden' }}>
+    <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
       <style>{`
-        .rv{opacity:0;transform:translateY(36px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
-        .rv.is-visible{opacity:1;transform:none;}
-        .rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}
-
-        .wc{display:inline-block;overflow:hidden;}
-        .wi{display:inline-block;animation:wi 1s cubic-bezier(0.16,1,0.3,1) both;}
-        @keyframes wi{from{transform:translateY(110%)}to{transform:translateY(0)}}
-
-        /* Masonry */
-        .gallery-masonry { columns:3; column-gap:2px; line-height:0; }
-        @media(max-width:860px)  { .gallery-masonry { columns:2; } }
-        @media(max-width:520px)  { .gallery-masonry { columns:1; } }
-
-        .g-item { break-inside:avoid; display:block; position:relative; overflow:hidden; margin-bottom:2px; cursor:pointer; }
-        .g-item img { display:block; width:100%; height:auto; transition:transform 0.7s cubic-bezier(0.16,1,0.3,1),filter 0.5s; filter:brightness(0.88) saturate(0.8); }
-        .g-item:hover img { transform:scale(1.05); filter:brightness(1) saturate(1); }
-        .g-overlay { position:absolute; inset:0; background:rgba(6,12,6,0); transition:background 0.5s; display:flex; align-items:flex-end; padding:16px; }
-        .g-item:hover .g-overlay { background:rgba(6,12,6,0.3); }
-        .g-label { opacity:0; transform:translateY(8px); transition:opacity 0.35s,transform 0.35s; font-family:Inter,sans-serif; font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:rgba(245,240,232,0.6); }
-        .g-item:hover .g-label { opacity:1; transform:none; }
-
-        /* Lightbox */
-        .lb-bg { position:fixed; inset:0; background:rgba(4,8,4,0.97); z-index:9999; display:flex; align-items:center; justify-content:center; animation:lbIn 0.3s cubic-bezier(0.16,1,0.3,1); }
-        @keyframes lbIn { from{opacity:0} to{opacity:1} }
-        .lb-wrap { position:relative; max-width:min(90vw,1100px); max-height:88vh; width:100%; }
-        .lb-btn { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border:1px solid rgba(201,168,76,0.3); background:rgba(6,12,6,0.8); color:rgba(201,168,76,0.8); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:border-color 0.25s,color 0.25s; z-index:10; }
-        .lb-btn:hover { border-color:rgba(201,168,76,0.7); color:#C9A84C; }
-        .lb-close { position:absolute; top:-52px; right:0; width:36px; height:36px; border:1px solid rgba(201,168,76,0.2); background:transparent; color:rgba(201,168,76,0.6); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.25s; }
-        .lb-close:hover { border-color:rgba(201,168,76,0.5); color:#C9A84C; }
+        .rv { opacity:0; transform:translateY(28px); transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .rv.is-visible { opacity:1; transform:none; }
+        .rv-scale { opacity:0; transform:scale(0.96); transition:opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .rv-scale.is-visible { opacity:1; transform:none; }
+        .d1{transition-delay:.06s} .d2{transition-delay:.12s} .d3{transition-delay:.18s} .d4{transition-delay:.24s} .d5{transition-delay:.30s} .d6{transition-delay:.36s}
+        .wc{display:inline-block;overflow:hidden;vertical-align:bottom;}
+        .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
+        @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
+        .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
+        .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
+        .photo-item { overflow:hidden; border-radius:2px; cursor:pointer; position:relative; aspect-ratio:1; }
+        .photo-item img { transition:transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+        .photo-item:hover img { transform:scale(1.06); }
+        .photo-overlay { position:absolute; inset:0; background:rgba(13,27,13,0); transition:background 0.4s; display:flex; align-items:flex-end; padding:20px; }
+        .photo-item:hover .photo-overlay { background:rgba(13,27,13,0.4); }
+        .photo-overlay-text { opacity:0; transform:translateY(8px); transition:opacity 0.4s, transform 0.4s; font-family:'DM Sans',sans-serif; font-size:11px; letter-spacing:0.12em; color:rgba(250,247,242,0.9); text-transform:uppercase; }
+        .photo-item:hover .photo-overlay-text { opacity:1; transform:none; }
+        .filter-btn { padding:8px 18px; border:1px solid rgba(201,168,76,0.2); background:transparent; font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; transition:all 0.3s; color:#3D4B3D; }
+        .filter-btn:hover { border-color:#C9A84C; color:#C9A84C; }
+        .filter-btn.active { border-color:#C9A84C; background:rgba(201,168,76,0.08); color:#C9A84C; }
+        .lightbox-bg { position:fixed; inset:0; background:rgba(13,27,13,0.96); z-index:2000; display:flex; align-items:center; justify-content:center; }
+        .lightbox-img { max-width:90vw; max-height:90vh; object-fit:contain; }
       `}</style>
 
-      {/* ════ HERO ════ */}
-      <section style={{ padding: 'clamp(24px,4vw,56px)', paddingTop: '160px', paddingBottom: 'clamp(60px,8vw,100px)', background: '#060c06', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(201,168,76,0.05)' }}>
-        <div aria-hidden style={{ position: 'absolute', right: '-4vw', top: '50%', transform: 'translateY(-52%)', fontFamily: 'Cormorant Garamond,serif', fontSize: 'clamp(180px,22vw,380px)', fontWeight: 700, color: 'rgba(201,168,76,0.02)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none', letterSpacing: '-8px' }}>LIGHT</div>
-
-        <p style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)', marginBottom: '40px' }}>
-          <span className="wc"><span className="wi" style={{ animationDelay: '0.05s' }}>Gallery · Moments &amp; Ministry</span></span>
-        </p>
-
-        <div style={{ marginBottom: '40px', lineHeight: 0.88 }}>
-          <div className="wc" style={{ display: 'block' }}>
-            <span className="wi font-display" style={{ fontSize: 'clamp(52px,7.5vw,110px)', fontWeight: 300, color: '#F5F0E8', letterSpacing: '-3px', animationDelay: '0.18s' }}>Moments</span>
+      {/* ── Hero ── */}
+      <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 85% 50%, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents:'none' }} />
+        <div style={{ position:'relative', maxWidth:'900px' }}>
+          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
+            <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
+            Gallery
           </div>
-          <div className="wc" style={{ display: 'block' }}>
-            <span className="wi font-display" style={{ fontSize: 'clamp(52px,7.5vw,110px)', fontWeight: 700, fontStyle: 'italic', letterSpacing: '-3px', animationDelay: '0.3s', background: 'linear-gradient(135deg,#E8C96A 0%,#C9A84C 45%,#D4B85E 72%,#a8873a 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>In His Presence.</span>
-          </div>
-        </div>
-
-        <div style={{ width: '48px', height: '1px', background: 'linear-gradient(90deg,#C9A84C,transparent)', animation: 'wi 0.7s 0.44s both' }} />
-      </section>
-
-      {/* ════ MASONRY ════ */}
-      <section style={{ padding: 'clamp(48px,6vw,80px) clamp(24px,4vw,56px)', background: '#040a04', borderBottom: '1px solid rgba(201,168,76,0.05)' }}>
-        <div className="gallery-masonry rv">
-          {photos.map((photo, i) => (
-            <div key={photo.src} className="g-item" onClick={() => setLightbox(i)}>
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                width={600}
-                height={photo.size === 'tall' ? 900 : photo.size === 'wide' ? 400 : 600}
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-              />
-              <div className="g-overlay">
-                <span className="g-label">{photo.alt}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ════ CTA ════ */}
-      <section style={{ padding: 'clamp(100px,13vw,180px) clamp(24px,4vw,56px)', background: '#1A2E1A', position: 'relative', overflow: 'hidden', borderTop: '1px solid rgba(201,168,76,0.06)' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 65% 75% at 50% 50%,rgba(201,168,76,0.09) 0%,transparent 65%)', pointerEvents: 'none' }} />
-        {(['top-left','top-right','bottom-left','bottom-right'] as const).map(pos => {
-          const [v, h] = pos.split('-') as ['top'|'bottom','left'|'right']
-          return <div key={pos} style={{ position: 'absolute', [v]: '36px', [h]: '36px', width: '44px', height: '44px', [`border${v[0].toUpperCase()+v.slice(1)}`]: '1px solid rgba(201,168,76,0.14)', [`border${h[0].toUpperCase()+h.slice(1)}`]: '1px solid rgba(201,168,76,0.14)' }} />
-        })}
-        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
-          <div className="rv" style={{ marginBottom: '24px' }}>
-            <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '9px', letterSpacing: '0.42em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.45)' }}>The Worship Nation</span>
-          </div>
-          <h2 className="font-display rv d1" style={{ fontSize: 'clamp(44px,6.5vw,96px)', fontWeight: 300, lineHeight: 0.88, letterSpacing: '-2.5px', color: '#F5F0E8', marginBottom: '32px' }}>
-            Come &amp; Be Part<br />
-            <span style={{ fontStyle: 'italic', fontWeight: 700, background: 'linear-gradient(135deg,#E8C96A,#C9A84C)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>of the Story.</span>
-          </h2>
-          <div className="rv d2" style={{ height: '1px', background: 'linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent)', marginBottom: '32px' }} />
-          <p className="rv d2" style={{ fontFamily: 'Inter,sans-serif', fontSize: '15px', lineHeight: 1.95, color: 'rgba(245,240,232,0.32)', marginBottom: '52px' }}>
-            Join one of the gatherings and encounter God in an atmosphere consecrated for His presence.
+          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,110px)', fontWeight:400, lineHeight:1, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-0.02em' }}>
+            <span className="wc"><span className="wi">Moments</span></span><br />
+            <span className="wc"><span className="wi" style={{ animationDelay:'0.1s', color:'#C9A84C' }}>Captured.</span></span>
+          </h1>
+          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'rgba(250,247,242,0.6)', maxWidth:'480px' }}>
+            Glimpses of worship, ministry, and the music that moves between heaven and earth.
           </p>
-          <div className="rv d3" style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/events"  className="btn-gold-pill"    style={{ padding: '17px 52px', fontSize: '10px', letterSpacing: '0.16em' }}>See the Events</Link>
-            <Link href="/contact" className="btn-outline-pill" style={{ padding: '17px 52px', fontSize: '10px', letterSpacing: '0.16em' }}>Get In Touch</Link>
+        </div>
+      </section>
+
+      {/* ── Gallery ── */}
+      <section style={{ padding:'clamp(64px,8vw,100px) clamp(24px,4vw,80px)', background:'#FAF7F2' }}>
+        <div style={{ maxWidth:'1300px', margin:'0 auto' }}>
+
+          {/* Filter bar */}
+          <div className="rv" style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginBottom:'clamp(40px,5vw,64px)' }}>
+            {cats.map(c => (
+              <button key={c} className={`filter-btn${filter === c ? ' active' : ''}`} onClick={() => setFilter(c)}>{c}</button>
+            ))}
+          </div>
+
+          {/* Masonry grid */}
+          <div style={{ columns:'clamp(2, 3, 4)', columnCount: typeof window !== 'undefined' && window.innerWidth > 900 ? 3 : typeof window !== 'undefined' && window.innerWidth > 600 ? 2 : 1, gap:'clamp(12px,2vw,20px)' }}>
+            {filtered.map((photo, i) => (
+              <div key={`${photo.src}-${filter}`} className={`photo-item rv-scale`} style={{ transitionDelay:`${i * 0.04}s`, display:'block', marginBottom:'clamp(12px,2vw,20px)', breakInside:'avoid', aspectRatio:'auto' }}
+                onClick={() => setLightbox(i)}
+              >
+                <div style={{ position:'relative', aspectRatio: i % 3 === 0 ? '3/4' : '4/3', overflow:'hidden' }}>
+                  <Image src={photo.src} alt={photo.alt} fill sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 33vw" style={{ objectFit:'cover' }} />
+                  <div className="photo-overlay">
+                    <span className="photo-overlay-text">{photo.cat}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      <Footer />
-
-      {/* ════ LIGHTBOX ════ */}
+      {/* ── Lightbox ── */}
       {lightbox !== null && (
-        <div className="lb-bg" onClick={() => setLightbox(null)}>
-          <div className="lb-wrap" onClick={e => e.stopPropagation()}>
-            <button className="lb-close" onClick={() => setLightbox(null)}>✕</button>
-            <div style={{ position: 'relative', width: '100%', paddingTop: '66.66%', background: '#040a04' }}>
-              <Image
-                src={photos[lightbox].src}
-                alt={photos[lightbox].alt}
-                fill
-                style={{ objectFit: 'contain' }}
-                sizes="(max-width:1100px) 90vw, 1100px"
-              />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px', padding: '0 4px' }}>
-              <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.4)' }}>{photos[lightbox].alt}</span>
-              <span style={{ fontFamily: 'Inter,sans-serif', fontSize: '10px', color: 'rgba(245,240,232,0.2)' }}>{lightbox + 1} / {photos.length}</span>
-            </div>
-            <button className="lb-btn" style={{ left: '-60px' }} onClick={() => setLightbox((lightbox - 1 + photos.length) % photos.length)}>←</button>
-            <button className="lb-btn" style={{ right: '-60px' }} onClick={() => setLightbox((lightbox + 1) % photos.length)}>→</button>
+        <div className="lightbox-bg" onClick={() => setLightbox(null)}>
+          <div style={{ position:'absolute', top:'20px', right:'28px', zIndex:1, cursor:'pointer' }} onClick={() => setLightbox(null)}>
+            <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.2em', color:'rgba(250,247,242,0.6)', textTransform:'uppercase' }}>Close ×</span>
+          </div>
+          <div style={{ position:'absolute', left:'20px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1 }}
+            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i - 1 + filtered.length) % filtered.length : null) }}
+          >
+            <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'24px', color:'rgba(250,247,242,0.5)' }}>‹</span>
+          </div>
+          <div style={{ position:'relative', maxWidth:'90vw', maxHeight:'88vh' }} onClick={e => e.stopPropagation()}>
+            <Image src={filtered[lightbox].src} alt={filtered[lightbox].alt} width={1200} height={900} style={{ maxWidth:'90vw', maxHeight:'88vh', objectFit:'contain' }} />
+          </div>
+          <div style={{ position:'absolute', right:'20px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1 }}
+            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i + 1) % filtered.length : null) }}
+          >
+            <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'24px', color:'rgba(250,247,242,0.5)' }}>›</span>
+          </div>
+          <div style={{ position:'absolute', bottom:'20px', left:'50%', transform:'translateX(-50%)' }}>
+            <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', color:'rgba(250,247,242,0.4)' }}>{lightbox + 1} / {filtered.length}</span>
           </div>
         </div>
       )}
+
+      <Footer />
     </main>
   )
 }
