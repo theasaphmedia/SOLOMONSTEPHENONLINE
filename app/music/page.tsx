@@ -416,4 +416,19 @@ export default function MusicPage() {
                   <a href={CHANNEL} target="_blank" rel="noopener noreferrer"
                     style={{ fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.2em', textTransform:'uppercase', padding:'15px 44px', border:'1px solid rgba(201,168,76,.3)', color:'#C9A84C', textDecoration:'none', transition:'all .35s', display:'inline-flex', alignItems:'center', gap:'12px' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.letterSpacing='.26em' }}
-                    onMouseLeave={e => { (e.currentTarget a
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.3)'; (e.currentTarget as HTMLElement).style.letterSpacing='.2em' }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5,3 19,12 5,21"/></svg>
+                    Watch More on YouTube
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      )}
+
+      <Footer />
+    </main>
+  )
+}

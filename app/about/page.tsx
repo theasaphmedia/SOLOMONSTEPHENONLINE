@@ -333,4 +333,12 @@ export default function AboutPage() {
           <Link href="/contact" className="rv d3"
             style={{ display:'inline-block', fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.2em', textTransform:'uppercase', padding:'18px 48px', border:'1px solid rgba(201,168,76,.45)', color:'#C9A84C', textDecoration:'none', transition:'all .35s' }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backg
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.45)' }}
+          >Get In Touch →</Link>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}
