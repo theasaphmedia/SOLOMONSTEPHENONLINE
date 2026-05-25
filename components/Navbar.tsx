@@ -68,6 +68,14 @@ export default function Navbar() {
 
   return (
     <>
+      <style>{`
+        .nav-desktop { display:flex; align-items:center; gap:clamp(20px,2.5vw,38px); }
+        .nav-cta { display:inline-block; }
+        .hamburger { display:flex; }
+        @media(min-width:769px) { .hamburger { display:none !important; } }
+        @media(max-width:768px) { .nav-desktop { display:none !important; } .nav-cta { display:none !important; } }
+        @media(pointer:coarse) { .cursor-dot, .cursor-ring { display:none !important; } }
+      `}</style>
       {/* ── Main bar ── */}
       <header style={{
         position:       'fixed',
@@ -102,7 +110,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(20px,2.5vw,38px)' }}>
+        <nav className="nav-desktop">
           {navLinks.filter(l => l.href !== '/').slice(0, 6).map(link => (
             <Link key={link.href} href={link.href} style={{
               fontFamily:    'DM Sans, sans-serif',
@@ -129,31 +137,29 @@ export default function Navbar() {
               )}
             </Link>
           ))}
-          <Link href="/contact" style={{
-            fontFamily:    'DM Sans, sans-serif',
+          <Link href="/contact" className="nav-cta" style={{
+            fontFamily:    "'DM Sans', sans-serif",
             fontSize:      '10px',
             fontWeight:    500,
-            letterSpacing: '0.14em',
+            letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            padding:       '11px 26px',
+            padding:       '11px 28px',
             background:    '#1A2E1A',
             color:         '#FAF7F2',
-            cursor:        'none',
-            transition:    'background 0.3s, transform 0.3s',
-            display:       'inline-block',
+            transition:    'background 0.3s',
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#2A4A2A'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1A2E1A'; (e.currentTarget as HTMLElement).style.transform = 'none' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#2A4A2A' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1A2E1A' }}
           >
             Get In Touch
           </Link>
         </nav>
 
-        {/* Hamburger */}
-        <button onClick={() => setOpen(!open)} style={{
-          background: 'none', border: 'none', cursor: 'none',
+        {/* Hamburger — mobile only */}
+        <button onClick={() => setOpen(!open)} className="hamburger" style={{
+          background: 'none', border: 'none', cursor: 'pointer',
           padding: '8px', zIndex: 1010, position: 'relative',
-          display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
+          flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
         }} aria-label={open ? 'Close menu' : 'Open menu'}>
           <span style={{
             display: 'block', height: '1.5px', width: '28px',
@@ -181,107 +187,82 @@ export default function Navbar() {
       {/* ── Full-screen overlay menu ── */}
       <div style={{
         position: 'fixed', inset: 0, zIndex: 999,
-        background: '#1A2E1A',
-        clipPath: open ? 'ellipse(150% 150% at 95% 4%)' : 'ellipse(0% 0% at 95% 4%)',
-        transition: 'clip-path 0.75s cubic-bezier(0.16,1,0.3,1)',
+        background: '#0D1B0D',
+        opacity: open ? 1 : 0,
+        pointerEvents: open ? 'all' : 'none',
+        transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)',
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: 'clamp(80px,10vw,120px) clamp(24px,6vw,80px)',
+        padding: 'clamp(80px,10vw,120px) clamp(28px,6vw,80px)',
         overflow: 'hidden',
       }}>
+        {/* Ambient gold glow */}
         <div style={{
           position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse 70% 50% at 15% 85%, rgba(201,168,76,0.07) 0%, transparent 60%)',
+          background: 'radial-gradient(ellipse 60% 55% at 8% 90%, rgba(201,168,76,0.09) 0%, transparent 65%)',
           pointerEvents: 'none',
         }} />
+        {/* Thin gold vertical accent */}
+        <div style={{ position:'absolute', top:'15%', bottom:'15%', left:'clamp(28px,6vw,80px)', width:'1px', background:'rgba(201,168,76,0.12)', pointerEvents:'none' }} />
 
-        <nav style={{ position: 'relative', zIndex: 1 }}>
+        {/* Menu nav links */}
+        <nav style={{ position: 'relative', zIndex: 1, paddingLeft: 'clamp(20px,3vw,48px)' }}>
           {navLinks.map((link, i) => (
             <div key={link.href} style={{
-              borderTop: '1px solid rgba(201,168,76,0.1)',
+              borderTop: '1px solid rgba(201,168,76,0.08)',
               opacity:   open ? 1 : 0,
-              transform: open ? 'translateY(0)' : 'translateY(24px)',
+              transform: open ? 'translateY(0)' : 'translateY(20px)',
               transitionProperty: 'opacity, transform',
-              transitionDuration: '0.55s',
+              transitionDuration: '0.6s',
               transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
-              transitionDelay: `${0.08 + i * 0.055}s`,
+              transitionDelay: `${0.1 + i * 0.05}s`,
             }}>
               <Link href={link.href} style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: 'clamp(12px,1.8vw,20px) 0',
-                fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(26px,4vw,50px)',
-                fontWeight: 400,
-                letterSpacing: '-0.01em',
+                display: 'flex', alignItems: 'baseline', gap: '20px',
+                padding: 'clamp(10px,1.6vw,18px) 0',
+                textDecoration: 'none',
                 color: pathname === link.href ? '#C9A84C' : '#FAF7F2',
-                lineHeight: 1.1,
-                transition: 'color 0.3s, padding-left 0.35s cubic-bezier(0.16,1,0.3,1)',
+                transition: 'color 0.3s',
               }}
-                onMouseEnter={e => {
-                  if (pathname !== link.href) {
-                    const el = e.currentTarget as HTMLElement
-                    el.style.color = '#C9A84C'
-                    el.style.paddingLeft = '16px'
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (pathname !== link.href) {
-                    const el = e.currentTarget as HTMLElement
-                    el.style.color = '#FAF7F2'
-                    el.style.paddingLeft = '0'
-                  }
-                }}
+                onMouseEnter={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
+                onMouseLeave={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#FAF7F2' }}
               >
-                <span>{link.label}</span>
-                <span style={{
-                  fontFamily: 'DM Sans, sans-serif', fontSize: '11px',
-                  letterSpacing: '0.2em', color: 'rgba(201,168,76,0.35)',
-                }}>0{i + 1}</span>
+                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.22em', color:'rgba(201,168,76,0.4)', minWidth:'28px' }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(28px,4.5vw,56px)', fontWeight:400, letterSpacing:'-0.01em', lineHeight:1 }}>
+                  {link.label}
+                </span>
               </Link>
             </div>
           ))}
 
-          {/* Social links */}
+          {/* Bottom bar — social + contact */}
           <div style={{
-            borderTop: '1px solid rgba(201,168,76,0.1)',
+            borderTop: '1px solid rgba(201,168,76,0.12)',
+            marginTop: 'clamp(16px,2.5vw,32px)',
             paddingTop: 'clamp(16px,2.5vw,28px)',
-            marginTop: '4px',
-            opacity:   open ? 1 : 0,
-            transform: open ? 'translateY(0)' : 'translateY(24px)',
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px',
+            opacity: open ? 1 : 0,
+            transform: open ? 'translateY(0)' : 'translateY(16px)',
             transitionProperty: 'opacity, transform',
-            transitionDuration: '0.55s',
-            transitionDelay: `${0.08 + navLinks.length * 0.055 + 0.04}s`,
-            display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap',
+            transitionDuration: '0.6s',
+            transitionDelay: `${0.1 + navLinks.length * 0.05 + 0.06}s`,
           }}>
-            <span style={{
-              fontFamily: 'DM Sans, sans-serif', fontSize: '10px',
-              letterSpacing: '0.28em', textTransform: 'uppercase',
-              color: 'rgba(201,168,76,0.35)',
-            }}>Follow —</span>
-            {[
-              { label: 'Instagram', url: 'https://www.instagram.com/thesolomonsteph' },
-              { label: 'YouTube',   url: 'https://www.youtube.com/@thesolomonsteph' },
-              { label: 'Facebook',  url: 'https://www.facebook.com/thesolomonsteph' },
-              { label: 'TikTok',    url: 'https://www.tiktok.com/@thesolomonsteph' },
-            ].map(s => (
-              <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" style={{
-                fontFamily: 'DM Sans, sans-serif', fontSize: '11px',
-                letterSpacing: '0.06em', textTransform: 'uppercase',
-                color: 'rgba(250,247,242,0.4)', transition: 'color 0.3s',
-              }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#C9A84C'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(250,247,242,0.4)'}
-              >{s.label}</a>
-            ))}
-          </div>
-        </nav>
-      </div>
-
-      <style>{`
-        @keyframes lineGrow {
-          from { transform: scaleX(0); }
-          to   { transform: scaleX(1); }
-        }
-      `}</style>
-    </>
-  )
-}
+            <div style={{ display:'flex', gap:'clamp(16px,2.5vw,32px)', flexWrap:'wrap' }}>
+              {[
+                { label: 'Instagram', url: 'https://www.instagram.com/thesolomonsteph' },
+                { label: 'YouTube',   url: 'https://www.youtube.com/@thesolomonsteph' },
+                { label: 'Facebook',  url: 'https://www.facebook.com/thesolomonsteph' },
+                { label: 'TikTok',    url: 'https://www.tiktok.com/@thesolomonsteph' },
+              ].map(s => (
+                <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" style={{
+                  fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.18em',
+                  textTransform:'uppercase', color:'rgba(250,247,242,0.35)', textDecoration:'none', transition:'color 0.3s',
+                }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#C9A84C'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(250,247,242,0.35)'}
+                >{s.label}</a>
+              ))}
+            </div>
+            <Link href="/contact" style={{
+              fontFamily:"'DM S
