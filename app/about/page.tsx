@@ -73,6 +73,8 @@ export default function AboutPage() {
         .ministry-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:#C9A84C;transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}
         .ministry-card:hover{background:#121f12}
         .ministry-card:hover::before{transform:scaleX(1)}
+        .about-hero{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+        @media(max-width:768px){.about-hero{grid-template-columns:1fr}.about-hero-photo{min-height:65vw!important}}
         @media(max-width:900px){
           .bio-split{grid-template-columns:1fr !important}
           .author-split{grid-template-columns:1fr !important}
@@ -331,12 +333,4 @@ export default function AboutPage() {
           <Link href="/contact" className="rv d3"
             style={{ display:'inline-block', fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.2em', textTransform:'uppercase', padding:'18px 48px', border:'1px solid rgba(201,168,76,.45)', color:'#C9A84C', textDecoration:'none', transition:'all .35s' }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.45)' }}
-          >Get In Touch</Link>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backg

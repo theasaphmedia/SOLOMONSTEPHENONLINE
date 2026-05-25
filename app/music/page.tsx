@@ -47,6 +47,7 @@ export default function MusicPage() {
   const tickRef      = useRef<ReturnType<typeof setInterval> | null>(null)
   const repeatRef    = useRef(false)
   const loadedRef    = useRef(0)
+  const carouselRef  = useRef<HTMLDivElement>(null)
 
   const setRepeat = (v: boolean) => { repeatRef.current = v; _setRepeat(v) }
 
@@ -205,6 +206,14 @@ export default function MusicPage() {
         ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(201,168,76,.2);border-radius:2px}
         .stream-pill{display:inline-flex;align-items:center;padding:7px 16px;border:1px solid rgba(250,247,242,.1);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.45);text-decoration:none;transition:all .3s;border-radius:1px}
         .stream-pill:hover{border-color:rgba(201,168,76,.4);color:#C9A84C}
+        .carousel-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:clamp(12px,1.5vw,22px);scrollbar-width:none;padding-bottom:4px}
+        .carousel-track::-webkit-scrollbar{display:none}
+        .carousel-card{scroll-snap-align:start;flex:0 0 calc(33.333% - 16px);min-width:0}
+        @media(max-width:900px){.carousel-card{flex:0 0 calc(50% - 12px)}}
+        @media(max-width:600px){.carousel-card{flex:0 0 82%}}
+        .carousel-btn{background:rgba(250,247,242,.06);border:1px solid rgba(201,168,76,.2);color:rgba(250,247,242,.6);cursor:pointer;padding:12px 20px;font-size:18px;transition:all .3s;line-height:1;font-family:'DM Sans',sans-serif}
+        .carousel-btn:hover{border-color:#C9A84C;color:#C9A84C;background:rgba(201,168,76,.08)}
+        .carousel-btn:active{transform:scale(.94)}
       `}</style>
 
       {/* ══ HERO ══ */}
@@ -364,66 +373,47 @@ export default function MusicPage() {
                 <div className="eyebrow rv" style={{ color:'rgba(201,168,76,.65)', marginBottom:'16px' }}>Archive</div>
                 <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(36px,5.5vw,64px)', fontWeight:400, color:'#FAF7F2', lineHeight:1, margin:0 }}>Live Services</h2>
               </div>
-              <a href={CHANNEL} target="_blank" rel="noopener noreferrer" className="rv d2"
-                style={{ fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.16em', textTransform:'uppercase', padding:'12px 28px', border:'1px solid rgba(201,168,76,.3)', color:'#C9A84C', textDecoration:'none', transition:'all .3s' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.07)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.3)' }}
-              >View Channel →</a>
+              {/* Swipe arrows */}
+              <div className="rv d2" style={{ display:'flex', gap:'10px' }}>
+                <button className="carousel-btn" onClick={() => carouselRef.current?.scrollBy({ left: -(carouselRef.current.clientWidth * 0.9), behavior:'smooth' })} aria-label="Previous">←</button>
+                <button className="carousel-btn" onClick={() => carouselRef.current?.scrollBy({ left: carouselRef.current.clientWidth * 0.9, behavior:'smooth' })} aria-label="Next">→</button>
+              </div>
             </div>
 
             {liveVideos.length === 0 ? (
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px,1fr))', gap:'24px' }}>
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} style={{ aspectRatio:'16/9', background:'rgba(255,255,255,.04)', borderRadius:'2px', animation:`pulse-glow 1.8s ease-in-out ${i * 0.15}s infinite` }} />
+              <div style={{ display:'flex', gap:'20px', overflow:'hidden' }}>
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} style={{ flex:'0 0 calc(33.333% - 14px)', aspectRatio:'16/9', background:'rgba(255,255,255,.04)', borderRadius:'2px', animation:`pulse-glow 1.8s ease-in-out ${i * 0.15}s infinite` }} />
                 ))}
               </div>
             ) : (
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px,1fr))', gap:'clamp(16px,2vw,28px)' }}>
-                {liveVideos.slice(0, 9).map((v: any, i: number) => (
-                  <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer"
-                    className="live-card rv-scale" style={{ transitionDelay:`${i * 0.05}s` }}
-                  >
-                    <div style={{ position:'relative', aspectRatio:'16/9', overflow:'hidden', borderRadius:'2px', marginBottom:'14px', background:'#0D1B0D' }}>
-                      <Image src={v.thumbnail} alt={v.title} fill style={{ objectFit:'cover', opacity:.82 }} unoptimized />
-                      <div style={{ position:'absolute', top:'10px', left:'10px', background:'rgba(201,168,76,.92)', padding:'3px 9px', fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.16em', textTransform:'uppercase', color:'#0D1B0D', fontWeight:700 }}>
-                        {v.category === 'Other' ? 'Live' : v.category}
-                      </div>
-                      <div className="play-overlay">
-                        <div className="play-circle">
-                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="6,3 15,9 6,15" fill="#0D1B0D"/></svg>
+              <>
+                <div ref={carouselRef} className="carousel-track">
+                  {liveVideos.map((v: any) => (
+                    <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noopener noreferrer"
+                      className="live-card carousel-card"
+                    >
+                      <div style={{ position:'relative', aspectRatio:'16/9', overflow:'hidden', borderRadius:'2px', marginBottom:'14px', background:'#0D1B0D' }}>
+                        <Image src={v.thumbnail} alt={v.title} fill style={{ objectFit:'cover', opacity:.82 }} unoptimized />
+                        <div style={{ position:'absolute', top:'10px', left:'10px', background:'rgba(201,168,76,.92)', padding:'3px 9px', fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.16em', textTransform:'uppercase', color:'#0D1B0D', fontWeight:700 }}>
+                          {v.category === 'Other' ? 'Live' : v.category}
+                        </div>
+                        <div className="play-overlay">
+                          <div className="play-circle">
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="6,3 15,9 6,15" fill="#0D1B0D"/></svg>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'18px', fontWeight:400, color:'#FAF7F2', marginBottom:'6px', lineHeight:1.3 }}>
-                      {v.title.length > 52 ? v.title.slice(0, 52) + '…' : v.title}
-                    </div>
-                    <div style={{ fontFamily:'DM Sans', fontSize:'10px', color:'rgba(250,247,242,.33)', letterSpacing:'.06em' }}>{v.date}</div>
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* ══ ALSO KNOWN FOR ══ */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(64px,8vw,100px) clamp(24px,4vw,80px)' }}>
-        <div style={{ maxWidth:'1100px', margin:'0 auto' }}>
-          <div className="eyebrow rv" style={{ color:'rgba(201,168,76,.65)', marginBottom:'clamp(32px,4vw,56px)' }}>Also Known For</div>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:'clamp(12px,2vw,20px)', alignItems:'center' }}>
-            {['Rivers of Joy','Alaabo Mi','JESU MY LOVE'].map((t, i) => (
-              <span key={t} className="rv" style={{ transitionDelay:`${i*.1}s`, fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(24px,3.5vw,42px)', fontWeight:300, color: i === 0 ? '#FAF7F2' : 'rgba(250,247,242,.38)', fontStyle:'italic', paddingRight:'clamp(16px,2.5vw,32px)', borderRight: i < 2 ? '1px solid rgba(201,168,76,.18)' : 'none' }}>
-                {t}
-              </span>
-            ))}
-          </div>
-          <p className="rv d1" style={{ fontFamily:'DM Sans', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.9, color:'rgba(250,247,242,.45)', maxWidth:'600px', marginTop:'clamp(32px,4vw,56px)' }}>
-            A catalogue spanning more than a decade of worship leadership — each song a stone of remembrance marking encounters with the God who shows up.
-          </p>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+                      <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'18px', fontWeight:400, color:'#FAF7F2', marginBottom:'6px', lineHeight:1.3 }}>
+                        {v.title.length > 52 ? v.title.slice(0, 52) + '…' : v.title}
+                      </div>
+                      <div style={{ fontFamily:'DM Sans', fontSize:'10px', color:'rgba(250,247,242,.33)', letterSpacing:'.06em' }}>{v.date}</div>
+                    </a>
+                  ))}
+                </div>
+                {/* Watch More */}
+                <div style={{ display:'flex', justifyContent:'center', marginTop:'clamp(40px,5vw,60px)' }}>
+                  <a href={CHANNEL} target="_blank" rel="noopener noreferrer"
+                    style={{ fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.2em', textTransform:'uppercase', padding:'15px 44px', border:'1px solid rgba(201,168,76,.3)', color:'#C9A84C', textDecoration:'none', transition:'all .35s', display:'inline-flex', alignItems:'center', gap:'12px' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.letterSpacing='.26em' }}
+                    onMouseLeave={e => { (e.currentTarget a
