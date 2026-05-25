@@ -27,18 +27,18 @@ const pillars = [
 ]
 
 const tracks = [
-  { id: 'TnEp0kiJBfI', title: 'CROSSOVER' },
+  { id: 'c8KAM_l151s', title: 'CROSSOVER' },
   { id: 'cB0LxEjVaIs', title: 'The Mighty God' },
-  { id: 'lDIjB11ueYM', title: 'AIKU' },
-  { id: 'aU0TFLxplck', title: 'Awesome God' },
+  { id: 'EPA7cFLHg2c', title: 'AIKU' },
+  { id: '6TYabI5QCO4', title: 'Awesome God' },
   { id: 'q1-eDXBpMkY', title: 'Alagbada Ina' },
 ]
 
 const books = [
-  { title: 'The Cost of Ignorance',   img: '/images/book-cost-of-ignorance.png',       href: 'https://selar.com/v8561k6070' },
-  { title: 'Sons Not Slaves (March)', img: '/images/book-sons-not-slaves-march.png',    href: 'https://selar.com/41x076wbk1' },
-  { title: 'Sons Not Slaves (April)', img: '/images/book-sons-not-slaves-april.png',    href: 'https://selar.com/8z43781b2n' },
-  { title: 'Go In This Thy Might',    img: '/images/solomon-cream-suit-books.png',      href: 'https://selar.com/showlove/solomonstephen' },
+  { title: 'The Cost of Ignorance',   img: '/images/book-cost-of-ignorance.png',    href: 'https://selar.com/v8561k6070',    comingSoon: false },
+  { title: 'Sons Not Slaves (March)', img: '/images/book-sons-not-slaves-march.png', href: 'https://selar.com/41x076wbk1',    comingSoon: false },
+  { title: 'Sons Not Slaves (April)', img: '/images/book-sons-not-slaves-april.png', href: 'https://selar.com/8z43781b2n',    comingSoon: false },
+  { title: 'Go In This Thy Might',    img: '/images/solomon-cream-suit-books.png',   href: '',                                comingSoon: true  },
 ]
 
 function CountUp({ target, suffix }: { target: number; suffix: string }) {
@@ -129,7 +129,7 @@ export default function HomePage() {
         {heroSlides.map((s, i) => (
           <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0 }}>
             <Image src={s.src} alt="Solomon Stephen" fill priority={i === 0}
-              style={{ objectFit:'cover', objectPosition: s.pos, transform: i === slide ? 'scale(1.04)' : 'scale(1)', transition:'opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 8s linear' }}
+              style={{ objectFit:'cover', objectPosition: s.pos, transform: i === slide ? 'scale(1.02)' : 'scale(1)', transition:'opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 10s linear' }}
             />
           </div>
         ))}
@@ -280,40 +280,30 @@ export default function HomePage() {
             >All Music →</Link>
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px,1fr))', gap:'clamp(20px,3vw,32px)', alignItems:'start' }}>
-            {/* Featured embed */}
-            <div className="rv-left" style={{ gridColumn:'span 1' }}>
-              <div style={{ borderRadius:'2px', overflow:'hidden', aspectRatio:'16/9', marginBottom:'16px' }}>
-                <iframe
-                  width="100%" height="100%"
-                  src="https://www.youtube.com/embed/TnEp0kiJBfI?rel=0&modestbranding=1"
-                  title="CROSSOVER — Solomon Stephen"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen style={{ border:'none', display:'block' }}
+          {/* Track grid — 3 columns on desktop */}
+          <div className="rv" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:'clamp(10px,1.5vw,16px)' }}>
+            {tracks.map((t, i) => (
+              <a key={t.id} href={`https://www.youtube.com/watch?v=${t.id}`} target="_blank" rel="noopener noreferrer"
+                className="rv-scale"
+                style={{ textDecoration:'none', transitionDelay:`${i * 0.06}s`, display:'block', borderRadius:'2px', overflow:'hidden', aspectRatio:'16/9', position:'relative' }}
+              >
+                <Image src={`https://img.youtube.com/vi/${t.id}/hqdefault.jpg`} alt={t.title} fill unoptimized
+                  style={{ objectFit:'cover', transition:'transform 0.7s cubic-bezier(0.16,1,0.3,1)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.06)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }}
                 />
-              </div>
-              <h3 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'28px', fontWeight:400, color:'#0D1B0D', marginBottom:'4px' }}>CROSSOVER</h3>
-              <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'12px', color:'#C9A84C', letterSpacing:'0.1em' }}>Psalm 23 · 2024</div>
-            </div>
-
-            {/* Track thumbnails */}
-            <div className="rv-right" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(8px,1.5vw,14px)' }}>
-              {tracks.map((t, i) => (
-                <a key={t.id} href={`https://www.youtube.com/watch?v=${t.id}`} target="_blank" rel="noopener noreferrer"
-                  className="rv-scale"
-                  style={{ textDecoration:'none', transitionDelay:`${i * 0.06}s`, display:'block', borderRadius:'2px', overflow:'hidden', aspectRatio:'16/9', position:'relative' }}
+                <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.85) 0%, transparent 55%)' }} />
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'clamp(8px,1.2vw,14px)' }}>
+                  <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'12px', fontWeight:500, color:'#FAF7F2', margin:0, letterSpacing:'0.04em' }}>{t.title}</p>
+                </div>
+                <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(201,168,76,0.85)', display:'flex', alignItems:'center', justifyContent:'center', opacity:0, transition:'opacity 0.3s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='0' }}
                 >
-                  <Image src={`https://img.youtube.com/vi/${t.id}/mqdefault.jpg`} alt={t.title} fill style={{ objectFit:'cover', transition:'transform 0.7s cubic-bezier(0.16,1,0.3,1)' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.06)' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }}
-                  />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.8) 0%, transparent 60%)' }} />
-                  <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'10px' }}>
-                    <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', color:'#FAF7F2', margin:0 }}>{t.title}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
+                  <svg width="14" height="14" viewBox="0 0 14 14"><polygon points="4,2 12,7 4,12" fill="#1A2E1A"/></svg>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -371,21 +361,39 @@ export default function HomePage() {
 
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px,1fr))', gap:'clamp(16px,2.5vw,28px)' }}>
             {books.map((b, i) => (
-              <a key={b.title} href={b.href} target="_blank" rel="noopener noreferrer"
-                className="book-card rv-scale"
-                style={{ textDecoration:'none', transitionDelay:`${i * 0.08}s`, display:'block', background:'#fff' }}
-                onMouseEnter={() => setHoveredBook(i)} onMouseLeave={() => setHoveredBook(null)}
-              >
-                <div style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden' }}>
-                  <Image src={b.img} alt={b.title} fill style={{ objectFit:'cover', objectPosition:'top' }} />
-                  <div style={{ position:'absolute', inset:0, background:'rgba(13,27,13,0.4)', opacity: hoveredBook === i ? 1 : 0, transition:'opacity 0.4s', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                    <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', color:'#C9A84C' }}>Read →</span>
+              b.comingSoon ? (
+                <div key={b.title}
+                  className="book-card rv-scale"
+                  style={{ transitionDelay:`${i * 0.08}s`, display:'block', background:'#1A2E1A', cursor:'default' }}
+                >
+                  <div style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'32px 24px', textAlign:'center' }}>
+                    <Image src={b.img} alt={b.title} fill style={{ objectFit:'cover', objectPosition:'top', opacity:0.12 }} />
+                    <div style={{ position:'relative', zIndex:1 }}>
+                      <div style={{ width:40, height:1, background:'rgba(201,168,76,0.6)', margin:'0 auto 20px' }} />
+                      <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'10px', letterSpacing:'0.32em', textTransform:'uppercase', color:'rgba(201,168,76,0.7)', marginBottom:'16px' }}>Coming Soon</div>
+                      <div style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(20px,2.5vw,28px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.3, marginBottom:'20px' }}>{b.title}</div>
+                      <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'12px', lineHeight:1.75, color:'rgba(250,247,242,0.45)' }}>A companion to <em style={{ color:'rgba(250,247,242,0.65)' }}>Go In This Thy Might</em> — arriving soon.</p>
+                      <div style={{ width:40, height:1, background:'rgba(201,168,76,0.3)', margin:'20px auto 0' }} />
+                    </div>
                   </div>
                 </div>
-                <div style={{ padding:'clamp(14px,2vw,20px)' }}>
-                  <p style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(16px,2vw,22px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.3 }}>{b.title}</p>
-                </div>
-              </a>
+              ) : (
+                <a key={b.title} href={b.href} target="_blank" rel="noopener noreferrer"
+                  className="book-card rv-scale"
+                  style={{ textDecoration:'none', transitionDelay:`${i * 0.08}s`, display:'block', background:'#fff' }}
+                  onMouseEnter={() => setHoveredBook(i)} onMouseLeave={() => setHoveredBook(null)}
+                >
+                  <div style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden' }}>
+                    <Image src={b.img} alt={b.title} fill style={{ objectFit:'cover', objectPosition:'top' }} />
+                    <div style={{ position:'absolute', inset:0, background:'rgba(13,27,13,0.4)', opacity: hoveredBook === i ? 1 : 0, transition:'opacity 0.4s', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', color:'#C9A84C' }}>Read →</span>
+                    </div>
+                  </div>
+                  <div style={{ padding:'clamp(14px,2vw,20px)' }}>
+                    <p style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(16px,2vw,22px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.3 }}>{b.title}</p>
+                  </div>
+                </a>
+              )
             ))}
           </div>
         </div>

@@ -6,10 +6,10 @@ import Link from 'next/link'
 import Footer from '@/components/Footer'
 
 const tracks = [
-  { id: 'TnEp0kiJBfI', title: 'CROSSOVER',      year: '2024', scripture: 'Psalm 23',          desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
+  { id: 'c8KAM_l151s', title: 'CROSSOVER',      year: '2024', scripture: 'Psalm 23',          desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
   { id: 'cB0LxEjVaIs', title: 'The Mighty God',  year: '2023', scripture: 'Isaiah 9:6',         desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
-  { id: 'lDIjB11ueYM', title: 'AIKU',            year: '2023', scripture: 'Revelation 1:17–18', desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
-  { id: 'aU0TFLxplck', title: 'Awesome God',     year: '2022', scripture: 'Psalm 48:1',         desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
+  { id: 'EPA7cFLHg2c', title: 'AIKU',            year: '2023', scripture: 'Revelation 1:17–18', desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
+  { id: '6TYabI5QCO4', title: 'Awesome God',     year: '2022', scripture: 'Psalm 48:1',         desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
   { id: 'q1-eDXBpMkY', title: 'Alagbada Ina',    year: '2022', scripture: 'Exodus 3:2',         desc: 'The God clothed in fire — a Yoruba-infused anthem from the burning bush encounter.' },
   { id: 'Ao_ZC3oHi9c', title: 'There Is No One', year: '2021', scripture: 'Isaiah 46:9',        desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.' },
 ]

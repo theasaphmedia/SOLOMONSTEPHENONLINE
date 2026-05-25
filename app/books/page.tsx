@@ -42,13 +42,14 @@ const books = [
   {
     num: '04',
     title: 'Go In This Thy Might',
-    subtitle: 'A Devotional',
-    year: '2022',
-    desc: "God's presence forms and equips — but dependence must never transfer from the Giver to what the Giver gave. This devotional explores the dangerous gift of Gideon's call: to carry the power of encounter into the field without making the encounter itself an idol.",
+    subtitle: 'Coming Soon',
+    year: '',
+    desc: "God's presence forms and equips — but dependence must never transfer from the Giver to what the Giver gave. A devotional on carrying the power of encounter into the field without making the encounter itself an idol.",
     theme: 'Calling · Dependence · Courage',
-    href: 'https://selar.com/showlove/solomonstephen',
+    href: '',
     img: '/images/solomon-cream-suit-books.png',
     accent: '#C9A84C',
+    comingSoon: true,
   },
 ]
 
