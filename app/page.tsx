@@ -6,10 +6,10 @@ import Link from 'next/link'
 import Footer from '@/components/Footer'
 
 const heroSlides = [
-  { src: '/images/solomon-green-suit-hero.png',         pos: '60% 30%' },
-  { src: '/images/gallery-solomon-worship-intense.jpg', pos: '50% 35%' },
-  { src: '/images/gallery-solomon-standing-deep.jpg',   pos: '50% 30%' },
-  { src: '/images/gallery-solomon-worship-raise.jpg',   pos: '50% 25%' },
+  { src: '/images/solomon-green-suit-hero.png',         pos: '65% 12%' },
+  { src: '/images/gallery-solomon-worship-intense.jpg', pos: '58% 12%' },
+  { src: '/images/gallery-solomon-standing-deep.jpg',   pos: '58% 10%' },
+  { src: '/images/gallery-solomon-worship-raise.jpg',   pos: '65% 12%' },
 ]
 
 const stats = [
@@ -120,71 +120,70 @@ export default function HomePage() {
         .gathering-row { border-top:1px solid rgba(201,168,76,0.15); padding:clamp(20px,2.5vw,32px) 0; display:grid; grid-template-columns:clamp(60px,8vw,100px) 1fr auto; align-items:center; gap:clamp(16px,3vw,48px); }
         .gathering-row:last-child { border-bottom:1px solid rgba(201,168,76,0.15); }
         .hide-mobile { display:flex; }
-        @media(max-width:768px) { .hide-mobile { display:none; } .pillar-grid { grid-template-columns:1fr 1fr !important; } }
         .cta-outline { display:inline-block;font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;padding:16px 48px;border:1px solid rgba(201,168,76,0.45);color:#C9A84C;text-decoration:none;transition:background 0.3s,border-color 0.3s; }
         .cta-outline:hover { background:rgba(201,168,76,0.08); border-color:#C9A84C; }
+        .hero-h1 { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(72px,13vw,148px); line-height:0.9; color:#FAF7F2; margin:0 0 clamp(24px,3vw,40px); letter-spacing:-0.02em; }
+        .hero-sub { font-family:'DM Sans',sans-serif; font-size:clamp(13px,1.4vw,17px); line-height:1.75; color:rgba(250,247,242,0.6); max-width:460px; margin-bottom:clamp(32px,4vw,52px); }
+        .hero-eyebrow { font-family:'DM Sans',sans-serif; font-size:10px; letter-spacing:0.28em; text-transform:uppercase; color:rgba(201,168,76,0.75); display:flex; align-items:center; gap:10px; margin-bottom:clamp(18px,2.2vw,30px); }
+        .slide-dots { position:absolute; bottom:32px; right:28px; z-index:3; display:flex; flex-direction:column; gap:8px; }
+        @media(max-width:768px) {
+          .hide-mobile { display:none; }
+          .pillar-grid { grid-template-columns:1fr 1fr !important; }
+          .hero-h1 { font-size:clamp(64px,18vw,100px) !important; }
+          .hero-sub { display:none; }
+          .slide-dots { bottom:20px; right:16px; }
+        }
       `}</style>
 
       {/* ══════════════ HERO ══════════════ */}
-      <section style={{ height: '100vh', position: 'relative', overflow: 'hidden', background: '#1A2E1A' }}>
-        {/* Right-side portrait images — full body visible */}
+      <section style={{ height:'100vh', minHeight:'600px', position:'relative', overflow:'hidden', background:'#1A2E1A' }}>
+        {/* Full-bleed slides */}
         {heroSlides.map((s, i) => (
-          <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0, position:'absolute', right:0, top:0, width:'62%', height:'100%' }}>
+          <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0, position:'absolute', inset:0 }}>
             <Image src={s.src} alt="Solomon Stephen" fill priority={i === 0}
-              style={{ objectFit:'contain', objectPosition:'center bottom' }}
+              style={{ objectFit:'cover', objectPosition: s.pos }}
             />
           </div>
         ))}
 
-        {/* Overlays — strong left fade to protect text; subtle bottom */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, #1A2E1A 28%, rgba(26,46,26,0.85) 50%, rgba(26,46,26,0.2) 75%, transparent 100%)', zIndex:1 }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.5) 0%, transparent 35%)', zIndex:1 }} />
+        {/* Gradient — diagonal, strong on left/bottom for text, opens on right/top for image drama */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(115deg, rgba(13,27,13,0.93) 0%, rgba(13,27,13,0.75) 38%, rgba(13,27,13,0.25) 65%, transparent 100%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.75) 0%, rgba(13,27,13,0.2) 30%, transparent 60%)', zIndex:1 }} />
 
-        {/* Content */}
-        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(56px,7vw,96px)' }}>
-          <div className="eyebrow-light" style={{ marginBottom:'clamp(20px,2.5vw,36px)' }}>
-            <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
+        {/* Content — bottom-left anchored */}
+        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,5vw,96px) clamp(60px,7vw,100px)' }}>
+          <div className="hero-eyebrow">
+            <span style={{ width:24, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block', flexShrink:0 }} />
             Gospel Minister · Worship Leader · Author
           </div>
 
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontWeight:400, fontSize:'clamp(56px,10vw,120px)', lineHeight:0.95, color:'#FAF7F2', margin:'0 0 clamp(28px,3.5vw,48px)', letterSpacing:'-0.02em', maxWidth:'800px' }}>
+          <h1 className="hero-h1">
             <span className="wc"><span className="wi">Solomon</span></span><br />
             <span className="wc"><span className="wi" style={{ animationDelay:'0.1s', color:'#C9A84C' }}>Stephen.</span></span>
           </h1>
 
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'rgba(250,247,242,0.65)', maxWidth:'480px', marginBottom:'clamp(32px,4vw,56px)' }}>
+          <p className="hero-sub">
             Founder of The Worship Nation — Lagos, Nigeria.<br />
             Building encounters with God through worship, music, and the written Word.
           </p>
 
-          <div style={{ display:'flex', gap:'16px', flexWrap:'wrap' }}>
-            <Link href="/about" style={{
-              fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase',
-              padding:'14px 32px', background:'#C9A84C', color:'#0D1B0D', textDecoration:'none', fontWeight:500,
-              transition:'background 0.3s, transform 0.3s'
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#E8C96A'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='#C9A84C'; (e.currentTarget as HTMLElement).style.transform='none' }}
-            >His Story</Link>
-            <Link href="/events" style={{
-              fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase',
-              padding:'14px 32px', border:'1px solid rgba(250,247,242,0.35)', color:'rgba(250,247,242,0.8)', textDecoration:'none',
-              transition:'all 0.3s'
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(250,247,242,0.7)'; (e.currentTarget as HTMLElement).style.color='#FAF7F2' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(250,247,242,0.35)'; (e.currentTarget as HTMLElement).style.color='rgba(250,247,242,0.8)' }}
-            >Join a Gathering</Link>
+          <div style={{ display:'flex', gap:'14px', flexWrap:'wrap' }}>
+            <Link href="/about" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', padding:'15px 36px', background:'#C9A84C', color:'#0D1B0D', textDecoration:'none', fontWeight:500 }}>
+              His Story
+            </Link>
+            <Link href="/events" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase', padding:'15px 36px', border:'1px solid rgba(250,247,242,0.4)', color:'rgba(250,247,242,0.85)', textDecoration:'none' }}>
+              Join a Gathering
+            </Link>
           </div>
         </div>
 
-        {/* Slide dots */}
-        <div style={{ position:'absolute', bottom:'clamp(28px,4vw,48px)', right:'clamp(24px,4vw,80px)', zIndex:3, display:'flex', flexDirection:'column', gap:'8px' }}>
+        {/* Slide dots — fixed bottom-right */}
+        <div className="slide-dots">
           {heroSlides.map((_, i) => (
             <button key={i} onClick={() => setSlide(i)} style={{
-              width: i === slide ? '2px' : '2px',
-              height: i === slide ? '32px' : '12px',
-              background: i === slide ? '#C9A84C' : 'rgba(250,247,242,0.3)',
-              border: 'none', cursor: 'pointer', padding: 0, transition: 'height 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s'
+              width:'2px', height: i === slide ? '32px' : '10px',
+              background: i === slide ? '#C9A84C' : 'rgba(250,247,242,0.28)',
+              border:'none', cursor:'pointer', padding:0, transition:'height 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s'
             }} />
           ))}
         </div>
