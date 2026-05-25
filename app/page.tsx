@@ -6,10 +6,10 @@ import Link from 'next/link'
 import Footer from '@/components/Footer'
 
 const heroSlides = [
-  { src: '/images/solomon-green-suit-hero.png',         pos: '60% top' },
-  { src: '/images/gallery-solomon-worship-intense.jpg', pos: '50% 20%' },
-  { src: '/images/gallery-solomon-standing-deep.jpg',   pos: '50% 15%' },
-  { src: '/images/gallery-solomon-worship-raise.jpg',   pos: '50% 10%' },
+  { src: '/images/solomon-green-suit-hero.png',         pos: '60% 30%' },
+  { src: '/images/gallery-solomon-worship-intense.jpg', pos: '50% 35%' },
+  { src: '/images/gallery-solomon-standing-deep.jpg',   pos: '50% 30%' },
+  { src: '/images/gallery-solomon-worship-raise.jpg',   pos: '50% 25%' },
 ]
 
 const stats = [
@@ -129,7 +129,7 @@ export default function HomePage() {
         {heroSlides.map((s, i) => (
           <div key={i} className="slide-img" style={{ opacity: i === slide ? 1 : 0 }}>
             <Image src={s.src} alt="Solomon Stephen" fill priority={i === 0}
-              style={{ objectFit:'cover', objectPosition: s.pos, transform: i === slide ? 'scale(1.02)' : 'scale(1)', transition:'opacity 1.4s cubic-bezier(0.16,1,0.3,1), transform 10s linear' }}
+              style={{ objectFit:'cover', objectPosition: s.pos }}
             />
           </div>
         ))}

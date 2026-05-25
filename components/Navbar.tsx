@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -89,17 +90,15 @@ export default function Navbar() {
       }}>
 
         {/* Logo */}
-        <Link href="/" style={{
-          fontFamily:    'Cormorant Garamond, serif',
-          fontSize:      '22px',
-          fontWeight:    600,
-          letterSpacing: '0.01em',
-          color:         open ? '#FAF7F2' : '#0D1B0D',
-          transition:    'color 0.45s',
-          zIndex:        1010,
-          position:      'relative',
-        }}>
-          Solomon<span style={{ color: '#C9A84C' }}> Stephen</span>
+        <Link href="/" style={{ zIndex: 1010, position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <Image
+            src="/images/solomon-stephen-logo.svg"
+            alt="Solomon Stephen"
+            width={48}
+            height={112}
+            style={{ height: scrolled ? '44px' : '56px', width: 'auto', transition: 'height 0.45s cubic-bezier(0.16,1,0.3,1)', filter: open ? 'brightness(10)' : 'none' }}
+            priority
+          />
         </Link>
 
         {/* Desktop nav */}
