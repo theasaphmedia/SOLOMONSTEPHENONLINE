@@ -103,4 +103,20 @@ export default function Footer() {
 
       {/* ── Bottom bar ── */}
       <div style={{ borderTop: '1px solid rgba(201,168,76,0.07)', padding: '20px clamp(24px,4vw,64px)' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap:
+        <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: 'rgba(250,247,242,0.18)' }}>
+            © {new Date().getFullYear()} Solomon Stephen. All rights reserved.
+          </p>
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', color: 'rgba(250,247,242,0.18)' }}>
+            Crafted by{' '}
+            <a href="https://theasaphmedia.com" target="_blank" rel="noopener noreferrer"
+              style={{ color: 'rgba(201,168,76,0.45)', transition: 'color 0.3s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#C9A84C'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(201,168,76,0.45)'}
+            >TAI Digital</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}
