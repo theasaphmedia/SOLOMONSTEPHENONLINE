@@ -67,6 +67,8 @@ export default function EventsPage() {
         .wc{display:inline-block;overflow:hidden;vertical-align:bottom;}
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+        @keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
         .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
         .gathering-tab { display:block; width:100%; text-align:left; background:none; border:none; border-top:1px solid rgba(201,168,76,0.15); padding:clamp(20px,2.5vw,32px) 0; cursor:pointer; transition:background 0.3s; }
@@ -78,24 +80,51 @@ export default function EventsPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
+      <section style={{ background:'#080F08', minHeight:'92vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
+        {/* Background image */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <Image src="/images/gallery-congregation-worship.jpg" alt="Worship gathering" fill style={{ objectFit:'cover', opacity:0.25, objectPosition:'center' }} priority />
+          <Image src="/images/gallery-congregation-worship.jpg" alt="Worship gathering" fill style={{ objectFit:'cover', opacity:0.18, objectPosition:'center' }} priority />
         </div>
-        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to top, #1A2E1A 40%, rgba(26,46,26,0.4) 80%, transparent)' }} />
-        <div style={{ position:'relative', zIndex:2, maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
-            <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
+        {/* Layered gradients */}
+        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to top, #080F08 50%, rgba(8,15,8,0.82) 75%, rgba(8,15,8,0.5) 100%)' }} />
+        {/* Giant ambient gathering typography */}
+        <div style={{ position:'absolute', right:'-1%', top:'15%', fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(90px,18vw,210px)', fontWeight:400, color:'rgba(201,168,76,0.035)', lineHeight:1, pointerEvents:'none', zIndex:2, userSelect:'none', letterSpacing:'-0.02em' }}>MDWE</div>
+        <div style={{ position:'absolute', right:'8%', top:'44%', fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(60px,12vw,150px)', fontWeight:400, color:'rgba(201,168,76,0.025)', lineHeight:1, pointerEvents:'none', zIndex:2, userSelect:'none', letterSpacing:'-0.02em' }}>TSH</div>
+        {/* Animated orb */}
+        <div style={{ position:'absolute', width:'520px', height:'520px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', top:'-90px', right:'12%', animation:'float 11s ease-in-out infinite', pointerEvents:'none', zIndex:2 }} />
+        {/* Vertical rule */}
+        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 25%, rgba(201,168,76,0.15) 75%, transparent)', pointerEvents:'none', zIndex:3 }} />
+        {/* Content */}
+        <div style={{ position:'relative', zIndex:4, maxWidth:'900px' }}>
+          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
             Gatherings
           </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,110px)', fontWeight:400, lineHeight:1, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-0.02em' }}>
-            <span className="wc"><span className="wi">Meeting</span></span>{" "}
+          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,118px)', fontWeight:400, lineHeight:0.92, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,44px)', letterSpacing:'-0.025em' }}>
+            <span className="wc"><span className="wi">Meeting</span></span>{' '}
             <span className="wc"><span className="wi" style={{ animationDelay:'0.07s', color:'#C9A84C' }}>God</span></span><br />
             <span className="wc"><span className="wi" style={{ animationDelay:'0.14s' }}>Together.</span></span>
           </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'rgba(250,247,242,0.6)', maxWidth:'520px' }}>
+          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s both' }}>
             Three recurring gatherings. Three different atmospheres. One conviction — that encounter with God is the birthright of every believer.
           </p>
+          {/* Gathering badges */}
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginTop:'clamp(32px,4vw,56px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both' }}>
+            {[
+              { code:'MDWE', name:'Mid Day Worship Experience' },
+              { code:'TSH', name:'The Slaughter House' },
+              { code:'Synantesis', name:'The Divine Appointment' },
+            ].map(g => (
+              <div key={g.code} style={{ padding:'8px 18px', border:'1px solid rgba(201,168,76,0.15)', background:'rgba(201,168,76,0.05)' }}>
+                <div style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(14px,1.6vw,18px)', fontWeight:400, color:'#C9A84C', lineHeight:1 }}>{g.code}</div>
+                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'9px', letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(250,247,242,0.3)', marginTop:'3px' }}>{g.name}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Scroll indicator */}
+        <div style={{ position:'absolute', bottom:'clamp(28px,3.5vw,48px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 1s both', zIndex:4 }}>
+          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'0.3em', color:'rgba(201,168,76,0.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
+          <div style={{ width:'1px', height:'48px', background:'linear-gradient(to bottom, rgba(201,168,76,0.45), transparent)' }} />
         </div>
       </section>
 

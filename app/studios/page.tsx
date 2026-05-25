@@ -43,6 +43,9 @@ export default function StudiosPage() {
         .wc{display:inline-block;overflow:hidden;vertical-align:bottom;}
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+        @keyframes pulse-glow{0%,100%{opacity:1}50%{opacity:.55}}
+        @keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
         .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
         .svc-row { border-top:1px solid rgba(201,168,76,0.15); padding:clamp(28px,3.5vw,48px) 0;
@@ -56,25 +59,46 @@ export default function StudiosPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background:'#1A2E1A', minHeight:'90vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, zIndex:0 }} className="img-zoom">
-          <Image src="/images/worship-atmosphere-bg.jpg" alt="TWN Studios" fill style={{ objectFit:'cover', objectPosition:'center', opacity:0.3 }} priority />
+      <section style={{ background:'#0A1408', minHeight:'92vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
+        {/* Background image */}
+        <div style={{ position:'absolute', inset:0, zIndex:0 }}>
+          <Image src="/images/worship-atmosphere-bg.jpg" alt="TWN Studios" fill style={{ objectFit:'cover', objectPosition:'center', opacity:0.2 }} priority />
         </div>
-        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to top, #1A2E1A 35%, rgba(26,46,26,0.5) 70%, transparent)' }} />
-        <div style={{ position:'relative', zIndex:2, maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
-            <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
+        {/* Layered gradients */}
+        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to top, #0A1408 45%, rgba(10,20,8,0.75) 72%, rgba(10,20,8,0.45) 100%)' }} />
+        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to right, #0A1408 0%, transparent 60%)' }} />
+        {/* Animated orbs */}
+        <div style={{ position:'absolute', width:'550px', height:'550px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)', top:'-100px', right:'2%', animation:'float 10s ease-in-out infinite', pointerEvents:'none', zIndex:2 }} />
+        <div style={{ position:'absolute', width:'300px', height:'300px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%)', bottom:'100px', left:'35%', animation:'pulse-glow 8s ease-in-out 1.5s infinite', pointerEvents:'none', zIndex:2 }} />
+        {/* Vertical rule */}
+        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 25%, rgba(201,168,76,0.15) 75%, transparent)', pointerEvents:'none', zIndex:3 }} />
+        {/* Content */}
+        <div style={{ position:'relative', zIndex:4, maxWidth:'900px' }}>
+          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
             TWN Studios
           </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,110px)', fontWeight:400, lineHeight:1, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-0.02em' }}>
-            <span className="wc"><span className="wi">Where</span></span>{" "}
+          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,118px)', fontWeight:400, lineHeight:0.92, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,44px)', letterSpacing:'-0.025em' }}>
+            <span className="wc"><span className="wi">Where</span></span>{' '}
             <span className="wc"><span className="wi" style={{ animationDelay:'0.07s', color:'#C9A84C' }}>Craft</span></span><br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.14s' }}>Meets</span></span>{" "}
+            <span className="wc"><span className="wi" style={{ animationDelay:'0.14s' }}>Meets</span></span>{' '}
             <span className="wc"><span className="wi" style={{ animationDelay:'0.21s' }}>Calling.</span></span>
           </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'rgba(250,247,242,0.6)', maxWidth:'520px' }}>
+          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s both' }}>
             Not merely a business. A consecrated space in Ajah, Lagos — purpose-built for artists and ministers who refuse to separate excellence from anointing.
           </p>
+          {/* Stat strip */}
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'0', marginTop:'clamp(36px,4.5vw,64px)', borderTop:'1px solid rgba(201,168,76,0.1)', paddingTop:'clamp(18px,2.5vw,28px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both' }}>
+            {['6 Services', '60+ Guests', 'Acoustically Treated', 'Ajah, Lagos'].map((s, i) => (
+              <div key={s} style={{ paddingRight:'clamp(16px,2.5vw,40px)', paddingLeft: i > 0 ? 'clamp(16px,2.5vw,40px)' : 0, borderLeft: i > 0 ? '1px solid rgba(201,168,76,0.15)' : 'none' }}>
+                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)' }}>{s}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Scroll indicator */}
+        <div style={{ position:'absolute', bottom:'clamp(28px,3.5vw,48px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 1s both', zIndex:4 }}>
+          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'0.3em', color:'rgba(201,168,76,0.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
+          <div style={{ width:'1px', height:'48px', background:'linear-gradient(to bottom, rgba(201,168,76,0.45), transparent)' }} />
         </div>
       </section>
 

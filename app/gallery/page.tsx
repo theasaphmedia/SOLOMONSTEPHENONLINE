@@ -62,6 +62,8 @@ export default function GalleryPage() {
         .wc{display:inline-block;overflow:hidden;vertical-align:bottom;}
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+        @keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
         .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
         .photo-item { overflow:hidden; border-radius:2px; cursor:pointer; position:relative; aspect-ratio:1; }
@@ -79,20 +81,52 @@ export default function GalleryPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 85% 50%, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents:'none' }} />
-        <div style={{ position:'relative', maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
-            <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
+      <section style={{ background:'#080F08', minHeight:'92vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
+        {/* Mosaic background images */}
+        <div style={{ position:'absolute', top:'-5%', right:'5%', width:'clamp(140px,22vw,290px)', height:'clamp(100px,17vw,220px)', overflow:'hidden', borderRadius:'2px', opacity:0.11, transform:'rotate(3deg)', zIndex:1 }}>
+          <Image src="/images/gallery-congregation-worship.jpg" alt="" fill style={{ objectFit:'cover' }} />
+        </div>
+        <div style={{ position:'absolute', top:'4%', right:'clamp(160px,28vw,370px)', width:'clamp(100px,16vw,210px)', height:'clamp(140px,22vw,290px)', overflow:'hidden', borderRadius:'2px', opacity:0.08, transform:'rotate(-2deg)', zIndex:1, filter:'blur(0.5px)' }}>
+          <Image src="/images/gallery-solomon-profile-bw.jpg" alt="" fill style={{ objectFit:'cover' }} />
+        </div>
+        <div style={{ position:'absolute', top:'38%', right:'2%', width:'clamp(110px,17vw,220px)', height:'clamp(80px,13vw,170px)', overflow:'hidden', borderRadius:'2px', opacity:0.07, transform:'rotate(-1.5deg)', zIndex:1 }}>
+          <Image src="/images/gallery-band-drummer-action.jpg" alt="" fill style={{ objectFit:'cover' }} />
+        </div>
+        <div style={{ position:'absolute', top:'55%', right:'clamp(120px,20vw,260px)', width:'clamp(120px,18vw,240px)', height:'clamp(90px,14vw,180px)', overflow:'hidden', borderRadius:'2px', opacity:0.06, transform:'rotate(2deg)', zIndex:1, filter:'blur(1px)' }}>
+          <Image src="/images/gallery-solomon-worship-intense.jpg" alt="" fill style={{ objectFit:'cover' }} />
+        </div>
+        {/* Gradient overlays */}
+        <div style={{ position:'absolute', inset:0, zIndex:2, background:'linear-gradient(to top, #080F08 52%, rgba(8,15,8,0.9) 75%, rgba(8,15,8,0.72) 100%)' }} />
+        <div style={{ position:'absolute', inset:0, zIndex:2, background:'linear-gradient(to right, #080F08 30%, transparent 65%)' }} />
+        {/* Ambient orb */}
+        <div style={{ position:'absolute', width:'480px', height:'480px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)', top:'-70px', right:'18%', animation:'float 10s ease-in-out infinite', pointerEvents:'none', zIndex:2 }} />
+        {/* Vertical rule */}
+        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 25%, rgba(201,168,76,0.15) 75%, transparent)', pointerEvents:'none', zIndex:3 }} />
+        {/* Content */}
+        <div style={{ position:'relative', zIndex:4, maxWidth:'900px' }}>
+          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
             Gallery
           </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,110px)', fontWeight:400, lineHeight:1, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-0.02em' }}>
+          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,118px)', fontWeight:400, lineHeight:0.92, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,44px)', letterSpacing:'-0.025em' }}>
             <span className="wc"><span className="wi">Moments</span></span><br />
             <span className="wc"><span className="wi" style={{ animationDelay:'0.1s', color:'#C9A84C' }}>Captured.</span></span>
           </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'rgba(250,247,242,0.6)', maxWidth:'480px' }}>
+          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s both' }}>
             Glimpses of worship, ministry, and the music that moves between heaven and earth.
           </p>
+          {/* Stat strip */}
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'0', marginTop:'clamp(36px,4.5vw,64px)', borderTop:'1px solid rgba(201,168,76,0.1)', paddingTop:'clamp(18px,2.5vw,28px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both' }}>
+            {['12 Photos', '6 Categories', 'Worship · Ministry · Band'].map((s, i) => (
+              <div key={s} style={{ paddingRight:'clamp(16px,2.5vw,40px)', paddingLeft: i > 0 ? 'clamp(16px,2.5vw,40px)' : 0, borderLeft: i > 0 ? '1px solid rgba(201,168,76,0.15)' : 'none' }}>
+                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)', whiteSpace:'nowrap' }}>{s}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Scroll indicator */}
+        <div style={{ position:'absolute', bottom:'clamp(28px,3.5vw,48px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 1s both', zIndex:4 }}>
+          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'0.3em', color:'rgba(201,168,76,0.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
+          <div style={{ width:'1px', height:'48px', background:'linear-gradient(to bottom, rgba(201,168,76,0.45), transparent)' }} />
         </div>
       </section>
 

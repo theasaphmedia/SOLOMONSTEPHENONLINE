@@ -82,6 +82,9 @@ export default function BooksPage() {
         .wc{display:inline-block;overflow:hidden;vertical-align:bottom;}
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
+        @keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-20px) rotate(-4deg)}}
+        @keyframes float2{0%,100%{transform:translateY(0) rotate(6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+        @keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
         .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
         .book-card { background:#fff; border-radius:2px; overflow:hidden; transition:transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s cubic-bezier(0.16,1,0.3,1); }
@@ -97,21 +100,46 @@ export default function BooksPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background:'#FAF7F2', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', right:'-5%', top:'50%', transform:'translateY(-50%)', width:'clamp(280px,45vw,560px)', aspectRatio:'3/4', zIndex:0, opacity:0.07 }}>
+      <section style={{ background:'#080F08', minHeight:'92vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
+        {/* Floating book covers */}
+        <div style={{ position:'absolute', right:'clamp(-20px,3vw,60px)', top:'6%', width:'clamp(160px,24vw,320px)', aspectRatio:'3/4', zIndex:1, opacity:0.13, animation:'float 12s ease-in-out infinite', filter:'blur(0.5px)' }}>
           <Image src="/images/book-cost-of-ignorance.png" alt="" fill style={{ objectFit:'contain' }} />
         </div>
-        <div style={{ position:'relative', zIndex:1, maxWidth:'800px' }}>
-          <div className="eyebrow" style={{ marginBottom:'clamp(24px,3vw,40px)' }}>Books</div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,110px)', fontWeight:400, lineHeight:1, color:'#0D1B0D', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-0.02em' }}>
-            <span className="wc"><span className="wi">Words</span></span>{" "}
+        <div style={{ position:'absolute', right:'clamp(100px,22vw,300px)', top:'12%', width:'clamp(100px,15vw,200px)', aspectRatio:'3/4', zIndex:1, opacity:0.07, animation:'float2 9s ease-in-out 1s infinite', filter:'blur(1.5px)' }}>
+          <Image src="/images/book-sons-not-slaves-march.png" alt="" fill style={{ objectFit:'contain' }} />
+        </div>
+        {/* Gold ambient glow */}
+        <div style={{ position:'absolute', width:'580px', height:'580px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', top:'-80px', right:'-60px', pointerEvents:'none', zIndex:2 }} />
+        {/* Gradient overlays */}
+        <div style={{ position:'absolute', inset:0, zIndex:2, background:'linear-gradient(to top, #080F08 50%, rgba(8,15,8,0.85) 78%, rgba(8,15,8,0.6) 100%)' }} />
+        <div style={{ position:'absolute', inset:0, zIndex:2, background:'linear-gradient(to right, #080F08 28%, transparent 65%)' }} />
+        {/* Vertical rule */}
+        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 25%, rgba(201,168,76,0.15) 75%, transparent)', pointerEvents:'none', zIndex:3 }} />
+        {/* Content */}
+        <div style={{ position:'relative', zIndex:4, maxWidth:'800px' }}>
+          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>Books</div>
+          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,118px)', fontWeight:400, lineHeight:0.92, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,44px)', letterSpacing:'-0.025em' }}>
+            <span className="wc"><span className="wi">Words</span></span>{' '}
             <span className="wc"><span className="wi" style={{ animationDelay:'0.07s' }}>That</span></span><br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.14s', color:'#C9A84C' }}>Outlast</span></span>{" "}
+            <span className="wc"><span className="wi" style={{ animationDelay:'0.14s', color:'#C9A84C' }}>Outlast</span></span>{' '}
             <span className="wc"><span className="wi" style={{ animationDelay:'0.21s' }}>Moments.</span></span>
           </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.8, color:'#3D4B3D', maxWidth:'520px' }}>
-            Solomon Stephen writes not to fill pages, but to recalibrate believers to the truth of who they are. Each book is a stake in the ground.
+          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s both' }}>
+            Solomon Stephen writes not to fill pages — but to recalibrate believers to the truth of who they are. Each book is a stake in the ground.
           </p>
+          {/* Stat strip */}
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'0', marginTop:'clamp(36px,4.5vw,64px)', borderTop:'1px solid rgba(201,168,76,0.1)', paddingTop:'clamp(18px,2.5vw,28px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both' }}>
+            {['04 Books', 'Hebrew & Greek Studies', 'Available on Selar', 'Since 2021'].map((s, i) => (
+              <div key={s} style={{ paddingRight:'clamp(16px,2.5vw,40px)', paddingLeft: i > 0 ? 'clamp(16px,2.5vw,40px)' : 0, borderLeft: i > 0 ? '1px solid rgba(201,168,76,0.15)' : 'none' }}>
+                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)', whiteSpace:'nowrap' }}>{s}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Scroll indicator */}
+        <div style={{ position:'absolute', bottom:'clamp(28px,3.5vw,48px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 1s both', zIndex:4 }}>
+          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'0.3em', color:'rgba(201,168,76,0.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
+          <div style={{ width:'1px', height:'48px', background:'linear-gradient(to bottom, rgba(201,168,76,0.45), transparent)' }} />
         </div>
       </section>
 
