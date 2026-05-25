@@ -104,7 +104,7 @@ export default function Navbar() {
             alt="Solomon Stephen"
             width={48}
             height={112}
-            style={{ height: scrolled ? '44px' : '56px', width: 'auto', transition: 'height 0.45s cubic-bezier(0.16,1,0.3,1)', filter: open ? 'brightness(10)' : 'none' }}
+            style={{ height: scrolled ? '44px' : '56px', width: 'auto', transition: 'height 0.45s cubic-bezier(0.16,1,0.3,1)', filter: open ? 'brightness(10)' : !scrolled ? 'brightness(8)' : 'none' }}
             priority
           />
         </Link>
@@ -117,14 +117,14 @@ export default function Navbar() {
               fontSize:      '11px',
               fontWeight:    500,
               letterSpacing: '0.08em',
-              color:         pathname === link.href ? '#C9A84C' : '#3D4B3D',
+              color:         pathname === link.href ? '#C9A84C' : scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)',
               textTransform: 'uppercase',
               transition:    'color 0.3s',
               position:      'relative',
               paddingBottom: '4px',
             }}
-              onMouseEnter={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#1A2E1A' }}
-              onMouseLeave={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#3D4B3D' }}
+              onMouseEnter={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
+              onMouseLeave={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)' }}
             >
               {link.label}
               {pathname === link.href && (
@@ -144,12 +144,13 @@ export default function Navbar() {
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
             padding:       '11px 28px',
-            background:    '#1A2E1A',
-            color:         '#FAF7F2',
-            transition:    'background 0.3s',
+            background:    scrolled ? '#1A2E1A' : 'transparent',
+            color:         scrolled ? '#FAF7F2' : '#C9A84C',
+            border:        scrolled ? 'none' : '1px solid rgba(201,168,76,0.5)',
+            transition:    'background 0.3s, color 0.3s, border-color 0.3s',
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#2A4A2A' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1A2E1A' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#C9A84C'; (e.currentTarget as HTMLElement).style.color = '#0D1B0D' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = scrolled ? '#1A2E1A' : 'transparent'; (e.currentTarget as HTMLElement).style.color = scrolled ? '#FAF7F2' : '#C9A84C' }}
           >
             Get In Touch
           </Link>
@@ -163,20 +164,20 @@ export default function Navbar() {
         }} aria-label={open ? 'Close menu' : 'Open menu'}>
           <span style={{
             display: 'block', height: '1.5px', width: '28px',
-            background: open ? '#FAF7F2' : '#0D1B0D',
+            background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
             transform: open ? 'translateY(6.5px) rotate(45deg)' : 'none',
             transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s',
             transformOrigin: 'center',
           }} />
           <span style={{
             display: 'block', height: '1.5px', width: open ? '28px' : '18px',
-            background: open ? '#FAF7F2' : '#0D1B0D',
+            background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
             opacity: open ? 0 : 1,
             transition: 'opacity 0.3s, background 0.45s, width 0.4s',
           }} />
           <span style={{
             display: 'block', height: '1.5px', width: '28px',
-            background: open ? '#FAF7F2' : '#0D1B0D',
+            background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
             transform: open ? 'translateY(-6.5px) rotate(-45deg)' : 'none',
             transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s',
             transformOrigin: 'center',
@@ -266,15 +267,4 @@ export default function Navbar() {
             </div>
             <Link href="/contact" style={{
               fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:500, letterSpacing:'0.18em',
-              textTransform:'uppercase', color:'#C9A84C', textDecoration:'none',
-              padding:'11px 28px', border:'1px solid rgba(201,168,76,0.35)', transition:'border-color 0.3s',
-            }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = '#C9A84C'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.35)'}
-            >Get In Touch →</Link>
-          </div>
-        </nav>
-      </div>
-    </>
-  )
-}
+      
