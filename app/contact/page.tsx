@@ -84,7 +84,7 @@ export default function ContactPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
+      <section style={{ height:'100vh', minHeight:'600px', background:'#1A2E1A', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,80px) clamp(64px,8vw,100px)', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 15% 50%, rgba(201,168,76,0.06) 0%, transparent 70%)', pointerEvents:'none' }} />
         <div style={{ position:'relative', maxWidth:'900px' }}>
           <div className="eyebrow rv" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
@@ -175,12 +175,4 @@ export default function ContactPage() {
                 Langbasa Road, Ajah<br />
                 Lagos, Nigeria
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+  

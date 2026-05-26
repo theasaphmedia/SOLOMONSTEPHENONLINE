@@ -96,15 +96,27 @@ export default function BooksPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ minHeight:'100vh', background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'center', position:'relative', overflow:'hidden', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,80px) clamp(64px,8vw,100px)' }}>
+      <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
+        <Image
+          src="/images/gallery-solomon-kneeling-surrender.jpg"
+          alt="Solomon Stephen"
+          fill
+          priority
+          style={{ objectFit:'cover', objectPosition:'center 20%' }}
+        />
+        {/* Gradient layers */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.98) 0%, rgba(7,13,7,0.82) 28%, rgba(7,13,7,0.35) 58%, transparent 82%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.90) 0%, rgba(7,13,7,0.55) 32%, rgba(7,13,7,0.12) 58%, transparent 75%)', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
 
         {/* Big background number */}
-        <div style={{ position:'absolute', right:'-2%', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(200px,30vw,420px)', fontWeight:400, color:'rgba(201,168,76,0.04)', lineHeight:1, pointerEvents:'none', userSelect:'none', letterSpacing:'-.05em' }}>04</div>
+        <div style={{ position:'absolute', right:'-2%', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(200px,30vw,420px)', fontWeight:400, color:'rgba(201,168,76,0.04)', lineHeight:1, pointerEvents:'none', userSelect:'none', letterSpacing:'-.05em', zIndex:2 }}>04</div>
 
         {/* Subtle vertical rule */}
-        <div style={{ position:'absolute', left:'clamp(24px,4vw,80px)', top:'0', bottom:'0', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.12) 30%, rgba(201,168,76,.12) 70%, transparent)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', left:'clamp(24px,4vw,80px)', top:'0', bottom:'0', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.12) 30%, rgba(201,168,76,.12) 70%, transparent)', pointerEvents:'none', zIndex:2 }} />
 
-        <div style={{ maxWidth:'860px', position:'relative', zIndex:1, animation:'heroIn .9s .15s both' }}>
+        <div style={{ position:'absolute', inset:0, zIndex:3, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,80px) clamp(64px,8vw,100px)', animation:'heroIn .9s .15s both' }}>
+        <div style={{ maxWidth:'860px', position:'relative' }}>
           <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'clamp(28px,4vw,52px)', display:'flex', alignItems:'center', gap:'14px' }}>
             <span style={{ display:'inline-block', width:'28px', height:'1px', background:'rgba(201,168,76,.4)' }} />
             Solomon Stephen · Books
@@ -122,6 +134,7 @@ export default function BooksPage() {
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.4)' }}
           >Browse on Selar →</a>
         </div>
+        </div>
       </section>
 
       {/* ── Book Rail — all 4 visible, horizontal, no vertical scroll ── */}
@@ -129,7 +142,7 @@ export default function BooksPage() {
         <style>{`
           .book-rail{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;height:82vh;min-height:500px}
           .book-rail::-webkit-scrollbar{display:none}
-          .book-slot{flex:0 0 25%;min-width:220px;position:relative;cursor:pointer;overflow:hidden;border-right:1px solid rgba(255,255,255,.04)}
+          .book-slot{flex:0 0 25%;min-width:220px;position:relative;cursor:pointer;overflow:hidden;border-right:1px solid rgba(255,255,255,.04);background:#0A0A0A}
           .book-slot:last-child{border-right:none}
           .book-slot img{transition:transform 1s cubic-bezier(0.16,1,0.3,1)}
           .book-slot:hover img{transform:scale(1.06)}
@@ -173,7 +186,7 @@ export default function BooksPage() {
               className="book-slot"
               style={{ textDecoration:'none', cursor: b.comingSoon ? 'default' : 'pointer' }}
             >
-              <Image src={b.img} alt={b.title} fill style={{ objectFit:'cover', objectPosition:'center top' }} sizes="25vw" />
+              <Image src={b.img} alt={b.title} fill style={{ objectFit:'contain', objectPosition:'center 15%' }} sizes="25vw" />
               <div className="book-base" />
               {/* Decorative number */}
               <div className="book-num">{b.num}</div>

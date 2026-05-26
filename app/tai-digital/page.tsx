@@ -89,7 +89,7 @@ export default function TaiDigitalPage() {
       `}</style>
 
       {/* ── Hero ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
+      <section style={{ height:'100vh', minHeight:'600px', background:'#1A2E1A', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,80px) clamp(64px,8vw,100px)', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 90% 40%, rgba(201,168,76,0.08) 0%, transparent 70%)', pointerEvents:'none' }} />
         <div style={{ position:'absolute', right:'clamp(24px,6vw,80px)', bottom:0, width:'clamp(200px,30vw,380px)', aspectRatio:'3/4', zIndex:0, opacity:0.18 }}>
           <Image src="/images/solomon-green-blazer-tai.png" alt="" fill style={{ objectFit:'cover', objectPosition:'top' }} />
@@ -222,12 +222,4 @@ export default function TaiDigitalPage() {
             }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.35)'; (e.currentTarget as HTMLElement).style.color='#3D4B3D' }}
-            >theasaphinnovations@gmail.com</a>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+            >theasaphinnovatio

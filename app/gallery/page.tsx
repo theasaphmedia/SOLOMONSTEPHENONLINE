@@ -64,22 +64,42 @@ export default function GalleryPage() {
         @media(max-width:700px){
           .collage-wall{display:flex!important;flex-direction:row!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-snap-type:x mandatory!important;-webkit-overflow-scrolling:touch!important;gap:3px!important;height:75vw!important;padding-bottom:0!important}
           .c-cell{flex:0 0 65vw!important;height:100%!important;scroll-snap-align:start!important;grid-column:unset!important;grid-row:unset!important}
-          .gallery-header{flex-direction:column!important;align-items:flex-start!important;gap:16px!important}
+          .gallery-header-bar{flex-direction:column!important;align-items:flex-start!important;gap:16px!important}
+          .gallery-hero-text{padding:80px 24px clamp(40px,8vw,56px)!important}
         }
         .lb-bg{position:fixed;inset:0;background:rgba(7,13,7,0.96);z-index:2000;display:flex;align-items:center;justify-content:center}
       `}</style>
 
-      {/* Header + filters */}
-      <div className="gallery-header" style={{ paddingTop:'80px', background:'#0A0A0A', padding:'clamp(90px,10vw,120px) clamp(24px,4vw,60px) clamp(20px,2.5vw,28px)', display:'flex', flexWrap:'wrap', alignItems:'flex-end', justifyContent:'space-between', gap:'20px' }}>
-        <div>
-          <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.42em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'14px', display:'flex', alignItems:'center', gap:'10px' }}>
+      {/* ══ HERO — Full-bleed ══ */}
+      <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
+        <Image
+          src="/images/gallery-solomon-worship-intense.jpg"
+          alt="Moments Captured"
+          fill
+          priority
+          style={{ objectFit:'cover', objectPosition:'center 30%' }}
+        />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.75) 28%, rgba(7,13,7,0.25) 55%, transparent 78%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.85) 0%, rgba(7,13,7,0.45) 32%, rgba(7,13,7,0.08) 58%, transparent 75%)', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
+        <div className="gallery-hero-text" style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)' }}>
+          <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.42em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'16px', display:'flex', alignItems:'center', gap:'10px' }}>
             <span style={{ display:'inline-block', width:'24px', height:'1px', background:'rgba(201,168,76,.4)' }} />
             Gallery
           </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(36px,5.5vw,72px)', fontWeight:400, lineHeight:.9, color:'#fff', margin:0, letterSpacing:'-.02em' }}>
+          <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(52px,9vw,110px)', fontWeight:400, lineHeight:.9, color:'#FAF7F2', margin:'0 0 clamp(20px,3vw,36px)', letterSpacing:'-.02em' }}>
             Moments <em style={{ color:'#C9A84C' }}>Captured.</em>
           </h1>
+          <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
+            <div style={{ width:'1px', height:'40px', background:'linear-gradient(to bottom, rgba(201,168,76,.4), transparent)', flexShrink:0 }} />
+            <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.3em', textTransform:'uppercase', color:'rgba(201,168,76,0.4)' }}>Scroll to explore</span>
+          </div>
         </div>
+      </section>
+
+      {/* Filter bar */}
+      <div className="gallery-header-bar" style={{ background:'#0A0A0A', padding:'clamp(28px,4vw,40px) clamp(24px,4vw,60px)', display:'flex', flexWrap:'wrap', alignItems:'center', justifyContent:'space-between', gap:'16px', borderBottom:'1px solid rgba(255,255,255,.04)' }}>
+        <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.38em', textTransform:'uppercase', color:'rgba(201,168,76,.35)' }}>Filter</div>
         <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
           {cats.map(c => (
             <button key={c} className={`filter-btn${filter === c ? ' active' : ''}`} onClick={() => setFilter(c)}>{c}</button>
@@ -111,29 +131,4 @@ export default function GalleryPage() {
       {/* Lightbox */}
       {lightbox !== null && (
         <div className="lb-bg" onClick={() => setLightbox(null)}>
-          <div style={{ position:'absolute', top:'20px', right:'24px', zIndex:1, cursor:'pointer' }} onClick={() => setLightbox(null)}>
-            <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.22em', color:'rgba(250,247,242,.5)', textTransform:'uppercase' }}>Close ×</span>
-          </div>
-          <div style={{ position:'absolute', left:'16px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1, padding:'12px' }}
-            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i - 1 + filtered.length) % filtered.length : null) }}>
-            <span style={{ fontSize:'28px', color:'rgba(250,247,242,.45)' }}>‹</span>
-          </div>
-          <div style={{ position:'relative', maxWidth:'90vw', maxHeight:'88vh' }} onClick={e => e.stopPropagation()}>
-            <Image src={filtered[lightbox].src} alt={filtered[lightbox].alt} width={1400} height={1000}
-              style={{ maxWidth:'90vw', maxHeight:'88vh', objectFit:'contain', display:'block' }} />
-          </div>
-          <div style={{ position:'absolute', right:'16px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1, padding:'12px' }}
-            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i + 1) % filtered.length : null) }}>
-            <span style={{ fontSize:'28px', color:'rgba(250,247,242,.45)' }}>›</span>
-          </div>
-          <div style={{ position:'absolute', bottom:'20px', left:'50%', transform:'translateX(-50%)', textAlign:'center' }}>
-            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.18em', color:'rgba(250,247,242,.32)' }}>{lightbox + 1} / {filtered.length}</div>
-            <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'14px', fontStyle:'italic', color:'rgba(250,247,242,.42)', marginTop:'4px' }}>{filtered[lightbox].alt}</div>
-          </div>
-        </div>
-      )}
-
-      <Footer />
-    </main>
-  )
-}
+          <div style={{ position:'absolute', top:'20px', right:'24px', zIndex:1, c
