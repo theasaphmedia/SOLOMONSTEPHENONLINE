@@ -5,9 +5,11 @@ import Image from 'next/image'
 import Footer from '@/components/Footer'
 
 /* ─── constants ─────────────────────────────────────────────────── */
-const WHATSAPP = '2348000000000'   // ← replace with real number (digits only)
-const EMAIL    = 'theasaphmedia@gmail.com'
+const WHATSAPP = '2348145799098'
+const EMAIL    = 'twnstudiosglobal@gmail.com'
 const IG       = 'https://www.instagram.com/twnstudiosglobal'
+const TIKTOK   = 'https://www.tiktok.com/@twnstudiosglobal'
+const FACEBOOK = 'https://www.facebook.com/twnstudiosglobal'
 
 /* ─── data ───────────────────────────────────────────────────────── */
 const SERVICES = [
@@ -330,8 +332,9 @@ export default function StudiosPage() {
                 {[
                   ['Address', 'Kenny T. Kay Building, beside Azkol Fuel Station, Langbasa Road, Ajah, Lagos'],
                   ['Capacity', 'Up to 60 guests for live events and showcases'],
-                  ['Contact', EMAIL],
-                  ['Instagram', '@twnstudiosglobal'],
+                  ['Phone / WA', '+234 814 579 9098'],
+                  ['Email', 'twnstudiosglobal@gmail.com'],
+                  ['Social', '@twnstudiosglobal — Instagram · TikTok · Facebook'],
                 ].map(([lbl, val]) => (
                   <div key={lbl} style={{ display:'flex', gap:'16px' }}>
                     <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'#C9A84C', minWidth:'76px', paddingTop:'2px', flexShrink:0 }}>{lbl}</span>
@@ -644,8 +647,10 @@ export default function StudiosPage() {
                 We will confirm your session within 24 hours. In the meantime, follow us for updates from the studio.
               </p>
               <div style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
-                <a href={IG} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Follow @twnstudiosglobal</button></a>
-                <button className="btn-outline" onClick={resetBook}>Book Another Session</button>
+                <a href={IG}       target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Instagram</button></a>
+                <a href={TIKTOK}   target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">TikTok</button></a>
+                <a href={FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
+                <button className="btn-outline" onClick={resetBook}>Book Another</button>
               </div>
             </div>
           )}
@@ -727,9 +732,11 @@ export default function StudiosPage() {
           <p className="rv d2" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(14px,1.5vw,16px)', lineHeight:1.85, color:'rgba(240,237,232,.4)', margin:'0 auto clamp(36px,5vw,56px)', maxWidth:'440px' }}>
             Artists. Ministers. Creators. Brands. If your work demands excellence and anointing in the same room — TWN Studios is your space.
           </p>
-          <div className="rv d3" style={{ display:'flex', gap:'14px', justifyContent:'center', flexWrap:'wrap' }}>
+          <div className="rv d3" style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
             <button className="btn-gold" onClick={scrollToBook} style={{ animation:'pulseGold 3s infinite' }}>Book a Session</button>
-            <a href={IG} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Follow on Instagram</button></a>
+            <a href={IG}       target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Instagram</button></a>
+            <a href={TIKTOK}   target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">TikTok</button></a>
+            <a href={FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
           </div>
         </div>
       </section>
