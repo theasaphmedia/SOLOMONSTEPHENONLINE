@@ -314,9 +314,18 @@ export default function MusicPage() {
         .stream-pill{display:inline-flex;align-items:center;padding:7px 16px;border:1px solid rgba(250,247,242,.09);font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.4);text-decoration:none;transition:all .3s;border-radius:1px}
         .stream-pill:hover{border-color:rgba(201,168,76,.4);color:#C9A84C}
         /* ── No-embed overlay ── */
-        .no-embed-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:rgba(0,0,0,.55);padding:20px;text-align:center}
-        .yt-watch-btn{display:inline-flex;align-items:center;gap:9px;padding:11px 26px;background:#C9A84C;color:#0D1B0D;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;font-weight:700;transition:background .25s;border-radius:1px}
-        .yt-watch-btn:hover{background:#d4b462}
+        /* ── No-embed full-bleed frame ── */
+        .no-embed-frame{position:absolute;inset:0;display:block;text-decoration:none;cursor:pointer;overflow:hidden}
+        .no-embed-bg{position:absolute;inset:0;background:linear-gradient(160deg,#0a1a0a 0%,#0f2a0f 40%,#1a3a1a 70%,#0d1b0d 100%)}
+        .no-embed-corner{position:absolute;width:20px;height:20px;border-color:rgba(201,168,76,.4);border-style:solid}
+        .no-embed-corner-tl{top:16px;left:16px;border-width:1px 0 0 1px}
+        .no-embed-corner-tr{top:16px;right:16px;border-width:1px 1px 0 0}
+        .no-embed-corner-bl{bottom:16px;left:16px;border-width:0 0 1px 1px}
+        .no-embed-corner-br{bottom:16px;right:16px;border-width:0 1px 1px 0}
+        .no-embed-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+        .no-embed-watch-btn{display:inline-flex;align-items:center;gap:9px;padding:12px 28px;background:#C9A84C;color:#0D1B0D;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;transition:background .25s,transform .2s;border-radius:1px}
+        .no-embed-frame:hover .no-embed-watch-btn{background:#d4b462;transform:scale(1.04)}
+        .no-embed-frame:hover .no-embed-bg{background:linear-gradient(160deg,#0f2a0f 0%,#163516 40%,#224422 70%,#122212 100%)}
         /* ── Mobile: full-bleed video, constrained container ── */
         @media(max-width:860px){
           .player-left-col{padding-left:0!important;padding-right:0!important;padding-top:0!important;overflow:hidden}
@@ -451,31 +460,41 @@ export default function MusicPage() {
                 style={{ position:'absolute', inset:0, display: isNoEmbed ? 'none' : 'block' }}
               />
 
-              {/* No-embed fallback: thumbnail + watch link */}
+              {/* No-embed fallback: full-bleed designed frame */}
               {isNoEmbed && (
-                <div style={{ position:'absolute', inset:0 }}>
-                  <Image
-                    src={`https://img.youtube.com/vi/${currentTrack.id}/hqdefault.jpg`}
-                    alt={displayTitle}
-                    fill
-                    style={{ objectFit:'cover' }}
-                    unoptimized
-                  />
-                  <div className="no-embed-overlay">
-                    <div style={{ fontFamily:'DM Sans', fontSize:'10px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(250,247,242,.6)' }}>
-                      Available on YouTube
+                <a
+                  href={`https://www.youtube.com/watch?v=${currentTrack.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="no-embed-frame"
+                >
+                  {/* Background: deep gradient */}
+                  <div className="no-embed-bg" />
+                  {/* Decorative corner marks */}
+                  <div className="no-embed-corner no-embed-corner-tl" />
+                  <div className="no-embed-corner no-embed-corner-tr" />
+                  <div className="no-embed-corner no-embed-corner-bl" />
+                  <div className="no-embed-corner no-embed-corner-br" />
+                  {/* Content */}
+                  <div className="no-embed-content">
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'8px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,.5)', marginBottom:'clamp(12px,2vw,20px)' }}>
+                      Solomon Stephen
                     </div>
-                    <a
-                      href={`https://www.youtube.com/watch?v=${currentTrack.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="yt-watch-btn"
-                    >
-                      <YTIcon />
+                    <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(22px,4vw,44px)', fontWeight:400, color:'#FAF7F2', lineHeight:1, letterSpacing:'-.02em', textAlign:'center', marginBottom:'clamp(6px,1vw,10px)' }}>
+                      {displayTitle}
+                    </div>
+                    {currentTrack.scripture && (
+                      <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(201,168,76,.55)', marginBottom:'clamp(20px,3vw,36px)' }}>
+                        {currentTrack.scripture}
+                      </div>
+                    )}
+                    {/* Watch button */}
+                    <div className="no-embed-watch-btn">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
                       Watch on YouTube
-                    </a>
+                    </div>
                   </div>
-                </div>
+                </a>
               )}
             </div>
 
