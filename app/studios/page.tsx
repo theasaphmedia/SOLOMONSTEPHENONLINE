@@ -109,9 +109,11 @@ export default function StudiosPage() {
         /* service card */
         .svc-card{border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);padding:clamp(20px,2.5vw,32px);border-radius:2px;transition:all .4s cubic-bezier(.16,1,.3,1);cursor:default}
         .svc-card:hover{border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.04);transform:translateY(-4px)}
-        /* gear card */
-        .gear-card{border-left:1px solid rgba(201,168,76,.12);padding:clamp(16px,2vw,24px) clamp(16px,2vw,24px);transition:all .35s;cursor:default}
-        .gear-card:hover{border-left-color:#C9A84C;background:rgba(201,168,76,.03)}
+        /* capability row */
+        .cap-row{display:grid;grid-template-columns:56px 1fr 1fr;gap:0 clamp(24px,4vw,60px);padding:clamp(22px,3vw,36px) 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:default;transition:background .35s}
+        .cap-row:hover{background:rgba(201,168,76,.03)}
+        .cap-num{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;color:rgba(201,168,76,.35);padding-top:4px;transition:color .3s;user-select:none}
+        .cap-row:hover .cap-num{color:#C9A84C}
         /* faq */
         .faq-item{border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden}
         /* service chip */
@@ -141,8 +143,8 @@ export default function StudiosPage() {
         /* mobile */
         @media(max-width:860px){
           .hero-sub{display:none}
-          .gear-grid{grid-template-columns:1fr!important}
-          .gear-photo{display:none!important}
+          .cap-row{grid-template-columns:40px 1fr!important}
+          .cap-desc{display:none!important}
           .svc-grid{grid-template-columns:1fr 1fr!important}
           .gal-masonry{grid-template-columns:1fr 1fr!important;grid-template-rows:auto!important}
           .gal-big{grid-column:span 2!important;grid-row:auto!important}
@@ -247,44 +249,49 @@ export default function StudiosPage() {
       </section>
 
       {/* ════════════════════════════════════════════ CAPABILITIES */}
-      <section id="gear" style={{ background:'#09090E', padding:'clamp(80px,10vw,140px) 0', borderTop:'1px solid rgba(255,255,255,.04)' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto', padding:'0 clamp(24px,4vw,80px)' }}>
-          <div className="ew rv" style={{ marginBottom:'clamp(16px,2vw,24px)' }}>Studio Capabilities</div>
-          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(30px,4.5vw,56px)', fontWeight:400, color:'#F0EDE8', lineHeight:1.05, margin:'0 0 clamp(40px,5vw,72px)' }}>
-            Built to produce<br /><em style={{ color:'#C9A84C' }}>at the highest level.</em>
-          </h2>
-        </div>
+      <section id="gear" style={{ background:'#09090E', padding:'clamp(80px,10vw,140px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(255,255,255,.04)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
 
-        <div className="gear-grid" style={{ maxWidth:'1200px', margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 480px', gap:'0', padding:'0 clamp(24px,4vw,80px)' }}>
-          {/* gear list */}
+          {/* header row */}
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:'24px', marginBottom:'clamp(48px,6vw,80px)' }}>
+            <div>
+              <div className="ew rv" style={{ marginBottom:'clamp(14px,2vw,20px)' }}>Studio Capabilities</div>
+              <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(30px,4.5vw,56px)', fontWeight:400, color:'#F0EDE8', lineHeight:1.05, margin:0 }}>
+                Built to produce<br /><em style={{ color:'#C9A84C' }}>at the highest level.</em>
+              </h2>
+            </div>
+            <p className="rv d2" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,14px)', lineHeight:1.85, color:'rgba(240,237,232,.35)', maxWidth:'340px', margin:0 }}>
+              Every tool, technique, and talent — precision-matched to your creative vision.
+            </p>
+          </div>
+
+          {/* capability rows */}
           <div style={{ borderTop:'1px solid rgba(255,255,255,.06)' }}>
             {CAPABILITIES.map((g, i) => (
-              <div key={g.name} className="gear-card rv" style={{ transitionDelay:`${i*.07}s` }}
-                onMouseEnter={() => setCapHover(i)} onMouseLeave={() => setCapHover(null)}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:'16px' }}>
-                  <div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.25em', textTransform:'uppercase', color:'rgba(201,168,76,.5)', marginBottom:'6px' }}>{g.cat}</div>
-                    <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(20px,2.5vw,28px)', fontWeight:400, color: capHover===i ? '#C9A84C' : '#F0EDE8', transition:'color .3s', lineHeight:1.1 }}>{g.name}</div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', lineHeight:1.7, color:'rgba(240,237,232,.38)', marginTop:'8px', maxWidth:'480px' }}>{g.desc}</div>
-                  </div>
-                  <div style={{ flexShrink:0, width:'24px', height:'24px', border:'1px solid rgba(201,168,76,.2)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', transition:'all .3s', background: capHover===i ? 'rgba(201,168,76,.1)' : 'transparent', borderColor: capHover===i ? '#C9A84C' : 'rgba(201,168,76,.2)' }}>
-                    <div style={{ width:'6px', height:'6px', borderRadius:'50%', background: capHover===i ? '#C9A84C' : 'rgba(201,168,76,.4)', transition:'all .3s' }} />
-                  </div>
+              <div
+                key={g.name}
+                className="cap-row rv"
+                style={{ transitionDelay:`${i*.06}s` }}
+                onMouseEnter={() => setCapHover(i)}
+                onMouseLeave={() => setCapHover(null)}
+              >
+                {/* number */}
+                <div className="cap-num">0{i + 1}</div>
+
+                {/* name + category */}
+                <div>
+                  <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color: capHover===i ? 'rgba(201,168,76,.8)' : 'rgba(201,168,76,.4)', marginBottom:'8px', transition:'color .3s' }}>{g.cat}</div>
+                  <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(22px,2.8vw,34px)', fontWeight:400, lineHeight:1.05, color: capHover===i ? '#C9A84C' : '#F0EDE8', transition:'color .35s' }}>{g.name}</div>
+                </div>
+
+                {/* description */}
+                <div className="cap-desc" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(12px,1.2vw,14px)', lineHeight:1.85, color:'rgba(240,237,232,.38)', alignSelf:'center' }}>
+                  {g.desc}
                 </div>
               </div>
             ))}
           </div>
 
-          {/* featured gear photo */}
-          <div className="gear-photo" style={{ position:'relative', marginLeft:'48px', borderRadius:'2px', overflow:'hidden' }}>
-            <Image src="/images/twn-studio-drums.jpg" alt="Studio drum kit" fill style={{ objectFit:'cover', objectPosition:'center 60%' }} />
-            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(9,9,14,.15) 0%, transparent 50%)' }} />
-            {/* gear badge */}
-            <div style={{ position:'absolute', bottom:'24px', left:'24px', background:'rgba(9,9,14,.8)', backdropFilter:'blur(12px)', border:'1px solid rgba(201,168,76,.2)', padding:'12px 18px', borderRadius:'2px' }}>
-              <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(201,168,76,.7)', marginBottom:'4px' }}>Live Percussion</div>
-              <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'18px', color:'#F0EDE8' }}>Professional Drum Kit</div>
-            </div>
-          </div>
         </div>
       </section>
 
