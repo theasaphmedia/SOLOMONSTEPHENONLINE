@@ -514,4 +514,5 @@ body:has(button:hover) .cursor-ring {
   /* Cursor — hidden on touch */
   .cursor-dot, .cursor-ring { display: none !important; }
   body { cursor: auto !important; }
-}
+
+ 
