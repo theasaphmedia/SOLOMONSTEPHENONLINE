@@ -303,7 +303,7 @@ export default function MusicPage() {
         .q-row:hover{background:rgba(201,168,76,.06)}
         .q-row:last-child{border-bottom:1px solid rgba(201,168,76,.06)}
         .queue-scroll{overflow-y:auto}
-        @media(min-width:861px){.queue-scroll{max-height:calc(100vh - 52px);position:sticky;top:52px}}
+        @media(min-width:861px){.queue-scroll{max-height:calc(100vh - 52px);position:sticky;top:0}}
         @media(max-width:860px){.queue-scroll{max-height:400px}}
         ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(201,168,76,.18);border-radius:2px}
         /* ── Tabs ── */
@@ -383,7 +383,15 @@ export default function MusicPage() {
       </section>
 
       {/* ══ MUSIC PLAYER APP ══ */}
-      <section style={{ background:'#070D07' }}>
+      <section style={{ background:'#070D07', paddingTop:'clamp(56px,7vw,96px)' }}>
+
+        {/* Section label above tabs */}
+        <div style={{ padding:'0 clamp(20px,3vw,48px)', marginBottom:'clamp(28px,3.5vw,48px)' }}>
+          <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.42em', textTransform:'uppercase', color:'rgba(201,168,76,.35)', display:'flex', alignItems:'center', gap:'14px' }}>
+            <span style={{ display:'inline-block', width:'28px', height:'1px', background:'rgba(201,168,76,.35)' }} />
+            Solomon Stephen · Music Player
+          </div>
+        </div>
 
         {/* Tab bar */}
         <div style={{ borderBottom:'1px solid rgba(201,168,76,.09)', padding:'0 clamp(20px,3vw,48px)', display:'flex', alignItems:'stretch', overflow:'hidden' }}>
@@ -583,7 +591,7 @@ export default function MusicPage() {
       </section>
 
       {/* ══ VISUAL LIBRARY — carousel ══ */}
-      <section style={{ padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)', background:'#FAF7F2' }}>
+      <section style={{ padding:'clamp(96px,10vw,140px) clamp(24px,4vw,80px)', background:'#FAF7F2' }}>
         <div style={{ maxWidth:'1280px', margin:'0 auto' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:'24px', marginBottom:'clamp(40px,5vw,64px)' }}>
             <div>
@@ -645,7 +653,7 @@ export default function MusicPage() {
 
       {/* ══ LIVE SERVICES — carousel ══ */}
       {!liveErr && (
-        <section style={{ background:'#111D11', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
+        <section style={{ background:'#111D11', padding:'clamp(96px,10vw,140px) clamp(24px,4vw,80px)' }}>
           <div style={{ maxWidth:'1280px', margin:'0 auto' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:'24px', marginBottom:'clamp(40px,5vw,64px)' }}>
               <div>
