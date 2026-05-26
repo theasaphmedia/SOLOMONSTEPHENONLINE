@@ -181,4 +181,20 @@ export default function GalleryPage() {
             <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'24px', color:'rgba(250,247,242,0.5)' }}>‹</span>
           </div>
           <div style={{ position:'relative', maxWidth:'90vw', maxHeight:'88vh' }} onClick={e => e.stopPropagation()}>
-            <Image src={filtered[lightbox].src} alt=
+            <Image src={filtered[lightbox].src} alt={filtered[lightbox].alt} width={1200} height={900} style={{ maxWidth:'90vw', maxHeight:'88vh', objectFit:'contain' }} />
+          </div>
+          <div style={{ position:'absolute', right:'20px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1 }}
+            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i + 1) % filtered.length : null) }}
+          >
+            <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'24px', color:'rgba(250,247,242,0.5)' }}>›</span>
+          </div>
+          <div style={{ position:'absolute', bottom:'20px', left:'50%', transform:'translateX(-50%)' }}>
+            <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', color:'rgba(250,247,242,0.4)' }}>{lightbox + 1} / {filtered.length}</span>
+          </div>
+        </div>
+      )}
+
+      <Footer />
+    </main>
+  )
+}

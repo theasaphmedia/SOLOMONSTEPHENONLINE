@@ -225,4 +225,7 @@ export default function EventsPage() {
         </div>
       </section>
 
- 
+      <Footer />
+    </main>
+  )
+}
