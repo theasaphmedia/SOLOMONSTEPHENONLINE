@@ -348,12 +348,17 @@ export default function MusicPage() {
         .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(201,168,76,.25);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#3D4B3D;transition:all .3s;text-decoration:none}
         .pill:hover{border-color:#C9A84C;color:#C9A84C;background:rgba(201,168,76,.05)}
         /* ── Mobile hero ── */
-        @media(max-width:800px){.hero-grid{grid-template-columns:1fr!important;grid-template-rows:auto 60vw!important}}
+        /* ── Mobile hero: full-bleed photo, text overlaid ── */
+        @media(max-width:800px){
+          .hero-grid{grid-template-columns:1fr!important;grid-template-rows:1fr!important;position:relative!important}
+          .hero-photo{position:absolute!important;inset:0!important;z-index:1!important}
+          .hero-text{position:relative!important;z-index:3!important;padding-top:clamp(80px,18vw,120px)!important;padding-bottom:clamp(40px,8vw,60px)!important;background:none!important}
+        }
       `}</style>
 
       {/* ══ HERO ══ */}
       <section className="hero-grid" style={{ minHeight:'100vh', display:'grid', gridTemplateColumns:'1fr 48%', background:'#000', position:'relative' }}>
-        <div style={{ display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)', position:'relative', zIndex:2 }}>
+        <div className="hero-text" style={{ display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)', position:'relative', zIndex:2 }}>
           <div style={{ animation:'heroIn .9s .2s both' }}>
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.45)', marginBottom:'clamp(24px,4vw,48px)' }}>
               Solomon Stephen · Music
@@ -374,11 +379,11 @@ export default function MusicPage() {
             </div>
           </div>
         </div>
-        <div style={{ position:'relative', overflow:'hidden' }}>
+        <div className="hero-photo" style={{ position:'relative', overflow:'hidden' }}>
           <Image src="/images/gallery-solomon-worship-intense.jpg" alt="Solomon Stephen" fill priority
-            style={{ objectFit:'cover', objectPosition:'center 20%' }} />
+            style={{ objectFit:'cover', objectPosition:'center top' }} />
           <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, #000 0%, transparent 40%)' }} />
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 50%)' }} />
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.3) 55%, transparent 100%)' }} />
         </div>
       </section>
 
