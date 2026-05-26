@@ -124,62 +124,82 @@ export default function BooksPage() {
         </div>
       </section>
 
-      {/* ── Grid of Books ── */}
-      <section style={{ background:'#F0EBE1', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-          <div className="eyebrow rv" style={{ marginBottom:'clamp(14px,2vw,20px)' }}>The Library</div>
-          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(28px,4vw,48px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.1, margin:'0 0 clamp(36px,5vw,56px)' }}>Four books.<br /><em style={{ color:'#C9A84C' }}>One conviction.</em></h2>
-          <div className="rv d2" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px,1fr))', gap:'clamp(20px,3vw,32px)' }}>
-            {books.map((b, i) => (
-              <a key={b.num} href={b.href} target="_blank" rel="noopener noreferrer"
-                className="book-card rv-scale"
-                style={{ textDecoration:'none', transitionDelay:`${i * 0.09}s` }}
-                onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}
-              >
-                <div className="img-zoom" style={{ aspectRatio:'3/4', position:'relative' }}>
-                  <Image src={b.img} alt={b.title} fill style={{ objectFit:'cover', objectPosition:'center top' }} />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(13,27,13,0.8) 0%, transparent 50%)', opacity: hovered === i ? 1 : 0, transition:'opacity 0.4s', display:'flex', alignItems:'flex-end', padding:'24px' }}>
-                    <span style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.14em', textTransform:'uppercase', color:'#C9A84C' }}>Read on Selar →</span>
-                  </div>
-                </div>
-                <div style={{ padding:'clamp(20px,2.5vw,32px)' }}>
-                  <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'#C9A84C', marginBottom:'8px' }}>{b.num} · </div>
-                  <h3 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(22px,2.5vw,30px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.2, marginBottom:'6px' }}>{b.title}</h3>
-                  <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', color:'#8A9A8A', marginBottom:'16px', letterSpacing:'0.06em' }}>{b.subtitle}</div>
-                  <div style={{ width:'32px', height:'1px', background:'#C9A84C', marginBottom:'16px', transition:'width 0.5s cubic-bezier(0.16,1,0.3,1)', ...(hovered === i ? { width:'100%' } : {}) }} />
-                  <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'13px', lineHeight:1.75, color:'#3D4B3D' }}>{b.desc}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── Book Rail — all 4 visible, horizontal, no vertical scroll ── */}
+      <section style={{ background:'#0A0A0A', overflow:'hidden' }}>
+        <style>{`
+          .book-rail{display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;height:82vh;min-height:500px}
+          .book-rail::-webkit-scrollbar{display:none}
+          .book-slot{flex:0 0 25%;min-width:220px;position:relative;cursor:pointer;overflow:hidden;border-right:1px solid rgba(255,255,255,.04)}
+          .book-slot:last-child{border-right:none}
+          .book-slot img{transition:transform 1s cubic-bezier(0.16,1,0.3,1)}
+          .book-slot:hover img{transform:scale(1.06)}
+          .book-base{position:absolute;inset:0;background:linear-gradient(to top,rgba(7,13,7,0.97) 0%,rgba(7,13,7,0.7) 35%,transparent 65%);transition:background 0.5s}
+          .book-slot:hover .book-base{background:linear-gradient(to top,rgba(7,13,7,0.99) 0%,rgba(7,13,7,0.85) 50%,rgba(7,13,7,0.3) 75%,transparent 90%)}
+          .book-info{position:absolute;bottom:0;left:0;right:0;padding:clamp(20px,2.5vw,32px);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1)}
+          .book-desc{font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.7;color:rgba(250,247,242,0.42);margin:12px 0 16px;max-height:0;overflow:hidden;transition:max-height 0.6s cubic-bezier(0.16,1,0.3,1),opacity 0.5s;opacity:0}
+          .book-slot:hover .book-desc{max-height:200px;opacity:1}
+          .book-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:rgba(201,168,76,0.06);position:absolute;top:20px;right:20px;line-height:1;pointer-events:none;user-select:none}
+          @media(max-width:700px){
+            .book-rail{height:78vw!important;min-height:360px!important}
+            .book-slot{flex:0 0 75vw!important;min-width:0!important}
+          }
+        `}</style>
 
-      {/* ── Theme Banner ── */}
-      <section style={{ background:'#1A2E1A', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
-        <div style={{ maxWidth:'1000px', margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px,1fr))', gap:'clamp(40px,5vw,80px)', alignItems:'center' }}>
+        {/* Rail header */}
+        <div style={{ padding:'clamp(48px,6vw,72px) clamp(24px,4vw,60px) clamp(16px,2vw,24px)', display:'flex', alignItems:'flex-end', justifyContent:'space-between', flexWrap:'wrap', gap:'16px' }}>
           <div>
-            <div className="eyebrow rv" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(20px,2.5vw,32px)' }}>Writing Approach</div>
-            <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(32px,5vw,56px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.15 }}>
-              Scholarly rigour.<br /><em style={{ color:'#C9A84C' }}>Pastoral warmth.</em>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.38em', textTransform:'uppercase', color:'rgba(201,168,76,.35)', marginBottom:'12px', display:'flex', alignItems:'center', gap:'10px' }}>
+              <span style={{ display:'inline-block', width:'22px', height:'1px', background:'rgba(201,168,76,.35)' }} />
+              The Library
+            </div>
+            <h2 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(28px,4vw,52px)', fontWeight:400, color:'#fff', margin:0, lineHeight:.95, letterSpacing:'-.02em' }}>
+              Four books. <em style={{ color:'#C9A84C' }}>One conviction.</em>
             </h2>
           </div>
-          <div>
-            <p className="rv d2" style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.85, color:'rgba(250,247,242,0.6)', marginBottom:'24px' }}>
-              Solomon writes with one conviction: that a transformed mind always precedes a transformed life. His books draw from Hebrew and Greek word studies — <em style={{ color:'rgba(250,247,242,0.8)' }}>hesed, nephesh, zōē, eusebeia</em> — not to impress, but to unlock layers of Scripture that English translations can only gesture toward.
-            </p>
-            <a href="https://selar.com/showlove/solomonstephen" target="_blank" rel="noopener noreferrer" className="rv d3" style={{
-              display:'inline-block', fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.16em', textTransform:'uppercase',
-              padding:'14px 32px', border:'1px solid rgba(201,168,76,0.4)', color:'#C9A84C', textDecoration:'none', transition:'all 0.3s'
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,0.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.4)' }}
-            >Browse All Books on Selar →</a>
-          </div>
+          <a href="https://selar.com/showlove/solomonstephen" target="_blank" rel="noopener noreferrer"
+            style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', padding:'12px 28px', border:'1px solid rgba(201,168,76,.35)', color:'rgba(201,168,76,.7)', textDecoration:'none', transition:'all .3s', whiteSpace:'nowrap' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.35)'; (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,.7)' }}
+          >Browse all on Selar →</a>
+        </div>
+
+        {/* Swipeable book rail */}
+        <div className="book-rail">
+          {books.map((b, i) => (
+            <a key={b.num}
+              href={b.comingSoon ? undefined : b.href}
+              target={b.comingSoon ? undefined : '_blank'}
+              rel={b.comingSoon ? undefined : 'noopener noreferrer'}
+              className="book-slot"
+              style={{ textDecoration:'none', cursor: b.comingSoon ? 'default' : 'pointer' }}
+            >
+              <Image src={b.img} alt={b.title} fill style={{ objectFit:'cover', objectPosition:'center top' }} sizes="25vw" />
+              <div className="book-base" />
+              {/* Decorative number */}
+              <div className="book-num">{b.num}</div>
+              {/* Info panel */}
+              <div className="book-info">
+                <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(201,168,76,.55)', marginBottom:'8px' }}>
+                  {b.comingSoon ? 'Coming Soon' : b.theme}
+                </div>
+                <h3 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(20px,2.2vw,28px)', fontWeight:400, color:'#fff', margin:'0 0 4px', lineHeight:1.15, letterSpacing:'-.01em' }}>
+                  {b.title}
+                </h3>
+                <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', color:'rgba(250,247,242,.35)', letterSpacing:'.08em' }}>{b.subtitle}</div>
+                <div style={{ width:'28px', height:'1px', background:'rgba(201,168,76,.45)', margin:'12px 0' }} />
+                <div className="book-desc">{b.desc}</div>
+                {!b.comingSoon && (
+                  <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', color:'#C9A84C' }}>
+                    Read on Selar →
+                  </div>
+                )}
+              </div>
+            </a>
+          ))}
         </div>
       </section>
 
-      <Footer />
+            <Footer />
     </main>
   )
 }
