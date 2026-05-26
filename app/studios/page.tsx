@@ -486,3 +486,14 @@ export default function StudiosPage() {
     </main>
   )
 }
+FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
+          </div>
+        </div>
+      </section>
+
+
+
+      <Footer />
+    </main>
+  )
+}
