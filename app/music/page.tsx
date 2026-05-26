@@ -380,10 +380,10 @@ export default function MusicPage() {
       <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
         {/* Full-bleed photo — objectPosition pushes up to cut excess headroom */}
         <Image src="/images/gallery-solomon-standing-deep.jpg" alt="Solomon Stephen" fill priority
-          style={{ objectFit:'cover', objectPosition:'50% 40%' }} />
-        {/* Bottom-to-top fade — anchors text legibility */}
+          style={{ objectFit:'cover', objectPosition:'50% 65%' }} />
+        {/* Bottom-to-top fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
-        {/* Left-side fade — draws eye to text */}
+        {/* Left-side fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.88) 0%, rgba(7,13,7,0.52) 32%, rgba(7,13,7,0.10) 58%, transparent 75%)', zIndex:1 }} />
         {/* Top navbar fade */}
         <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
@@ -396,17 +396,9 @@ export default function MusicPage() {
             <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(56px,9vw,120px)', fontWeight:400, lineHeight:.88, color:'#fff', margin:'0 0 clamp(20px,2.5vw,36px)', letterSpacing:'-.03em' }}>
               Sound<br />from the<br /><em style={{ color:'#C9A84C' }}>Secret Place.</em>
             </h1>
-            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(255,255,255,.38)', maxWidth:'380px', margin:'0 0 clamp(28px,3.5vw,48px)' }}>
+            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(255,255,255,.38)', maxWidth:'380px', margin:0 }}>
               Every song is an invitation. Not performance — presence. A doorway into the reality of God.
             </p>
-            <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
-              {[['07','Original Releases'],['2021','–  2025'],['YouTube','Channel']].map(([a, b]) => (
-                <div key={a} style={{ padding:'8px 16px', border:'1px solid rgba(255,255,255,.08)', background:'rgba(255,255,255,.03)' }}>
-                  <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'18px', color:'#C9A84C', lineHeight:1 }}>{a}</div>
-                  <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,255,255,.3)', marginTop:'3px' }}>{b}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
