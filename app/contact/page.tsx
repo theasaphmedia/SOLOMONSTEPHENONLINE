@@ -87,7 +87,7 @@ export default function ContactPage() {
       <section style={{ background:'#1A2E1A', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(72px,9vw,120px)', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 15% 50%, rgba(201,168,76,0.06) 0%, transparent 70%)', pointerEvents:'none' }} />
         <div style={{ position:'relative', maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
+          <div className="eyebrow rv" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)' }}>
             <span style={{ width:28, height:1, background:'rgba(201,168,76,0.7)', display:'inline-block' }} />
             Contact
           </div>
@@ -167,7 +167,7 @@ export default function ContactPage() {
               ))}
             </div>
 
-            <div>
+            <div className="rv d1">
               <div className="eyebrow" style={{ marginBottom:'clamp(20px,2.5vw,32px)' }}>Studio Location</div>
               <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.9, color:'#3D4B3D' }}>
                 Kenny T. Kay Building<br />

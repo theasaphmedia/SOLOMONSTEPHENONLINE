@@ -90,7 +90,7 @@ export default function GalleryPage() {
         </div>
         {/* Top-center: with title overlay */}
         <div style={{ gridColumn:'2', gridRow:'1', position:'relative', overflow:'hidden', background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(24px,3vw,40px)' }}>
-          <div style={{ animation:'heroIn .9s .2s both' }}>
+          <div>
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'20px' }}>Gallery</div>
             <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(40px,6vw,80px)', fontWeight:400, lineHeight:.9, color:'#fff', margin:'0 0 16px', letterSpacing:'-.02em' }}>
               Moments<br /><em style={{ color:'#C9A84C' }}>Captured.</em>
@@ -130,9 +130,10 @@ export default function GalleryPage() {
       {/* ── Gallery ── */}
       <section style={{ padding:'clamp(64px,8vw,100px) clamp(24px,4vw,80px)', background:'#FAF7F2' }}>
         <div style={{ maxWidth:'1300px', margin:'0 auto' }}>
+          <h2 className="rv" style={{ fontFamily:'Cormorant Garamond,sans-serif', fontSize:'clamp(28px,4vw,48px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.1, margin:'0 0 clamp(24px,3vw,40px)' }}>The full <em style={{ color:'#C9A84C' }}>gallery.</em></h2>
 
           {/* Filter bar */}
-          <div className="rv" style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginBottom:'clamp(40px,5vw,64px)' }}>
+          <div className="rv d1" style={{ display:'flex', flexWrap:'wrap', gap:'10px', marginBottom:'clamp(40px,5vw,64px)' }}>
             {cats.map(c => (
               <button key={c} className={`filter-btn${filter === c ? ' active' : ''}`} onClick={() => setFilter(c)}>{c}</button>
             ))}

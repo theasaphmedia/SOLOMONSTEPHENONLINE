@@ -154,8 +154,9 @@ export default function BooksPage() {
       {/* ── Grid of Books ── */}
       <section style={{ background:'#F0EBE1', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
         <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-          <div className="eyebrow rv" style={{ marginBottom:'clamp(40px,5vw,64px)' }}>The Library</div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px,1fr))', gap:'clamp(20px,3vw,32px)' }}>
+          <div className="eyebrow rv" style={{ marginBottom:'clamp(14px,2vw,20px)' }}>The Library</div>
+          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(28px,4vw,48px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.1, margin:'0 0 clamp(36px,5vw,56px)' }}>Four books.<br /><em style={{ color:'#C9A84C' }}>One conviction.</em></h2>
+          <div className="rv d2" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px,1fr))', gap:'clamp(20px,3vw,32px)' }}>
             {books.map((b, i) => (
               <a key={b.num} href={b.href} target="_blank" rel="noopener noreferrer"
                 className="book-card rv-scale"

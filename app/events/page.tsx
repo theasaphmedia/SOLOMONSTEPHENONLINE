@@ -150,10 +150,10 @@ export default function EventsPage() {
       <section style={{ background:'#0A0A0A', padding:'0 clamp(24px,4vw,80px) clamp(60px,8vw,100px)' }}>
         <div style={{ maxWidth:'1280px', margin:'0 auto' }}>
           {gatherings.map((g, i) => (
-            <div key={g.code} className="gathering-row rv">
+            <div key={g.code} className={`gathering-row rv d${i % 4 + 1}`}>
 
               {/* Number */}
-              <div>
+              <div className="rv">
                 <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', color:'rgba(201,168,76,0.4)', letterSpacing:'.2em' }}>{g.num}</div>
               </div>
 
@@ -194,13 +194,13 @@ export default function EventsPage() {
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)', marginBottom:'clamp(20px,3vw,36px)' }}>
               Follow the Movement
             </div>
-            <h2 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(32px,5vw,64px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.05, margin:'0 0 clamp(20px,2.5vw,32px)' }}>
+            <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(32px,5vw,64px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.05, margin:'0 0 clamp(20px,2.5vw,32px)' }}>
               Don't miss what<br />God is <em style={{ color:'#C9A84C' }}>doing here.</em>
             </h2>
-            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)', margin:'0 0 clamp(28px,4vw,48px)' }}>
+            <p className="rv d2" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)', margin:'0 0 clamp(28px,4vw,48px)' }}>
               Follow The Worship Nation for meeting announcements, live moments, and everything happening in the gatherings.
             </p>
-            <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
+            <div className="rv d3" style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
               <a href="https://www.instagram.com/theworshipnation_twn" target="_blank" rel="noopener noreferrer"
                 style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', padding:'13px 28px', border:'1px solid rgba(201,168,76,0.35)', color:'#C9A84C', textDecoration:'none', transition:'all .3s' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
