@@ -101,7 +101,7 @@ export default function MusicPage() {
         width: '100%',
         height: '100%',
         videoId: releaseTracks[0].id,
-        playerVars: { autoplay: 0, rel: 0, modestbranding: 1, iv_load_policy: 3 },
+        playerVars: { autoplay: 0, rel: 0, modestbranding: 1, iv_load_policy: 3, playsinline: 1 },
         events: {
           onReady: () => setPlayerReady(true),
           onStateChange: (e: any) => {
@@ -286,7 +286,7 @@ export default function MusicPage() {
         .prog-fill::after{content:'';position:absolute;right:-5px;top:50%;transform:translateY(-50%);width:10px;height:10px;background:#C9A84C;border-radius:50%;opacity:0;transition:opacity .2s}
         .prog-bar:hover .prog-fill::after{opacity:1}
         /* ── Queue ── */
-        .q-row{padding:12px 8px;border-top:1px solid rgba(201,168,76,.06);cursor:pointer;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:14px;transition:background .25s;border-radius:2px}
+        .q-row{padding:14px 10px;border-top:1px solid rgba(201,168,76,.06);cursor:pointer;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:16px;transition:background .25s;border-radius:2px}
         .q-row:hover{background:rgba(201,168,76,.06)}
         .q-row:last-child{border-bottom:1px solid rgba(201,168,76,.06)}
         .queue-scroll{overflow-y:auto}
@@ -304,8 +304,9 @@ export default function MusicPage() {
         .no-embed-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:rgba(0,0,0,.55);padding:20px;text-align:center}
         .yt-watch-btn{display:inline-flex;align-items:center;gap:9px;padding:11px 26px;background:#C9A84C;color:#0D1B0D;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;font-weight:700;transition:background .25s;border-radius:1px}
         .yt-watch-btn:hover{background:#d4b462}
-        /* ── YouTube iframe fill ── */
-        .yt-wrap iframe{position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important}
+        /* ── YouTube iframe fill — force containment ── */
+        .yt-wrap{overflow:hidden!important}
+        .yt-wrap>div,.yt-wrap iframe{display:block!important;position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;border:0!important;max-width:none!important;margin:0!important}
         /* ── Carousel ── */
         .carousel-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:clamp(12px,1.5vw,22px);scrollbar-width:none;padding-bottom:4px}
         .carousel-track::-webkit-scrollbar{display:none}
@@ -390,7 +391,7 @@ export default function MusicPage() {
         <div className="player-grid">
 
           {/* ── Left: Media + Controls ── */}
-          <div style={{ padding:'clamp(24px,3.5vw,44px)', display:'flex', flexDirection:'column', gap:'18px', borderRight:'1px solid rgba(201,168,76,.07)' }}>
+          <div style={{ padding:'clamp(24px,3.5vw,44px)', display:'flex', flexDirection:'column', gap:'22px', borderRight:'1px solid rgba(201,168,76,.07)' }}>
 
             {/* Now playing label + count */}
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
@@ -467,7 +468,7 @@ export default function MusicPage() {
             </div>
 
             {/* Controls */}
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'4px' }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'8px' }}>
               <button className={`ctrl-btn${repeat ? ' on' : ''}`} onClick={() => setRepeat(!repeat)} title="Repeat" aria-label="Repeat" disabled={isNoEmbed}>
                 <RepeatIcon />
               </button>
@@ -483,7 +484,7 @@ export default function MusicPage() {
             </div>
 
             {/* Streaming links */}
-            <div style={{ display:'flex', gap:'8px', flexWrap:'wrap', paddingTop:'16px', borderTop:'1px solid rgba(201,168,76,.07)' }}>
+            <div style={{ display:'flex', gap:'10px', flexWrap:'wrap', paddingTop:'20px', borderTop:'1px solid rgba(201,168,76,.07)' }}>
               <a href="https://open.spotify.com/artist/7l1GQgXjGCQxlXRxIlHnJw" target="_blank" rel="noopener noreferrer" className="stream-pill">Spotify</a>
               <a href="https://music.apple.com/ng/artist/solomon-stephen/1440574453" target="_blank" rel="noopener noreferrer" className="stream-pill">Apple Music</a>
               <a href={CHANNEL} target="_blank" rel="noopener noreferrer" className="stream-pill">YouTube</a>
@@ -491,7 +492,7 @@ export default function MusicPage() {
           </div>
 
           {/* ── Right: Queue ── */}
-          <div className="queue-scroll" style={{ padding:'clamp(24px,3.5vw,44px) clamp(16px,2.5vw,36px)' }}>
+          <div className="queue-scroll" style={{ padding:'clamp(24px,3.5vw,44px) clamp(20px,2.5vw,36px)' }}>
             <div style={{ fontFamily:'DM Sans', fontSize:'10px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(201,168,76,.32)', marginBottom:'18px' }}>
               {activeTab === 'releases' ? 'Tracklist' : 'Live Archive'}
             </div>
@@ -594,13 +595,24 @@ export default function MusicPage() {
                   style={{ transitionDelay:`${i * 0.06}s` }}
                 >
                   <div style={{ position:'relative', aspectRatio:'16/9', overflow:'hidden', borderRadius:'2px', marginBottom:'14px', background:'#1A2E1A' }}>
-                    <Image
-                      src={`https://img.youtube.com/vi/${t.id}/hqdefault.jpg`}
-                      alt={trackTitle}
-                      fill
-                      className="thumb-img"
-                      unoptimized
-                    />
+                    {t.noEmbed ? (
+                      <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,#0D1B0D 0%,#1f3a1f 100%)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'10px', padding:'20px', textAlign:'center' }}>
+                        <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(14px,2vw,18px)', color:'#C9A84C', lineHeight:1.2 }}>{trackTitle}</div>
+                        <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(255,255,255,.3)' }}>{t.scripture}</div>
+                        <div style={{ display:'flex', alignItems:'center', gap:'6px', color:'rgba(255,255,255,.35)', fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.14em', textTransform:'uppercase', marginTop:'4px' }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5,3 19,12 5,21"/></svg>
+                          YouTube
+                        </div>
+                      </div>
+                    ) : (
+                      <Image
+                        src={`https://img.youtube.com/vi/${t.id}/hqdefault.jpg`}
+                        alt={trackTitle}
+                        fill
+                        className="thumb-img"
+                        unoptimized
+                      />
+                    )}
                     <div className="play-overlay">
                       <div className="play-circle">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="6,3 15,9 6,15" fill="#1A2E1A"/></svg>
