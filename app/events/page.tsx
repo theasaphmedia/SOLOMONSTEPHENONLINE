@@ -70,11 +70,16 @@ export default function EventsPage() {
         @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
         @keyframes revealLine{from{width:0}to{width:100%}}
         .grow-line{animation:revealLine .8s cubic-bezier(.16,1,.3,1) both}
-        .gathering-row{border-top:1px solid rgba(250,247,242,.07);display:grid;grid-template-columns:80px 1fr 1fr 1fr;align-items:start;gap:clamp(20px,3vw,48px);padding:clamp(36px,5vw,72px) 0;transition:border-color .4s}
+        .gathering-row{border-top:1px solid rgba(250,247,242,.07);display:grid;grid-template-columns:56px 1fr 1fr 1fr;align-items:start;gap:clamp(20px,3vw,48px);padding:clamp(28px,5vw,72px) 0;transition:border-color .4s}
         .gathering-row:hover{border-color:rgba(201,168,76,.25)}
         .gathering-row:last-child{border-bottom:1px solid rgba(250,247,242,.07)}
-        @media(max-width:900px){.gathering-row{grid-template-columns:1fr;gap:20px}}
-        @media(max-width:900px){.hide-mobile{display:none}}
+        @media(max-width:860px){.gathering-row{grid-template-columns:1fr 1fr;gap:clamp(16px,3vw,32px)}}
+        @media(max-width:860px){.gathering-num{display:none!important}}
+        @media(max-width:860px){.gathering-photo{display:none!important}}
+        @media(max-width:540px){.gathering-row{grid-template-columns:1fr}}
+        @media(max-width:860px){.hide-mobile{display:none!important}}
+        @media(max-width:860px){.follow-grid{grid-template-columns:1fr!important}}
+        @media(max-width:860px){.follow-img{display:none!important}}
         .social-link{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(250,247,242,.5);text-decoration:none;transition:color .3s}
         .social-link:hover{color:#C9A84C}
       `}</style>
@@ -83,7 +88,7 @@ export default function EventsPage() {
       <section style={{ height:'100vh', minHeight:'640px', display:'grid', gridTemplateColumns:'55% 45%', position:'relative' }}>
 
         {/* LEFT — Photo side */}
-        <div style={{ position:'relative', overflow:'hidden' }}>
+        <div className="hero-photo" style={{ position:'relative', overflow:'hidden', minHeight:'unset' }}>
           <Image
             src="/images/gallery-congregation-worship.jpg"
             alt="Worship gathering"
@@ -107,7 +112,7 @@ export default function EventsPage() {
         </div>
 
         {/* RIGHT — Text panel */}
-        <div style={{ background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(100px,12vw,140px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)' }}>
+        <div className="hero-text" style={{ background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(100px,12vw,140px) clamp(32px,5vw,60px) clamp(48px,7vw,80px)' }}>
           <div style={{ opacity: entered ? 1 : 0, transform: entered ? 'none' : 'translateY(24px)', transition:'opacity 1s .3s, transform 1s .3s' }}>
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)', marginBottom:'clamp(28px,4vw,52px)' }}>
               The Worship Nation
@@ -143,7 +148,7 @@ export default function EventsPage() {
         </div>
 
         {/* Mobile override */}
-        <style>{`@media(max-width:700px){section:first-of-type{grid-template-columns:1fr;grid-template-rows:50vh auto}}`}</style>
+        <style>{`@media(max-width:700px){section:first-of-type{grid-template-columns:1fr!important;height:auto!important;min-height:100vh!important}.hero-photo{min-height:52vw!important}.hero-text{padding:32px 24px 48px!important}}`}</style>
       </section>
 
       {/* ══ GATHERINGS — Full-width rows on black ══ */}
@@ -153,7 +158,7 @@ export default function EventsPage() {
             <div key={g.code} className={`gathering-row rv d${i % 4 + 1}`}>
 
               {/* Number */}
-              <div className="rv">
+              <div className="rv gathering-num">
                 <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', color:'rgba(201,168,76,0.4)', letterSpacing:'.2em' }}>{g.num}</div>
               </div>
 
@@ -171,7 +176,7 @@ export default function EventsPage() {
               </div>
 
               {/* Photo + verse */}
-              <div>
+              <div className="gathering-photo">
                 <div style={{ aspectRatio:'4/3', position:'relative', overflow:'hidden', marginBottom:'20px' }}>
                   <Image src={g.img} alt={g.code} fill style={{ objectFit:'cover', objectPosition:g.imgPos }} />
                   <div style={{ position:'absolute', inset:0, background:'rgba(10,10,10,0.25)' }} />
@@ -189,7 +194,7 @@ export default function EventsPage() {
 
       {/* ══ FOLLOW — Pure black, no green ══ */}
       <section style={{ background:'#0A0A0A', borderTop:'1px solid rgba(250,247,242,.05)', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
-        <div style={{ maxWidth:'1280px', margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(40px,6vw,100px)', alignItems:'center' }}>
+        <div className="follow-grid" style={{ maxWidth:'1280px', margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(40px,6vw,100px)', alignItems:'center' }}>
           <div className="rv-left">
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)', marginBottom:'clamp(20px,3vw,36px)' }}>
               Follow the Movement
@@ -213,7 +218,7 @@ export default function EventsPage() {
               >@thesolomonsteph ↗</a>
             </div>
           </div>
-          <div className="rv-right" style={{ aspectRatio:'1', position:'relative', overflow:'hidden' }}>
+          <div className="rv-right follow-img" style={{ aspectRatio:'1', position:'relative', overflow:'hidden' }}>
             <Image src="/images/gallery-solomon-worship-raise.jpg" alt="Solomon Stephen in worship" fill style={{ objectFit:'cover', objectPosition:'center top' }} />
             <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg, transparent 60%, rgba(10,10,10,0.6) 100%)' }} />
           </div>

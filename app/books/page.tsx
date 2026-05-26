@@ -125,26 +125,89 @@ export default function BooksPage() {
             >Browse on Selar →</a>
           </div>
 
-          {/* RIGHT — books displayed as physical shelf */}
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(12px,2vw,24px)', animation:'heroIn 1s .4s both' }}>
-            {[
-              '/images/book-cost-of-ignorance.png',
-              '/images/book-sons-not-slaves-march.png',
-              '/images/book-sons-not-slaves-april.png',
-              '/images/solomon-cream-suit-books.png',
-            ].map((src, i) => (
-              <div key={i} style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden', background:'rgba(255,255,255,.04)', transition:'transform .5s cubic-bezier(.16,1,.3,1)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform='translateY(-8px) scale(1.02)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform='none' }}
-              >
-                <Image src={src} alt="Book" fill style={{ objectFit:'cover', objectPosition:'top' }} />
-                {i === 3 && (
-                  <div style={{ position:'absolute', inset:0, background:'rgba(10,10,10,.55)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(201,168,76,.7)' }}>Coming Soon</div>
-                  </div>
-                )}
+          {/* RIGHT — Editorial featured book + theme words */}
+          <div style={{ position:'relative', animation:'heroIn 1s .4s both', display:'flex', flexDirection:'column', gap:'0' }}>
+
+            {/* Large decorative number — background */}
+            <div style={{ position:'absolute', top:'-5%', right:'-4%', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(160px,22vw,280px)', fontWeight:300, lineHeight:1, color:'rgba(201,168,76,.05)', pointerEvents:'none', userSelect:'none', letterSpacing:'-.04em', zIndex:0 }}>IV</div>
+
+            {/* Featured book — large */}
+            <div style={{ position:'relative', zIndex:1, display:'flex', gap:'clamp(24px,3vw,40px)', alignItems:'flex-start' }}>
+              <div style={{ width:'clamp(140px,18vw,220px)', flexShrink:0, position:'relative' }}>
+                <div style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden', boxShadow:'0 32px 80px rgba(0,0,0,.6), -8px 8px 32px rgba(0,0,0,.3)', transition:'transform .6s cubic-bezier(.16,1,.3,1)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform='translateY(-10px) rotate(-1deg)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform='none' }}
+                >
+                  <Image src="/images/book-cost-of-ignorance.png" alt="The Cost of Ignorance" fill style={{ objectFit:'cover', objectPosition:'top' }} />
+                </div>
+                {/* Gold spine accent */}
+                <div style={{ position:'absolute', left:'-4px', top:'8px', bottom:'8px', width:'3px', background:'linear-gradient(to bottom, #C9A84C, rgba(201,168,76,.3))', borderRadius:'2px' }} />
               </div>
-            ))}
+
+              {/* Book meta + quote */}
+              <div style={{ flex:1, paddingTop:'clamp(8px,1.5vw,20px)' }}>
+                <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.3em', textTransform:'uppercase', color:'rgba(201,168,76,.5)', marginBottom:'12px' }}>Featured · 2021</div>
+                <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(20px,2.5vw,30px)', fontWeight:400, color:'#fff', lineHeight:1.1, marginBottom:'16px' }}>The Cost of<br />Ignorance</div>
+                <div style={{ width:'32px', height:'1px', background:'rgba(201,168,76,.4)', marginBottom:'16px' }} />
+                <p style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(13px,1.4vw,16px)', fontStyle:'italic', lineHeight:1.75, color:'rgba(255,255,255,.38)', margin:'0 0 20px' }}>
+                  "Ignorance is not bliss — it is peril."
+                </p>
+                <a href="https://selar.com/v8561k6070" target="_blank" rel="noopener noreferrer"
+                  style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.7)', textDecoration:'none', display:'inline-flex', alignItems:'center', gap:'8px', transition:'color .3s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,.7)' }}
+                >Read on Selar →</a>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div style={{ height:'1px', background:'rgba(255,255,255,.06)', margin:'clamp(28px,3.5vw,44px) 0' }} />
+
+            {/* Theme words — typographic art */}
+            <div style={{ position:'relative', zIndex:1 }}>
+              <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.3em', textTransform:'uppercase', color:'rgba(201,168,76,.35)', marginBottom:'18px' }}>Themes across all titles</div>
+              <div style={{ display:'flex', flexWrap:'wrap', gap:'clamp(8px,1.2vw,14px)', alignItems:'baseline' }}>
+                {[
+                  { word:'Truth',       size:'clamp(22px,3vw,36px)', weight:300, gold:true  },
+                  { word:'Sonship',     size:'clamp(16px,2vw,24px)', weight:400, gold:false },
+                  { word:'Knowledge',   size:'clamp(26px,3.5vw,42px)',weight:300, gold:false },
+                  { word:'Identity',    size:'clamp(14px,1.6vw,20px)',weight:400, gold:true  },
+                  { word:'Covenant',    size:'clamp(18px,2.2vw,28px)',weight:300, gold:false },
+                  { word:'Calling',     size:'clamp(20px,2.8vw,34px)',weight:400, gold:true  },
+                  { word:'Inheritance', size:'clamp(13px,1.5vw,18px)',weight:300, gold:false },
+                  { word:'Surrender',   size:'clamp(16px,2vw,24px)', weight:300, gold:false },
+                  { word:'Kingdom',     size:'clamp(22px,3vw,36px)', weight:300, gold:true  },
+                ].map(({ word, size, weight, gold }) => (
+                  <span key={word} style={{
+                    fontFamily:'Cormorant Garamond,serif',
+                    fontSize: size,
+                    fontWeight: weight,
+                    color: gold ? 'rgba(201,168,76,.75)' : 'rgba(255,255,255,.18)',
+                    lineHeight:1,
+                    letterSpacing:'-.01em',
+                    transition:'color .3s',
+                    cursor:'default',
+                  }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = gold ? '#C9A84C' : 'rgba(255,255,255,.45)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = gold ? 'rgba(201,168,76,.75)' : 'rgba(255,255,255,.18)' }}
+                  >{word}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Other titles count */}
+            <div style={{ marginTop:'clamp(20px,2.5vw,32px)', display:'flex', alignItems:'center', gap:'12px' }}>
+              {['/images/book-sons-not-slaves-march.png', '/images/book-sons-not-slaves-april.png', '/images/solomon-cream-suit-books.png'].map((src, i) => (
+                <div key={i} style={{ width:'36px', aspectRatio:'3/4', position:'relative', overflow:'hidden', opacity:.55, borderRadius:'1px', transition:'opacity .3s' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='.55' }}
+                >
+                  <Image src={src} alt="Book" fill style={{ objectFit:'cover', objectPosition:'top' }} />
+                </div>
+              ))}
+              <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,255,255,.2)', marginLeft:'4px' }}>+3 more titles</span>
+            </div>
+
           </div>
         </div>
 
