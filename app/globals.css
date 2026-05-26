@@ -515,4 +515,10 @@ body:has(button:hover) .cursor-ring {
   .cursor-dot, .cursor-ring { display: none !important; }
   body { cursor: auto !important; }
 
- 
+  /* WhatsApp bubble safe zone */
+}
+
+/* WhatsApp safe padding for bottom-right bubble */
+@media (max-width: 540px) {
+  .wa-safe { padding-right: 76px !important; }
+}
