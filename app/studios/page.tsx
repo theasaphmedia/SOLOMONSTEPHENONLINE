@@ -475,4 +475,14 @@ export default function StudiosPage() {
             <button className="btn-gold" onClick={scrollToBook} style={{ animation:'pulseGold 3s infinite' }}>Book a Session</button>
             <a href={IG}       target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Instagram</button></a>
             <a href={TIKTOK}   target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">TikTok</button></a>
-            <a href={
+            <a href={FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
+          </div>
+        </div>
+      </section>
+
+
+
+      <Footer />
+    </main>
+  )
+}
