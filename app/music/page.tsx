@@ -368,29 +368,35 @@ export default function MusicPage() {
         /* ── Pill link ── */
         .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border:1px solid rgba(201,168,76,.25);font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#3D4B3D;transition:all .3s;text-decoration:none}
         .pill:hover{border-color:#C9A84C;color:#C9A84C;background:rgba(201,168,76,.05)}
-        /* ── Mobile hero: photo on top, face visible, text below ── */
-        @media(max-width:800px){
-          .hero-grid{grid-template-columns:1fr!important;grid-template-rows:auto auto!important;min-height:auto!important;position:relative!important}
-          .hero-photo{position:relative!important;inset:auto!important;height:72vw!important;min-height:300px!important;max-height:440px!important;order:-1!important;z-index:1!important;overflow:hidden!important}
-          .hero-grad-h{display:none!important}
-          .hero-text{position:relative!important;z-index:2!important;background:#000!important;padding:clamp(28px,6vw,48px) 24px clamp(40px,8vw,60px)!important;justify-content:flex-start!important;order:1!important}
-          .hero-text h1{font-size:clamp(40px,12vw,68px)!important;line-height:.9!important}
-          .hero-text p{max-width:100%!important;font-size:13px!important}
-          .hero-text>div>div:last-child{flex-direction:column!important;align-items:flex-start!important}
+        /* ── Mobile hero ── */
+        @media(max-width:700px){
+          .music-hero{padding:80px 24px clamp(40px,8vw,56px)!important}
+          .music-hero h1{font-size:clamp(48px,14vw,76px)!important;line-height:.9!important}
+          .music-hero p{font-size:13px!important;max-width:100%!important}
         }
       `}</style>
 
-      {/* ══ HERO ══ */}
-      <section className="hero-grid" style={{ minHeight:'100vh', display:'grid', gridTemplateColumns:'1fr 48%', background:'#000', position:'relative' }}>
-        <div className="hero-text" style={{ display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)', position:'relative', zIndex:2 }}>
+      {/* ══ HERO — full-bleed, home-style ══ */}
+      <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
+        {/* Full-bleed photo — objectPosition pushes up to cut excess headroom */}
+        <Image src="/images/gallery-solomon-standing-deep.jpg" alt="Solomon Stephen" fill priority
+          style={{ objectFit:'cover', objectPosition:'50% 40%' }} />
+        {/* Bottom-to-top fade — anchors text legibility */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
+        {/* Left-side fade — draws eye to text */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.88) 0%, rgba(7,13,7,0.52) 32%, rgba(7,13,7,0.10) 58%, transparent 75%)', zIndex:1 }} />
+        {/* Top navbar fade */}
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
+        {/* Content */}
+        <div className="music-hero" style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)' }}>
           <div style={{ animation:'heroIn .9s .2s both' }}>
-            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.45)', marginBottom:'clamp(24px,4vw,48px)' }}>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.45)', marginBottom:'clamp(16px,2.5vw,28px)' }}>
               Solomon Stephen · Music
             </div>
-            <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(56px,9vw,120px)', fontWeight:400, lineHeight:.88, color:'#fff', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-.03em' }}>
+            <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(56px,9vw,120px)', fontWeight:400, lineHeight:.88, color:'#fff', margin:'0 0 clamp(20px,2.5vw,36px)', letterSpacing:'-.03em' }}>
               Sound<br />from the<br /><em style={{ color:'#C9A84C' }}>Secret Place.</em>
             </h1>
-            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(255,255,255,.38)', maxWidth:'380px', margin:'0 0 clamp(32px,4vw,56px)' }}>
+            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(255,255,255,.38)', maxWidth:'380px', margin:'0 0 clamp(28px,3.5vw,48px)' }}>
               Every song is an invitation. Not performance — presence. A doorway into the reality of God.
             </p>
             <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
@@ -402,12 +408,6 @@ export default function MusicPage() {
               ))}
             </div>
           </div>
-        </div>
-        <div className="hero-photo" style={{ position:'relative', overflow:'hidden' }}>
-          <Image src="/images/gallery-solomon-worship-intense.jpg" alt="Solomon Stephen" fill priority
-            style={{ objectFit:'cover', objectPosition:'center top' }} />
-          <div className="hero-grad-h" style={{ position:'absolute', inset:0, background:'linear-gradient(to right, #000 0%, transparent 40%)' }} />
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.3) 55%, transparent 100%)' }} />
         </div>
       </section>
 
