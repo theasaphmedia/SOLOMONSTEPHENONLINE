@@ -91,6 +91,18 @@ export default function MusicPage() {
       .catch(() => {})
   }, [])
 
+  // Force-resize the YT iframe to fill container (YouTube resets dims on loadVideoById)
+  const resizePlayer = () => {
+    requestAnimationFrame(() => {
+      try {
+        const iframe = playerRef.current?.getIframe?.()
+        if (iframe) {
+          iframe.style.cssText = 'position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;border:0!important;max-width:none!important'
+        }
+      } catch (_) {}
+    })
+  }
+
   // YouTube IFrame API — init once
   useEffect(() => {
     function initPlayer() {
@@ -103,12 +115,13 @@ export default function MusicPage() {
         videoId: releaseTracks[0].id,
         playerVars: { autoplay: 0, rel: 0, modestbranding: 1, iv_load_policy: 3, playsinline: 1 },
         events: {
-          onReady: () => setPlayerReady(true),
+          onReady: () => { setPlayerReady(true); resizePlayer() },
           onStateChange: (e: any) => {
             const S = window.YT.PlayerState
             if (e.data === S.PLAYING) {
               setIsPlaying(true)
               setDur(playerRef.current?.getDuration() ?? 0)
+              resizePlayer()
             } else if (e.data === S.PAUSED) {
               setIsPlaying(false)
             } else if (e.data === S.ENDED) {
@@ -123,7 +136,7 @@ export default function MusicPage() {
                   const next = (prev + 1) % Math.max(list.length, 1)
                   setTimeout(() => {
                     const nxt = list[next] as any
-                    if (nxt && !nxt.noEmbed) playerRef.current?.loadVideoById(nxt.id)
+                    if (nxt && !nxt.noEmbed) { playerRef.current?.loadVideoById(nxt.id); resizePlayer() }
                   }, 60)
                   return next
                 })
@@ -176,7 +189,7 @@ export default function MusicPage() {
     const list: any[] = tab === 'releases' ? releaseTracks : liveVideosRef.current
     const track = list[idx]
     if (track && !track.noEmbed && playerReady) {
-      playerRef.current?.loadVideoById(track.id)
+      playerRef.current?.loadVideoById(track.id); resizePlayer()
     } else if (playerReady) {
       playerRef.current?.pauseVideo?.()
     }
@@ -268,7 +281,7 @@ export default function MusicPage() {
         .eyebrow::before{content:'';width:28px;height:1px;background:#C9A84C}
         /* ── Player grid ── */
         .player-grid{display:grid;grid-template-columns:58% 42%}
-        @media(max-width:860px){.player-grid{grid-template-columns:1fr}}
+        @media(max-width:860px){.player-grid{grid-template-columns:1fr;overflow-x:hidden}}
         /* ── Waveform ── */
         .waveform{display:inline-flex;align-items:center;gap:2px;height:22px;flex-shrink:0}
         .wbar{width:3px;border-radius:2px;background:#C9A84C;animation:wave 1.1s ease-in-out infinite;height:100%}
@@ -304,6 +317,8 @@ export default function MusicPage() {
         .no-embed-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:rgba(0,0,0,.55);padding:20px;text-align:center}
         .yt-watch-btn{display:inline-flex;align-items:center;gap:9px;padding:11px 26px;background:#C9A84C;color:#0D1B0D;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;font-weight:700;transition:background .25s;border-radius:1px}
         .yt-watch-btn:hover{background:#d4b462}
+        /* ── Mobile clip ── */
+        @media(max-width:860px){.player-left-wrap{overflow-x:hidden;max-width:100vw}}
         /* ── YouTube iframe fill — force containment ── */
         .yt-wrap{overflow:hidden!important}
         .yt-wrap>div,.yt-wrap iframe{display:block!important;position:absolute!important;top:0!important;left:0!important;width:100%!important;height:100%!important;border:0!important;max-width:none!important;margin:0!important}
@@ -391,10 +406,10 @@ export default function MusicPage() {
         <div className="player-grid">
 
           {/* ── Left: Media + Controls ── */}
-          <div style={{ padding:'clamp(24px,3.5vw,44px)', display:'flex', flexDirection:'column', gap:'22px', borderRight:'1px solid rgba(201,168,76,.07)' }}>
+          <div style={{ padding:'clamp(24px,3.5vw,44px)', display:'flex', flexDirection:'column', gap:'20px', borderRight:'1px solid rgba(201,168,76,.07)' }}>
 
             {/* Now playing label + count */}
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'4px' }}>
               <div className="eyebrow" style={{ color:'rgba(201,168,76,.5)' }}>Now Playing</div>
               <div style={{ fontFamily:'DM Sans', fontSize:'10px', letterSpacing:'.2em', color:'rgba(201,168,76,.28)', textTransform:'uppercase' }}>
                 {activeIdx + 1}&thinsp;/&thinsp;{Math.max(currentTracks.length, releaseTracks.length)}
@@ -402,7 +417,7 @@ export default function MusicPage() {
             </div>
 
             {/* ── Media area — 16:9 responsive ── */}
-            <div style={{ position:'relative', width:'100%', paddingTop:'56.25%', background:'#000', overflow:'hidden', borderRadius:'2px', border:'1px solid rgba(201,168,76,.07)', flexShrink:0 }}>
+            <div style={{ position:'relative', width:'100%', paddingTop:'56.25%', background:'#000', overflow:'hidden', borderRadius:'2px', border:'1px solid rgba(201,168,76,.07)', flexShrink:0, marginTop:'8px' }}>
               {/* YouTube iframe (always mounted; hidden when noEmbed) */}
               <div
                 ref={containerRef}
