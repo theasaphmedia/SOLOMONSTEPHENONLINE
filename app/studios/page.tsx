@@ -253,12 +253,20 @@ export default function StudiosPage() {
 
       {/* ════════════════════════════════════════════ HERO */}
       <section ref={heroRef} style={{ position:'relative', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', overflow:'hidden' }}>
-        {/* background photo */}
+        {/* background video — with static image fallback */}
         <div style={{ position:'absolute', inset:0, zIndex:0 }}>
+          {/* static fallback (always rendered, hidden when video plays) */}
           <Image src="/images/twn-studio-hall.jpg" alt="TWN Studios" fill style={{ objectFit:'cover', objectPosition:'center center' }} priority />
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(9,9,14,.82) 0%, rgba(9,9,14,.55) 40%, rgba(9,9,14,.92) 100%)' }} />
-          {/* subtle gold vignette */}
-          <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 50% 60%, rgba(201,168,76,.04) 0%, transparent 70%)' }} />
+          {/* video overlay */}
+          <video
+            autoPlay muted loop playsInline
+            style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center center' }}
+          >
+            <source src="/videos/twn-studio-hero.mp4" type="video/mp4" />
+          </video>
+          {/* dark + gold overlay */}
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(9,9,14,.78) 0%, rgba(9,9,14,.48) 40%, rgba(9,9,14,.90) 100%)' }} />
+          <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 50% 60%, rgba(201,168,76,.05) 0%, transparent 70%)' }} />
         </div>
 
         {/* content */}
@@ -726,7 +734,7 @@ export default function StudiosPage() {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════ FLOATING BOOK */}
+      {/* FLOATING BOOK */}
       {floatShow && (
         <button className="float-book" onClick={scrollToBook}>
           Book a Session
