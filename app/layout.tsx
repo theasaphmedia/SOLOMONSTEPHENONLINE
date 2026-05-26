@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     title: "Solomon Stephen — Gospel Minister · Worship Leader · Author",
     description: "Gospel minister, worship leader, music producer, and published author. Founder of The Worship Nation and TWN Studios.",
     images: ["/images/og-image.png"],
-    creator: "@thesolomonsteph",
+    creator: "@theasaphmedia",
   },
   robots: { index: true, follow: true },
   alternates: { canonical: "https://solomonstephen.com" },
@@ -45,4 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <Navbar
+        <Navbar />
+        {children}
+        <WhatsAppFloat />
+      </body>
+    </html>
+  );
+}
