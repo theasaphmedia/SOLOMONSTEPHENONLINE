@@ -58,48 +58,47 @@ export default function StudiosPage() {
         .img-zoom:hover img { transform:scale(1.04); }
       `}</style>
 
-      {/* ── Hero ── */}
-      <section style={{ background:'#0A1408', minHeight:'92vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
-        {/* Background image */}
-        <div style={{ position:'absolute', inset:0, zIndex:0 }}>
-          <Image src="/images/worship-atmosphere-bg.jpg" alt="TWN Studios" fill style={{ objectFit:'cover', objectPosition:'center', opacity:0.2 }} priority />
-        </div>
-        {/* Layered gradients */}
-        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to top, #0A1408 45%, rgba(10,20,8,0.75) 72%, rgba(10,20,8,0.45) 100%)' }} />
-        <div style={{ position:'absolute', inset:0, zIndex:1, background:'linear-gradient(to right, #0A1408 0%, transparent 60%)' }} />
-        {/* Animated orbs */}
-        <div style={{ position:'absolute', width:'550px', height:'550px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)', top:'-100px', right:'2%', animation:'float 10s ease-in-out infinite', pointerEvents:'none', zIndex:2 }} />
-        <div style={{ position:'absolute', width:'300px', height:'300px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%)', bottom:'100px', left:'35%', animation:'pulse-glow 8s ease-in-out 1.5s infinite', pointerEvents:'none', zIndex:2 }} />
-        {/* Vertical rule */}
-        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 25%, rgba(201,168,76,0.15) 75%, transparent)', pointerEvents:'none', zIndex:3 }} />
-        {/* Content */}
-        <div style={{ position:'relative', zIndex:4, maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
-            TWN Studios
-          </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,118px)', fontWeight:400, lineHeight:0.92, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,44px)', letterSpacing:'-0.025em' }}>
-            <span className="wc"><span className="wi">Where</span></span>{' '}
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.07s', color:'#C9A84C' }}>Craft</span></span><br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.14s' }}>Meets</span></span>{' '}
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.21s' }}>Calling.</span></span>
-          </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s both' }}>
-            Not merely a business. A consecrated space in Ajah, Lagos — purpose-built for artists and ministers who refuse to separate excellence from anointing.
-          </p>
-          {/* Stat strip */}
-          <div style={{ display:'flex', flexWrap:'wrap', gap:'0', marginTop:'clamp(36px,4.5vw,64px)', borderTop:'1px solid rgba(201,168,76,0.1)', paddingTop:'clamp(18px,2.5vw,28px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both' }}>
-            {['6 Services', '60+ Guests', 'Acoustically Treated', 'Ajah, Lagos'].map((s, i) => (
-              <div key={s} style={{ paddingRight:'clamp(16px,2.5vw,40px)', paddingLeft: i > 0 ? 'clamp(16px,2.5vw,40px)' : 0, borderLeft: i > 0 ? '1px solid rgba(201,168,76,0.15)' : 'none' }}>
-                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)' }}>{s}</div>
-              </div>
-            ))}
+      {/* ── Hero — Light architectural split ── */}
+      <section style={{ minHeight:'100vh', display:'grid', gridTemplateColumns:'45% 55%', background:'#F2EDE4' }}>
+
+        {/* LEFT — cream text panel */}
+        <div style={{ display:'flex', flexDirection:'column', justifyContent:'center', padding:'clamp(120px,13vw,160px) clamp(32px,5vw,64px) clamp(48px,7vw,80px)', borderRight:'1px solid rgba(0,0,0,0.06)' }}>
+          <div style={{ animation:'heroIn .9s .15s both' }}>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(60,60,60,0.45)', marginBottom:'clamp(32px,5vw,56px)' }}>
+              TWN Studios · Ajah, Lagos
+            </div>
+            <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(48px,8vw,100px)', fontWeight:400, lineHeight:.9, color:'#0D0D0D', margin:'0 0 clamp(24px,3.5vw,44px)', letterSpacing:'-.02em' }}>
+              Where<br />Craft<br />Meets<br /><em style={{ color:'#C9A84C' }}>Calling.</em>
+            </h1>
+            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(0,0,0,.45)', maxWidth:'360px', margin:'0 0 clamp(32px,4vw,52px)' }}>
+              A consecrated recording space in Ajah, Lagos. Purpose-built for artists and ministers who refuse to separate excellence from anointing.
+            </p>
+            {/* Specs */}
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'16px 0' }}>
+              {[['6','Services'],['60+','Guests'],['Acoustically','Treated'],['Kenny T. Kay','Building']].map(([val,lbl]) => (
+                <div key={lbl}>
+                  <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(22px,3vw,32px)', fontWeight:400, color:'#0D0D0D', lineHeight:1 }}>{val}</div>
+                  <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(0,0,0,.35)', marginTop:'4px' }}>{lbl}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        {/* Scroll indicator */}
-        <div style={{ position:'absolute', bottom:'clamp(28px,3.5vw,48px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 1s both', zIndex:4 }}>
-          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'0.3em', color:'rgba(201,168,76,0.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
-          <div style={{ width:'1px', height:'48px', background:'linear-gradient(to bottom, rgba(201,168,76,0.45), transparent)' }} />
+
+        {/* RIGHT — photo collage on cream */}
+        <div style={{ position:'relative', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,48px) clamp(40px,6vw,64px)', display:'grid', gridTemplateColumns:'1fr 1fr', gridTemplateRows:'1fr 1fr', gap:'clamp(8px,1vw,16px)', background:'#E8E1D5', animation:'heroIn 1s .4s both' }}>
+          {[
+            { src:'/images/stage-lights-concert.jpg', style:{ gridRow:'1 / 3' } },
+            { src:'/images/gallery-band-drummer-action.jpg', style:{} },
+            { src:'/images/gallery-band-keys-motif.jpg', style:{} },
+          ].map((img, i) => (
+            <div key={i} style={{ position:'relative', overflow:'hidden', borderRadius:'2px', minHeight:'180px', ...img.style }}>
+              <Image src={img.src} alt="TWN Studios" fill style={{ objectFit:'cover', objectPosition:'center' }} />
+            </div>
+          ))}
         </div>
+
+        <style>{`@media(max-width:800px){section:first-of-type{grid-template-columns:1fr!important}}`}</style>
       </section>
 
       {/* ── Vision ── */}

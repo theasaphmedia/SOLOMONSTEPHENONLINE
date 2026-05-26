@@ -80,54 +80,51 @@ export default function GalleryPage() {
         .lightbox-img { max-width:90vw; max-height:90vh; object-fit:contain; }
       `}</style>
 
-      {/* ── Hero ── */}
-      <section style={{ background:'#080F08', minHeight:'92vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,4vw,80px) clamp(56px,7vw,100px)', position:'relative', overflow:'hidden' }}>
-        {/* Mosaic background images */}
-        <div style={{ position:'absolute', top:'-5%', right:'5%', width:'clamp(140px,22vw,290px)', height:'clamp(100px,17vw,220px)', overflow:'hidden', borderRadius:'2px', opacity:0.11, transform:'rotate(3deg)', zIndex:1 }}>
-          <Image src="/images/gallery-congregation-worship.jpg" alt="" fill style={{ objectFit:'cover' }} />
+      {/* ── Hero — Full-bleed photo mosaic, no text section ── */}
+      <section style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gridTemplateRows:'56vh 44vh', gap:'3px', background:'#0A0A0A', paddingTop:'80px' }}>
+        {/* Top-left: large portrait */}
+        <div style={{ gridColumn:'1', gridRow:'1', position:'relative', overflow:'hidden' }}>
+          <Image src="/images/gallery-solomon-worship-intense.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center top', transition:'transform 1.2s cubic-bezier(.16,1,.3,1)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }} />
         </div>
-        <div style={{ position:'absolute', top:'4%', right:'clamp(160px,28vw,370px)', width:'clamp(100px,16vw,210px)', height:'clamp(140px,22vw,290px)', overflow:'hidden', borderRadius:'2px', opacity:0.08, transform:'rotate(-2deg)', zIndex:1, filter:'blur(0.5px)' }}>
-          <Image src="/images/gallery-solomon-profile-bw.jpg" alt="" fill style={{ objectFit:'cover' }} />
-        </div>
-        <div style={{ position:'absolute', top:'38%', right:'2%', width:'clamp(110px,17vw,220px)', height:'clamp(80px,13vw,170px)', overflow:'hidden', borderRadius:'2px', opacity:0.07, transform:'rotate(-1.5deg)', zIndex:1 }}>
-          <Image src="/images/gallery-band-drummer-action.jpg" alt="" fill style={{ objectFit:'cover' }} />
-        </div>
-        <div style={{ position:'absolute', top:'55%', right:'clamp(120px,20vw,260px)', width:'clamp(120px,18vw,240px)', height:'clamp(90px,14vw,180px)', overflow:'hidden', borderRadius:'2px', opacity:0.06, transform:'rotate(2deg)', zIndex:1, filter:'blur(1px)' }}>
-          <Image src="/images/gallery-solomon-worship-intense.jpg" alt="" fill style={{ objectFit:'cover' }} />
-        </div>
-        {/* Gradient overlays */}
-        <div style={{ position:'absolute', inset:0, zIndex:2, background:'linear-gradient(to top, #080F08 52%, rgba(8,15,8,0.9) 75%, rgba(8,15,8,0.72) 100%)' }} />
-        <div style={{ position:'absolute', inset:0, zIndex:2, background:'linear-gradient(to right, #080F08 30%, transparent 65%)' }} />
-        {/* Ambient orb */}
-        <div style={{ position:'absolute', width:'480px', height:'480px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)', top:'-70px', right:'18%', animation:'float 10s ease-in-out infinite', pointerEvents:'none', zIndex:2 }} />
-        {/* Vertical rule */}
-        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,0.15) 25%, rgba(201,168,76,0.15) 75%, transparent)', pointerEvents:'none', zIndex:3 }} />
-        {/* Content */}
-        <div style={{ position:'relative', zIndex:4, maxWidth:'900px' }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,0.7)', marginBottom:'clamp(24px,3vw,40px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
-            Gallery
-          </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(52px,10vw,118px)', fontWeight:400, lineHeight:0.92, color:'#FAF7F2', margin:'0 0 clamp(24px,3vw,44px)', letterSpacing:'-0.025em' }}>
-            <span className="wc"><span className="wi">Moments</span></span><br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'0.1s', color:'#C9A84C' }}>Captured.</span></span>
-          </h1>
-          <p style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.55s both' }}>
-            Glimpses of worship, ministry, and the music that moves between heaven and earth.
-          </p>
-          {/* Stat strip */}
-          <div style={{ display:'flex', flexWrap:'wrap', gap:'0', marginTop:'clamp(36px,4.5vw,64px)', borderTop:'1px solid rgba(201,168,76,0.1)', paddingTop:'clamp(18px,2.5vw,28px)', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 0.8s both' }}>
-            {['12 Photos', '6 Categories', 'Worship · Ministry · Band'].map((s, i) => (
-              <div key={s} style={{ paddingRight:'clamp(16px,2.5vw,40px)', paddingLeft: i > 0 ? 'clamp(16px,2.5vw,40px)' : 0, borderLeft: i > 0 ? '1px solid rgba(201,168,76,0.15)' : 'none' }}>
-                <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.28em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)', whiteSpace:'nowrap' }}>{s}</div>
-              </div>
-            ))}
+        {/* Top-center: with title overlay */}
+        <div style={{ gridColumn:'2', gridRow:'1', position:'relative', overflow:'hidden', background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(24px,3vw,40px)' }}>
+          <div style={{ animation:'heroIn .9s .2s both' }}>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'20px' }}>Gallery</div>
+            <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(40px,6vw,80px)', fontWeight:400, lineHeight:.9, color:'#fff', margin:'0 0 16px', letterSpacing:'-.02em' }}>
+              Moments<br /><em style={{ color:'#C9A84C' }}>Captured.</em>
+            </h1>
+            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'12px', lineHeight:1.8, color:'rgba(255,255,255,.3)', margin:0 }}>
+              Worship. Ministry. Music.
+            </p>
           </div>
         </div>
-        {/* Scroll indicator */}
-        <div style={{ position:'absolute', bottom:'clamp(28px,3.5vw,48px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(0.16,1,0.3,1) 1s both', zIndex:4 }}>
-          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'0.3em', color:'rgba(201,168,76,0.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
-          <div style={{ width:'1px', height:'48px', background:'linear-gradient(to bottom, rgba(201,168,76,0.45), transparent)' }} />
+        {/* Top-right: congregation */}
+        <div style={{ gridColumn:'3', gridRow:'1', position:'relative', overflow:'hidden' }}>
+          <Image src="/images/gallery-congregation-worship.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center', transition:'transform 1.2s cubic-bezier(.16,1,.3,1)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }} />
         </div>
+        {/* Bottom-left: kneeling */}
+        <div style={{ gridColumn:'1', gridRow:'2', position:'relative', overflow:'hidden' }}>
+          <Image src="/images/gallery-solomon-kneeling-joy.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 30%', transition:'transform 1.2s cubic-bezier(.16,1,.3,1)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }} />
+        </div>
+        {/* Bottom-center: band */}
+        <div style={{ gridColumn:'2', gridRow:'2', position:'relative', overflow:'hidden' }}>
+          <Image src="/images/gallery-band-drummer-action.jpg" alt="" fill style={{ objectFit:'cover', transition:'transform 1.2s cubic-bezier(.16,1,.3,1)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }} />
+        </div>
+        {/* Bottom-right: profile */}
+        <div style={{ gridColumn:'3', gridRow:'2', position:'relative', overflow:'hidden' }}>
+          <Image src="/images/gallery-solomon-profile-bw.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center top', transition:'transform 1.2s cubic-bezier(.16,1,.3,1)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.transform='scale(1.05)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform='none' }} />
+        </div>
+        <style>{`@media(max-width:700px){section:first-of-type{grid-template-columns:1fr 1fr!important;grid-template-rows:repeat(3,40vw)!important}}`}</style>
       </section>
 
       {/* ── Gallery ── */}

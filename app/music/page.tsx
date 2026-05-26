@@ -216,35 +216,44 @@ export default function MusicPage() {
         .carousel-btn:active{transform:scale(.94)}
       `}</style>
 
-      {/* ══ HERO ══ */}
-      <section style={{ background:'#0D1B0D', padding:'clamp(140px,16vw,200px) clamp(24px,4vw,80px) clamp(80px,10vw,130px)', position:'relative', overflow:'hidden', minHeight:'72vh', display:'flex', alignItems:'flex-end' }}>
-        {/* Animated glows */}
-        <div style={{ position:'absolute', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,.07) 0%, transparent 70%)', top:'-120px', right:'0', animation:'float 9s ease-in-out infinite', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', width:'350px', height:'350px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,.05) 0%, transparent 70%)', bottom:'-60px', left:'20%', animation:'pulse-glow 7s ease-in-out infinite', pointerEvents:'none' }} />
-        {/* Vertical rule */}
-        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,4vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.15) 25%, rgba(201,168,76,.15) 75%, transparent)', pointerEvents:'none' }} />
-
-        <div style={{ maxWidth:'900px', position:'relative', zIndex:1 }}>
-          <div className="eyebrow" style={{ color:'rgba(201,168,76,.7)', marginBottom:'clamp(24px,3vw,44px)', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .2s both' }}>
-            Music
+      {/* ══ HERO — Artist profile split ══ */}
+      <section style={{ minHeight:'100vh', display:'grid', gridTemplateColumns:'1fr 48%', background:'#000', position:'relative' }}>
+        {/* LEFT — text panel */}
+        <div style={{ display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)', position:'relative', zIndex:2 }}>
+          <div style={{ animation:'heroIn .9s .2s both' }}>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.45)', marginBottom:'clamp(24px,4vw,48px)' }}>
+              Solomon Stephen · Music
+            </div>
+            <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(56px,9vw,120px)', fontWeight:400, lineHeight:.88, color:'#fff', margin:'0 0 clamp(24px,3vw,40px)', letterSpacing:'-.03em' }}>
+              Sound<br />from the<br /><em style={{ color:'#C9A84C' }}>Secret Place.</em>
+            </h1>
+            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(255,255,255,.38)', maxWidth:'380px', margin:'0 0 clamp(32px,4vw,56px)' }}>
+              Every song is an invitation. Not performance — presence. A doorway into the reality of God that Solomon carries in his own life.
+            </p>
+            {/* Track count pills */}
+            <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
+              {[['07','Original Releases'],['2021','–  2025'],['YouTube','Channel']].map(([a,b]) => (
+                <div key={a} style={{ padding:'8px 16px', border:'1px solid rgba(255,255,255,.08)', background:'rgba(255,255,255,.03)' }}>
+                  <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'18px', color:'#C9A84C', lineHeight:1 }}>{a}</div>
+                  <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,255,255,.3)', marginTop:'3px' }}>{b}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(58px,11vw,124px)', fontWeight:400, lineHeight:.9, color:'#FAF7F2', margin:'0 0 clamp(28px,3.5vw,52px)', letterSpacing:'-.025em' }}>
-            <span className="wc"><span className="wi">Sound</span></span>{' '}
-            <span className="wc"><span className="wi" style={{ animationDelay:'.07s', color:'#C9A84C' }}>from</span></span>{' '}
-            <span className="wc"><span className="wi" style={{ animationDelay:'.14s' }}>the</span></span>
-            <br />
-            <span className="wc"><span className="wi" style={{ animationDelay:'.21s' }}>Secret</span></span>{' '}
-            <span className="wc"><span className="wi" style={{ animationDelay:'.28s' }}>Place.</span></span>
-          </h1>
-          <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.9, color:'rgba(250,247,242,.5)', maxWidth:'460px', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .55s both' }}>
-            Every song is an invitation — a doorway into the reality of God that Solomon carries in his own life. Not performance. Presence.
-          </p>
         </div>
-        {/* Scroll indicator */}
-        <div style={{ position:'absolute', bottom:'clamp(32px,4vw,52px)', right:'clamp(24px,4vw,80px)', display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .85s both' }}>
-          <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.3em', color:'rgba(201,168,76,.45)', textTransform:'uppercase', writingMode:'vertical-rl' }}>Scroll</div>
-          <div style={{ width:'1px', height:'52px', background:'linear-gradient(to bottom, rgba(201,168,76,.45), transparent)' }} />
+
+        {/* RIGHT — full-height photo */}
+        <div style={{ position:'relative', overflow:'hidden' }}>
+          <Image src="/images/gallery-solomon-worship-intense.jpg" alt="Solomon Stephen" fill priority
+            style={{ objectFit:'cover', objectPosition:'center 20%' }} />
+          {/* Left-edge fade into black */}
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, #000 0%, transparent 40%)' }} />
+          {/* Bottom fade */}
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 50%)' }} />
         </div>
+
+        {/* Mobile: stack */}
+        <style>{`@media(max-width:800px){section:first-of-type{grid-template-columns:1fr!important;grid-template-rows:auto 55vw}}`}</style>
       </section>
 
       {/* ══ PREMIUM PLAYER ══ */}
