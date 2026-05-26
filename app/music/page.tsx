@@ -61,7 +61,6 @@ export default function MusicPage() {
   const activeTabRef = useRef<'releases' | 'live'>('releases')
   const liveVideosRef = useRef<any[]>([])
   const libCarRef    = useRef<HTMLDivElement>(null)
-  const liveCarRef   = useRef<HTMLDivElement>(null)
 
   const setRepeat = (v: boolean) => { repeatRef.current = v; _setRepeat(v) }
 
@@ -693,74 +692,26 @@ export default function MusicPage() {
         </div>
       </section>
 
-      {/* ══ LIVE SERVICES — carousel ══ */}
-      {!liveErr && (
-        <section style={{ background:'#111D11', padding:'clamp(96px,10vw,140px) clamp(24px,4vw,80px)' }}>
-          <div style={{ maxWidth:'1280px', margin:'0 auto' }}>
-            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:'24px', marginBottom:'clamp(40px,5vw,64px)' }}>
-              <div>
-                <div className="eyebrow rv" style={{ color:'rgba(201,168,76,.65)', marginBottom:'16px' }}>Archive</div>
-                <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(36px,5.5vw,64px)', fontWeight:400, color:'#FAF7F2', lineHeight:1, margin:0 }}>Live Services</h2>
-              </div>
-              <div className="rv d2" style={{ display:'flex', gap:'10px' }}>
-                <button className="carousel-btn" onClick={() => liveCarRef.current?.scrollBy({ left: -(liveCarRef.current.clientWidth * .9), behavior:'smooth' })} aria-label="Previous">←</button>
-                <button className="carousel-btn" onClick={() => liveCarRef.current?.scrollBy({ left: liveCarRef.current.clientWidth * .9, behavior:'smooth' })} aria-label="Next">→</button>
-              </div>
-            </div>
-
-            {liveVideos.length === 0 ? (
-              <div style={{ display:'flex', gap:'20px', overflow:'hidden' }}>
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} style={{ flex:'0 0 calc(33.333% - 14px)', aspectRatio:'16/9', background:'rgba(255,255,255,.04)', borderRadius:'2px', animation:`pulse-glow 1.8s ease-in-out ${i * .15}s infinite` }} />
-                ))}
-              </div>
-            ) : (
-              <>
-                <div ref={liveCarRef} className="carousel-track">
-                  {liveVideos.map((v: any) => (
-                    <a
-                      key={v.id}
-                      href={`https://www.youtube.com/watch?v=${v.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="live-card carousel-card"
-                    >
-                      <div style={{ position:'relative', aspectRatio:'16/9', overflow:'hidden', borderRadius:'2px', marginBottom:'14px', background:'#0D1B0D' }}>
-                        <Image src={v.thumbnail} alt={v.title} fill style={{ objectFit:'cover', opacity:.82 }} unoptimized />
-                        <div style={{ position:'absolute', top:'10px', left:'10px', background:'rgba(201,168,76,.92)', padding:'3px 9px', fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.16em', textTransform:'uppercase', color:'#0D1B0D', fontWeight:700 }}>
-                          {v.category === 'Other' ? 'Live' : v.category}
-                        </div>
-                        <div className="play-overlay">
-                          <div className="play-circle">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><polygon points="6,3 15,9 6,15" fill="#0D1B0D"/></svg>
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'18px', fontWeight:400, color:'#FAF7F2', marginBottom:'6px', lineHeight:1.3 }}>
-                        {v.title.length > 52 ? v.title.slice(0, 52) + '…' : v.title}
-                      </div>
-                      <div style={{ fontFamily:'DM Sans', fontSize:'10px', color:'rgba(250,247,242,.33)', letterSpacing:'.06em' }}>{v.date}</div>
-                    </a>
-                  ))}
-                </div>
-                <div style={{ display:'flex', justifyContent:'center', marginTop:'clamp(40px,5vw,60px)' }}>
-                  <a
-                    href={CHANNEL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.2em', textTransform:'uppercase', padding:'15px 44px', border:'1px solid rgba(201,168,76,.3)', color:'#C9A84C', textDecoration:'none', transition:'all .35s', display:'inline-flex', alignItems:'center', gap:'12px' }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.3)' }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polygon points="5,3 19,12 5,21"/></svg>
-                    Watch More on YouTube
-                  </a>
-                </div>
-              </>
-            )}
-          </div>
-        </section>
-      )}
+      {/* ══ LIVE ARCHIVE CTA ══ */}
+      <section style={{ background:'#111D11', padding:'clamp(64px,8vw,100px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(201,168,76,.1)' }}>
+        <div style={{ maxWidth:'1280px', margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', textAlign:'center', gap:'clamp(20px,3vw,28px)' }}>
+          <div style={{ fontFamily:'DM Sans', fontSize:'10px', letterSpacing:'.35em', textTransform:'uppercase', color:'rgba(201,168,76,.6)' }}>Archive</div>
+          <p style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(26px,4vw,42px)', fontWeight:400, color:'#FAF7F2', margin:0, lineHeight:1.15 }}>
+            Every service. Every moment. On YouTube.
+          </p>
+          <a
+            href={CHANNEL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.2em', textTransform:'uppercase', padding:'16px 48px', border:'1px solid rgba(201,168,76,.35)', color:'#C9A84C', textDecoration:'none', transition:'all .35s', display:'inline-flex', alignItems:'center', gap:'12px', marginTop:'8px' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.08)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.35)' }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 00.5 6.2 31.2 31.2 0 000 12a31.2 31.2 0 00.5 5.8 3 3 0 002.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 002.1-2.1A31.2 31.2 0 0024 12a31.2 31.2 0 00-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+            Explore the full archive on YouTube
+          </a>
+        </div>
+      </section>
 
       <Footer />
     </main>
