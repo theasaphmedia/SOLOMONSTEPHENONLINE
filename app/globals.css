@@ -463,55 +463,55 @@ body:has(button:hover) .cursor-ring {
 }
 
 /* ═══════════════════════════════════════════════════════
-   MOBILE — All animations disabled. Everything visible.
-   Mobile is the primary experience. No invisible content.
+   MOBILE — Quality animations. Faster, lighter, no large shifts.
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* Kill every scroll-reveal variant used across the site */
-  .rv,
-  .rv-left,
-  .rv-right,
-  .rv-scale,
-  .rv-up,
-  .rv-fade,
-  .rv-in,
-  .is-visible,
-  .vis {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
+  /* Lighter mobile reveals — subtle fade-up, no stagger */
+  .rv, .rv-up, .rv-fade {
+    opacity: 0;
+    transform: translateY(14px) !important;
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out !important;
+  }
+  .rv-left {
+    opacity: 0;
+    transform: translateY(14px) !important;
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out !important;
+  }
+  .rv-right {
+    opacity: 0;
+    transform: translateY(14px) !important;
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out !important;
+  }
+  .rv-scale {
+    opacity: 0;
+    transform: scale(0.97) !important;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out !important;
   }
 
-  /* Elements that haven't yet received their reveal class
-     still need to be visible on mobile */
-  .rv:not(.is-visible):not(.vis):not(.rv-in),
-  .rv-left:not(.is-visible):not(.rv-in),
-  .rv-right:not(.is-visible):not(.rv-in),
-  .rv-scale:not(.is-visible):not(.rv-in),
-  .rv-up:not(.is-visible):not(.rv-in),
-  .rv-fade:not(.is-visible):not(.rv-in) {
+  /* Revealed state */
+  .rv.is-visible, .rv.vis, .rv.rv-in,
+  .rv-left.is-visible, .rv-left.vis, .rv-left.rv-in,
+  .rv-right.is-visible, .rv-right.vis, .rv-right.rv-in,
+  .rv-scale.is-visible, .rv-scale.vis, .rv-scale.rv-in,
+  .rv-up.is-visible, .rv-up.vis, .rv-up.rv-in,
+  .rv-fade.is-visible, .rv-fade.vis {
     opacity: 1 !important;
     transform: none !important;
   }
 
-  /* Word-clip animations — show immediately */
+  /* No stagger delays on mobile — all at once */
+  .d1, .d2, .d3, .d4, .d5, .d6, .d7, .d8 {
+    transition-delay: 0ms !important;
+    animation-delay: 0ms !important;
+  }
+
+  /* Word clips — instant */
   .wi {
     animation-duration: 0.001ms !important;
     animation-delay: 0.001ms !important;
   }
 
-  /* Page-entry animations — keep but make instant */
-  .page-entry,
-  [style*="animation: heroIn"],
-  [style*="animation:heroIn"] {
-    animation-duration: 0.001ms !important;
-    animation-delay: 0.001ms !important;
-  }
-
-  /* Stagger delays — zero them all out */
-  .d1, .d2, .d3, .d4, .d5, .d6, .d7, .d8 {
-    transition-delay: 0ms !important;
-    animation-delay: 0ms !important;
-  }
+  /* Cursor — hidden on touch */
+  .cursor-dot, .cursor-ring { display: none !important; }
+  body { cursor: auto !important; }
 }
