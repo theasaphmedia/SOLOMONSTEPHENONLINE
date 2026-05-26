@@ -11,20 +11,19 @@ declare global {
 interface Track {
   id: string
   title: string
-  year: string
   scripture: string
   desc: string
   noEmbed?: boolean
 }
 
 const releaseTracks: Track[] = [
-  { id: 'TnEp0kiJBfI', title: 'Latest Release',  year: '2025', scripture: '',             desc: 'The newest sound from Solomon Stephen — a fresh move of God captured in worship.' },
-  { id: 'c8KAM_l151s', title: 'CROSSOVER',        year: '2024', scripture: 'Psalm 23',     desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
-  { id: 'cB0LxEjVaIs', title: 'The Mighty God',   year: '2023', scripture: 'Isaiah 9:6',   desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.', noEmbed: true },
-  { id: 'EPA7cFLHg2c', title: 'AIKU',             year: '2023', scripture: 'Rev 1:17–18',  desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
-  { id: '6TYabI5QCO4', title: 'Awesome God',      year: '2022', scripture: 'Psalm 48:1',   desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
-  { id: 'q1-eDXBpMkY', title: 'Alagbada Ina',     year: '2022', scripture: 'Exodus 3:2',   desc: 'The God clothed in fire — a Yoruba-infused anthem from the burning bush encounter.', noEmbed: true },
-  { id: 'Ao_ZC3oHi9c', title: 'There Is No One',  year: '2021', scripture: 'Isaiah 46:9',  desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.', noEmbed: true },
+  { id: 'TnEp0kiJBfI', title: 'Latest Release', scripture: '',             desc: 'The newest sound from Solomon Stephen — a fresh move of God captured in worship.' },
+  { id: 'c8KAM_l151s', title: 'CROSSOVER', scripture: 'Psalm 23',     desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
+  { id: 'cB0LxEjVaIs', title: 'The Mighty God', scripture: 'Isaiah 9:6',   desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.', noEmbed: true },
+  { id: 'EPA7cFLHg2c', title: 'AIKU', scripture: 'Rev 1:17–18',  desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
+  { id: '6TYabI5QCO4', title: 'Awesome God', scripture: 'Psalm 48:1',   desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
+  { id: 'q1-eDXBpMkY', title: 'Alagbada Ina', scripture: 'Exodus 3:2',   desc: 'The God clothed in fire — a Yoruba-infused anthem from the burning bush encounter.', noEmbed: true },
+  { id: 'Ao_ZC3oHi9c', title: 'There Is No One', scripture: 'Isaiah 46:9',  desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.', noEmbed: true },
 ]
 
 const CHANNEL = 'https://www.youtube.com/@thesolomonsteph'
@@ -73,7 +72,6 @@ export default function MusicPage() {
     : liveVideos.map((v: any) => ({
         id: v.id,
         title: v.title,
-        year: String(v.date ?? '').slice(0, 4),
         scripture: v.category === 'Other' ? 'Live' : (v.category ?? 'Live'),
         desc: '',
       }))
@@ -379,8 +377,8 @@ export default function MusicPage() {
       {/* ══ HERO — full-bleed, home-style ══ */}
       <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
         {/* Full-bleed photo — objectPosition pushes up to cut excess headroom */}
-        <Image src="/images/gallery-solomon-standing-deep.jpg" alt="Solomon Stephen" fill priority
-          style={{ objectFit:'cover', objectPosition:'50% 65%' }} />
+        <Image src="/images/gallery-solomon-worship-raise.jpg" alt="Solomon Stephen" fill priority
+          style={{ objectFit:'cover', objectPosition:'50% 20%' }} />
         {/* Bottom-to-top fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
         {/* Left-side fade */}
@@ -503,7 +501,7 @@ export default function MusicPage() {
                   {displayTitle}
                 </h2>
                 <div style={{ fontFamily:'DM Sans', fontSize:'11px', letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(201,168,76,.6)' }}>
-                  {currentTrack.scripture ? `${currentTrack.scripture} · ` : ''}{currentTrack.year}
+                  {currentTrack.scripture || ''}
                 </div>
                 {currentTrack.desc && (
                   <p style={{ fontFamily:'DM Sans', fontSize:'12px', lineHeight:1.7, color:'rgba(250,247,242,.28)', margin:'10px 0 0', maxWidth:'500px' }}>
@@ -605,10 +603,7 @@ export default function MusicPage() {
                   </div>
                 </div>
 
-                {/* Year */}
-                <div style={{ fontFamily:'DM Sans', fontSize:'10px', color:'rgba(250,247,242,.18)', flexShrink:0 }}>
-                  {String(t.year).slice(0, 4)}
-                </div>
+
               </div>
             ))}
 
@@ -679,7 +674,7 @@ export default function MusicPage() {
                     </div>
                   </div>
                   <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'20px', fontWeight:400, color:'#0D1B0D', marginBottom:'4px', lineHeight:1.2 }}>{trackTitle}</div>
-                  <div style={{ fontFamily:'DM Sans', fontSize:'11px', color:'#8A9A8A' }}>{t.scripture ? `${t.scripture} · ` : ''}{t.year}</div>
+                  <div style={{ fontFamily:'DM Sans', fontSize:'11px', color:'#8A9A8A' }}>{t.scripture || ''}</div>
                 </a>
               )
             })}

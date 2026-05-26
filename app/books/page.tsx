@@ -10,7 +10,6 @@ const books = [
     num: '01',
     title: 'The Cost of Ignorance',
     subtitle: 'A Clarion Call',
-    year: '2021',
     desc: 'In a generation drowning in information yet starving for truth, ignorance is not bliss — it is peril. This book is a prophetic summons: to pursue knowledge of God with urgency, rigour, and reverence. Not optional. Not casual. Essential.',
     theme: 'Knowledge · Urgency · Truth',
     href: 'https://selar.com/v8561k6070',
@@ -21,7 +20,6 @@ const books = [
     num: '02',
     title: 'Sons Not Slaves',
     subtitle: 'March Devotional',
-    year: '2023',
     desc: 'Thirty-one days of daily encounter designed to anchor believers in the identity and inheritance that Christ secured. Not performance. Not striving. Sonship — the unshakeable foundation on which every other thing must stand.',
     theme: 'Identity · Inheritance · Sonship',
     href: 'https://selar.com/41x076wbk1',
@@ -32,7 +30,6 @@ const books = [
     num: '03',
     title: 'Sons Not Slaves',
     subtitle: 'April Devotional',
-    year: '2023',
     desc: 'The continuation of the Sons Not Slaves series — deeper into the revelation of who you are in the Father. April extends the exploration: what does a son do? How does a son pray? How does a son carry the Kingdom? Day by day, word by word.',
     theme: 'Sonship · Kingdom · Daily Walk',
     href: 'https://selar.com/8z43781b2n',
@@ -43,7 +40,6 @@ const books = [
     num: '04',
     title: 'Go In This Thy Might',
     subtitle: 'Coming Soon',
-    year: '',
     desc: "God's presence forms and equips — but dependence must never transfer from the Giver to what the Giver gave. A devotional on carrying the power of encounter into the field without making the encounter itself an idol.",
     theme: 'Calling · Dependence · Courage',
     href: '',
@@ -99,119 +95,33 @@ export default function BooksPage() {
         .book-strip:hover { background:rgba(201,168,76,0.04); }
       `}</style>
 
-      {/* ── Hero — Editorial book showcase ── */}
-      <section style={{ minHeight:'100vh', background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'center', position:'relative', overflow:'hidden', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,80px) clamp(48px,6vw,80px)' }}>
+      {/* ── Hero ── */}
+      <section style={{ minHeight:'100vh', background:'#0A0A0A', display:'flex', flexDirection:'column', justifyContent:'center', position:'relative', overflow:'hidden', padding:'clamp(100px,12vw,140px) clamp(24px,4vw,80px) clamp(64px,8vw,100px)' }}>
 
         {/* Big background number */}
         <div style={{ position:'absolute', right:'-2%', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(200px,30vw,420px)', fontWeight:400, color:'rgba(201,168,76,0.04)', lineHeight:1, pointerEvents:'none', userSelect:'none', letterSpacing:'-.05em' }}>04</div>
 
-        <div style={{ maxWidth:'1280px', margin:'0 auto', width:'100%', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(32px,6vw,100px)', alignItems:'center', position:'relative', zIndex:1 }}>
+        {/* Subtle vertical rule */}
+        <div style={{ position:'absolute', left:'clamp(24px,4vw,80px)', top:'0', bottom:'0', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.12) 30%, rgba(201,168,76,.12) 70%, transparent)', pointerEvents:'none' }} />
 
-          {/* LEFT — text */}
-          <div style={{ animation:'heroIn .9s .15s both' }}>
-            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'clamp(28px,4vw,52px)' }}>
-              Solomon Stephen · Books
-            </div>
-            <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(52px,8.5vw,108px)', fontWeight:400, lineHeight:.88, color:'#fff', margin:'0 0 clamp(20px,3vw,36px)', letterSpacing:'-.025em' }}>
-              Words<br />That<br /><em style={{ color:'#C9A84C' }}>Outlast.</em>
-            </h1>
-            <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.9, color:'rgba(255,255,255,.35)', maxWidth:'380px', margin:'0 0 clamp(28px,4vw,48px)' }}>
-              Solomon Stephen writes not to fill pages — but to recalibrate believers to the truth of who they are. Rooted in Hebrew and Greek. Each book, a stake in the ground.
-            </p>
-            <a href="https://selar.com/showlove/solomonstephen" target="_blank" rel="noopener noreferrer"
-              style={{ display:'inline-block', fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.2em', textTransform:'uppercase', padding:'14px 32px', border:'1px solid rgba(201,168,76,.4)', color:'#C9A84C', textDecoration:'none', transition:'all .3s' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.1)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.4)' }}
-            >Browse on Selar →</a>
+        <div style={{ maxWidth:'860px', position:'relative', zIndex:1, animation:'heroIn .9s .15s both' }}>
+          <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'clamp(28px,4vw,52px)', display:'flex', alignItems:'center', gap:'14px' }}>
+            <span style={{ display:'inline-block', width:'28px', height:'1px', background:'rgba(201,168,76,.4)' }} />
+            Solomon Stephen · Books
           </div>
-
-          {/* RIGHT — Editorial featured book + theme words */}
-          <div style={{ position:'relative', animation:'heroIn 1s .4s both', display:'flex', flexDirection:'column', gap:'0' }}>
-
-            {/* Large decorative number — background */}
-            <div style={{ position:'absolute', top:'-5%', right:'-4%', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(160px,22vw,280px)', fontWeight:300, lineHeight:1, color:'rgba(201,168,76,.05)', pointerEvents:'none', userSelect:'none', letterSpacing:'-.04em', zIndex:0 }}>IV</div>
-
-            {/* Featured book — large */}
-            <div style={{ position:'relative', zIndex:1, display:'flex', gap:'clamp(24px,3vw,40px)', alignItems:'flex-start' }}>
-              <div style={{ width:'clamp(140px,18vw,220px)', flexShrink:0, position:'relative' }}>
-                <div style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden', boxShadow:'0 32px 80px rgba(0,0,0,.6), -8px 8px 32px rgba(0,0,0,.3)', transition:'transform .6s cubic-bezier(.16,1,.3,1)' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform='translateY(-10px) rotate(-1deg)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform='none' }}
-                >
-                  <Image src="/images/book-cost-of-ignorance.png" alt="The Cost of Ignorance" fill style={{ objectFit:'cover', objectPosition:'top' }} />
-                </div>
-                {/* Gold spine accent */}
-                <div style={{ position:'absolute', left:'-4px', top:'8px', bottom:'8px', width:'3px', background:'linear-gradient(to bottom, #C9A84C, rgba(201,168,76,.3))', borderRadius:'2px' }} />
-              </div>
-
-              {/* Book meta + quote */}
-              <div style={{ flex:1, paddingTop:'clamp(8px,1.5vw,20px)' }}>
-                <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.3em', textTransform:'uppercase', color:'rgba(201,168,76,.5)', marginBottom:'12px' }}>Featured · 2021</div>
-                <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(20px,2.5vw,30px)', fontWeight:400, color:'#fff', lineHeight:1.1, marginBottom:'16px' }}>The Cost of<br />Ignorance</div>
-                <div style={{ width:'32px', height:'1px', background:'rgba(201,168,76,.4)', marginBottom:'16px' }} />
-                <p style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(13px,1.4vw,16px)', fontStyle:'italic', lineHeight:1.75, color:'rgba(255,255,255,.38)', margin:'0 0 20px' }}>
-                  "Ignorance is not bliss — it is peril."
-                </p>
-                <a href="https://selar.com/v8561k6070" target="_blank" rel="noopener noreferrer"
-                  style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.7)', textDecoration:'none', display:'inline-flex', alignItems:'center', gap:'8px', transition:'color .3s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,.7)' }}
-                >Read on Selar →</a>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div style={{ height:'1px', background:'rgba(255,255,255,.06)', margin:'clamp(28px,3.5vw,44px) 0' }} />
-
-            {/* Theme words — typographic art */}
-            <div style={{ position:'relative', zIndex:1 }}>
-              <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.3em', textTransform:'uppercase', color:'rgba(201,168,76,.35)', marginBottom:'18px' }}>Themes across all titles</div>
-              <div style={{ display:'flex', flexWrap:'wrap', gap:'clamp(8px,1.2vw,14px)', alignItems:'baseline' }}>
-                {[
-                  { word:'Truth',       size:'clamp(22px,3vw,36px)', weight:300, gold:true  },
-                  { word:'Sonship',     size:'clamp(16px,2vw,24px)', weight:400, gold:false },
-                  { word:'Knowledge',   size:'clamp(26px,3.5vw,42px)',weight:300, gold:false },
-                  { word:'Identity',    size:'clamp(14px,1.6vw,20px)',weight:400, gold:true  },
-                  { word:'Covenant',    size:'clamp(18px,2.2vw,28px)',weight:300, gold:false },
-                  { word:'Calling',     size:'clamp(20px,2.8vw,34px)',weight:400, gold:true  },
-                  { word:'Inheritance', size:'clamp(13px,1.5vw,18px)',weight:300, gold:false },
-                  { word:'Surrender',   size:'clamp(16px,2vw,24px)', weight:300, gold:false },
-                  { word:'Kingdom',     size:'clamp(22px,3vw,36px)', weight:300, gold:true  },
-                ].map(({ word, size, weight, gold }) => (
-                  <span key={word} style={{
-                    fontFamily:'Cormorant Garamond,serif',
-                    fontSize: size,
-                    fontWeight: weight,
-                    color: gold ? 'rgba(201,168,76,.75)' : 'rgba(255,255,255,.18)',
-                    lineHeight:1,
-                    letterSpacing:'-.01em',
-                    transition:'color .3s',
-                    cursor:'default',
-                  }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = gold ? '#C9A84C' : 'rgba(255,255,255,.45)' }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = gold ? 'rgba(201,168,76,.75)' : 'rgba(255,255,255,.18)' }}
-                  >{word}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Other titles count */}
-            <div style={{ marginTop:'clamp(20px,2.5vw,32px)', display:'flex', alignItems:'center', gap:'12px' }}>
-              {['/images/book-sons-not-slaves-march.png', '/images/book-sons-not-slaves-april.png', '/images/solomon-cream-suit-books.png'].map((src, i) => (
-                <div key={i} style={{ width:'36px', aspectRatio:'3/4', position:'relative', overflow:'hidden', opacity:.55, borderRadius:'1px', transition:'opacity .3s' }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='.55' }}
-                >
-                  <Image src={src} alt="Book" fill style={{ objectFit:'cover', objectPosition:'top' }} />
-                </div>
-              ))}
-              <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(255,255,255,.2)', marginLeft:'4px' }}>+3 more titles</span>
-            </div>
-
-          </div>
+          <h1 style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(64px,11vw,140px)', fontWeight:400, lineHeight:.88, color:'#fff', margin:'0 0 clamp(24px,3.5vw,44px)', letterSpacing:'-.03em' }}>
+            Words<br />That<br /><em style={{ color:'#C9A84C' }}>Outlast.</em>
+          </h1>
+          <div style={{ width:'48px', height:'1px', background:'rgba(201,168,76,.35)', marginBottom:'clamp(24px,3.5vw,40px)' }} />
+          <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.9, color:'rgba(255,255,255,.38)', maxWidth:'480px', margin:'0 0 clamp(36px,5vw,60px)' }}>
+            Solomon Stephen writes not to fill pages — but to recalibrate believers to the truth of who they are. Rooted in Hebrew and Greek. Each book, a stake in the ground.
+          </p>
+          <a href="https://selar.com/showlove/solomonstephen" target="_blank" rel="noopener noreferrer"
+            style={{ display:'inline-block', fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.2em', textTransform:'uppercase', padding:'16px 40px', border:'1px solid rgba(201,168,76,.4)', color:'#C9A84C', textDecoration:'none', transition:'all .3s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,.1)'; (e.currentTarget as HTMLElement).style.borderColor='#C9A84C' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='transparent'; (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.4)' }}
+          >Browse on Selar →</a>
         </div>
-
-        <style>{`@media(max-width:700px){section:first-of-type>div>div:last-child{grid-template-columns:1fr 1fr}section:first-of-type>div{grid-template-columns:1fr!important}}`}</style>
       </section>
 
       {/* ── Grid of Books ── */}
@@ -233,7 +143,7 @@ export default function BooksPage() {
                   </div>
                 </div>
                 <div style={{ padding:'clamp(20px,2.5vw,32px)' }}>
-                  <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'#C9A84C', marginBottom:'8px' }}>{b.num} · {b.year}</div>
+                  <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'#C9A84C', marginBottom:'8px' }}>{b.num} · </div>
                   <h3 style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(22px,2.5vw,30px)', fontWeight:400, color:'#0D1B0D', lineHeight:1.2, marginBottom:'6px' }}>{b.title}</h3>
                   <div style={{ fontFamily:'DM Sans, sans-serif', fontSize:'11px', color:'#8A9A8A', marginBottom:'16px', letterSpacing:'0.06em' }}>{b.subtitle}</div>
                   <div style={{ width:'32px', height:'1px', background:'#C9A84C', marginBottom:'16px', transition:'width 0.5s cubic-bezier(0.16,1,0.3,1)', ...(hovered === i ? { width:'100%' } : {}) }} />
