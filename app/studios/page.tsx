@@ -55,24 +55,12 @@ export default function StudiosPage() {
   const [openFaq,    setOpenFaq]    = useState<number | null>(null)
   const [svcHover,   setSvcHover]   = useState<number | null>(null)
   const [capHover,   setCapHover]   = useState<number | null>(null)
-  const [floatShow,  setFloatShow]  = useState(false)
 
   /* booking state */
   const [bService,   setBService]   = useState('')
   const [bNotes,     setBNotes]     = useState('')
 
-  /* scroll observer for floating button */
-  useEffect(() => {
-    const handler = () => {
-      const top = bookRef.current?.getBoundingClientRect().top ?? 9999
-      const bot = bookRef.current?.getBoundingClientRect().bottom ?? 0
-      const inView = top < window.innerHeight && bot > 0
-      setFloatShow(window.scrollY > 600 && !inView)
-    }
-    window.addEventListener('scroll', handler, { passive: true })
-    handler()
-    return () => window.removeEventListener('scroll', handler)
-  }, [])
+
 
   /* intersection observers for reveal */
   useEffect(() => {
@@ -145,9 +133,7 @@ export default function StudiosPage() {
         .btn-wa:hover{background:#1ebe5a;transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,211,102,.3)}
         .btn-em{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;text-transform:uppercase;padding:16px 28px;background:transparent;color:#C9A84C;border:1px solid rgba(201,168,76,.3);cursor:pointer;font-weight:600;transition:all .3s;border-radius:2px;display:inline-flex;align-items:center;gap:9px}
         .btn-em:hover{background:rgba(201,168,76,.07);border-color:#C9A84C;transform:translateY(-2px)}
-        /* floating book */
-        .float-book{position:fixed;bottom:32px;right:32px;z-index:90;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.22em;text-transform:uppercase;padding:13px 28px;background:#C9A84C;color:#09090E;border:none;cursor:pointer;font-weight:700;border-radius:32px;box-shadow:0 8px 32px rgba(201,168,76,.25);transition:all .4s cubic-bezier(.16,1,.3,1);animation:pulseGold 3s infinite}
-        .float-book:hover{background:#E5C76B;transform:translateY(-3px) scale(1.04);box-shadow:0 12px 40px rgba(201,168,76,.35)}
+
         /* gallery */
         .gal-frame{position:relative;overflow:hidden;border-radius:2px}
         .gal-frame img{transition:transform 1s cubic-bezier(.16,1,.3,1)}
@@ -158,7 +144,6 @@ export default function StudiosPage() {
           .gear-grid{grid-template-columns:1fr!important}
           .gear-photo{display:none!important}
           .svc-grid{grid-template-columns:1fr 1fr!important}
-          .float-book{bottom:20px;right:20px;padding:11px 22px}
           .gal-masonry{grid-template-columns:1fr 1fr!important;grid-template-rows:auto!important}
           .gal-big{grid-column:span 2!important;grid-row:auto!important}
         }
@@ -292,8 +277,8 @@ export default function StudiosPage() {
 
           {/* featured gear photo */}
           <div className="gear-photo" style={{ position:'relative', marginLeft:'48px', borderRadius:'2px', overflow:'hidden' }}>
-            <Image src="/images/twn-studio-drums.jpg" alt="Studio drum kit" fill style={{ objectFit:'cover', objectPosition:'center 20%' }} />
-            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(9,9,14,.3) 0%, transparent 60%)' }} />
+            <Image src="/images/twn-studio-drums.jpg" alt="Studio drum kit" fill style={{ objectFit:'cover', objectPosition:'center 60%' }} />
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(9,9,14,.15) 0%, transparent 50%)' }} />
             {/* gear badge */}
             <div style={{ position:'absolute', bottom:'24px', left:'24px', background:'rgba(9,9,14,.8)', backdropFilter:'blur(12px)', border:'1px solid rgba(201,168,76,.2)', padding:'12px 18px', borderRadius:'2px' }}>
               <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(201,168,76,.7)', marginBottom:'4px' }}>Live Percussion</div>
@@ -485,12 +470,7 @@ export default function StudiosPage() {
         </div>
       </section>
 
-      {/* FLOATING BOOK */}
-      {floatShow && (
-        <button className="float-book" onClick={scrollToBook}>
-          Book a Session
-        </button>
-      )}
+
 
       <Footer />
     </main>
