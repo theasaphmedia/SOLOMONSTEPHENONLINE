@@ -94,7 +94,7 @@ export default function AboutPage() {
       <section style={{ background:'#080F08', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,5vw,80px) clamp(64px,8vw,110px)', position:'relative', overflow:'hidden' }}>
         {/* Background photo */}
         <div style={{ position:'absolute', inset:0 }}>
-          <Image src="/images/gallery-solomon-standing-deep.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 18%', opacity:0.55 }} priority />
+          <Image src="/images/gallery-solomon-worship-raise.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 25%', opacity:0.6 }} priority />
         </div>
         {/* Gradient layers */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #080F08 30%, rgba(8,15,8,.72) 58%, rgba(8,15,8,.25) 100%)' }} />
@@ -103,8 +103,6 @@ export default function AboutPage() {
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 50% 60% at 12% 88%, rgba(201,168,76,.08) 0%, transparent 60%)', pointerEvents:'none' }} />
         {/* Animated orbs */}
         <div style={{ position:'absolute', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 70%)', top:'-80px', right:'8%', animation:'float 10s ease-in-out infinite', pointerEvents:'none' }} />
-        {/* Vertical accent line */}
-        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,5vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.14) 30%, rgba(201,168,76,.14) 70%, transparent)', pointerEvents:'none' }} />
         {/* Horizontal accent line */}
         <div style={{ position:'absolute', left:'clamp(24px,5vw,80px)', right:0, bottom:'clamp(64px,8vw,110px)', height:'1px', background:'linear-gradient(to right, rgba(201,168,76,.2), transparent 80%)', pointerEvents:'none' }} />
 
@@ -198,8 +196,7 @@ export default function AboutPage() {
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 5% 50%, rgba(201,168,76,.06) 0%, transparent 60%)', pointerEvents:'none' }} />
         {/* Ghost watermark */}
         <div style={{ position:'absolute', right:'-0.04em', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(160px,22vw,320px)', fontWeight:700, color:'rgba(201,168,76,.04)', lineHeight:1, pointerEvents:'none', userSelect:'none', whiteSpace:'nowrap' }}>TWN</div>
-        {/* Decorative lines */}
-        <div style={{ position:'absolute', top:'20%', left:'clamp(24px,5vw,80px)', width:'1px', height:'60%', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.1), transparent)', pointerEvents:'none' }} />
+        {/* Decorative lines removed */}
         <div style={{ maxWidth:'860px', margin:'0 auto', position:'relative', zIndex:1 }}>
           <div className="rv" style={{ display:'flex', gap:'clamp(16px,2vw,32px)', marginBottom:'clamp(24px,3vw,40px)', alignItems:'flex-start' }}>
             <div style={{ width:'2px', background:'#C9A84C', flexShrink:0, alignSelf:'stretch', minHeight:'60px', opacity:.55 }} />

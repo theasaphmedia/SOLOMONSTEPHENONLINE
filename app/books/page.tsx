@@ -120,8 +120,6 @@ export default function BooksPage() {
         {/* Big watermark number */}
         <div style={{ position:'absolute', right:'-2%', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(200px,30vw,420px)', fontWeight:400, color:'rgba(201,168,76,0.03)', lineHeight:1, pointerEvents:'none', userSelect:'none', letterSpacing:'-.05em', zIndex:5 }}>04</div>
 
-        {/* Vertical rule */}
-        <div style={{ position:'absolute', left:'clamp(24px,4vw,80px)', top:0, bottom:0, width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.12) 30%, rgba(201,168,76,.12) 70%, transparent)', pointerEvents:'none', zIndex:5 }} />
 
         {/* Text — anchored bottom, font sized to fit without overflow */}
         <div style={{ position:'absolute', inset:0, zIndex:6, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(48px,6vw,72px)', animation:'heroIn .9s .15s both' }}>
