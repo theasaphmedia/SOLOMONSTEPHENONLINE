@@ -99,7 +99,7 @@ export default function BooksPage() {
       <section style={{ height:'100vh', minHeight:'640px', background:'#050A05', position:'relative', overflow:'hidden' }}>
 
         {/* Full-bleed background */}
-        <Image src="/images/books-hero-bg.png" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center center' }} />
+        <Image src="/images/books-hero-bg-v2.png" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center center' }} />
 
         {/* Gradients — same weights as music/gallery */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.97) 0%, rgba(5,10,5,0.80) 28%, rgba(5,10,5,0.30) 58%, transparent 82%)', zIndex:1 }} />
