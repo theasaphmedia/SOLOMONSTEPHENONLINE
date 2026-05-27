@@ -95,28 +95,20 @@ export default function BooksPage() {
         .book-strip:hover { background:rgba(201,168,76,0.04); }
       `}</style>
 
-      {/* ── Hero — typographic, no photo of Solomon ── */}
+      {/* ── Hero ── */}
       <section style={{ height:'100vh', minHeight:'640px', background:'#050A05', position:'relative', overflow:'hidden' }}>
 
-        {/* Floating book covers — visible background art */}
-        <div style={{ position:'absolute', right:'5%', top:'6%', width:'clamp(160px,20vw,280px)', aspectRatio:'3/4', zIndex:1, opacity:0.65, transform:'rotate(9deg)' }}>
-          <Image src="/images/book-cost-of-ignorance.png" alt="" fill style={{ objectFit:'contain' }} />
-        </div>
-        <div style={{ position:'absolute', right:'26%', top:'18%', width:'clamp(130px,16vw,230px)', aspectRatio:'3/4', zIndex:0, opacity:0.42, transform:'rotate(-6deg)' }}>
-          <Image src="/images/book-sons-not-slaves-march.png" alt="" fill style={{ objectFit:'contain' }} />
-        </div>
-        <div style={{ position:'absolute', right:'10%', top:'50%', width:'clamp(140px,17vw,250px)', aspectRatio:'3/4', zIndex:2, opacity:0.32, transform:'rotate(4deg)' }}>
-          <Image src="/images/book-sons-not-slaves-april.png" alt="" fill style={{ objectFit:'contain' }} />
-        </div>
+        {/* Full-bleed background */}
+        <Image src="/images/books-hero-bg.png" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center center' }} />
 
         {/* Gradients — same weights as music/gallery */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.97) 0%, rgba(5,10,5,0.80) 28%, rgba(5,10,5,0.30) 58%, transparent 82%)', zIndex:3 }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(5,10,5,0.88) 0%, rgba(5,10,5,0.52) 32%, rgba(5,10,5,0.10) 58%, transparent 75%)', zIndex:3 }} />
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(5,10,5,0.65) 0%, transparent 100%)', zIndex:4 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.97) 0%, rgba(5,10,5,0.80) 28%, rgba(5,10,5,0.30) 58%, transparent 82%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(5,10,5,0.88) 0%, rgba(5,10,5,0.52) 32%, rgba(5,10,5,0.10) 58%, transparent 75%)', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(5,10,5,0.65) 0%, transparent 100%)', zIndex:2 }} />
 
 
-        {/* Text — anchored bottom, font sized to fit without overflow */}
-        <div style={{ position:'absolute', inset:0, zIndex:6, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(48px,6vw,72px)', animation:'heroIn .9s .15s both' }}>
+        {/* Text */}
+        <div style={{ position:'absolute', inset:0, zIndex:3, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(48px,6vw,72px)', animation:'heroIn .9s .15s both' }}>
           <div style={{ maxWidth:'640px' }}>
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'clamp(20px,3vw,36px)', display:'flex', alignItems:'center', gap:'14px' }}>
               <span style={{ display:'inline-block', width:'28px', height:'1px', background:'rgba(201,168,76,.4)' }} />
