@@ -91,22 +91,17 @@ export default function AboutPage() {
       `}</style>
 
       {/* ══ HERO ══ */}
-      <section style={{ background:'#080F08', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,5vw,80px) clamp(64px,8vw,110px)', position:'relative', overflow:'hidden' }}>
-        {/* Background photo */}
-        <div style={{ position:'absolute', inset:0 }}>
-          <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 20%', opacity:0.85 }} priority />
-        </div>
-        {/* Gradient layers */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #080F08 20%, rgba(8,15,8,.6) 52%, rgba(8,15,8,.15) 100%)' }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(105deg, rgba(8,15,8,.7) 0%, rgba(8,15,8,.3) 50%, transparent 100%)' }} />
-        {/* Gold glow */}
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 50% 60% at 12% 88%, rgba(201,168,76,.08) 0%, transparent 60%)', pointerEvents:'none' }} />
-        {/* Animated orbs */}
-        <div style={{ position:'absolute', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 70%)', top:'-80px', right:'8%', animation:'float 10s ease-in-out infinite', pointerEvents:'none' }} />
-        {/* Horizontal accent line */}
-        <div style={{ position:'absolute', left:'clamp(24px,5vw,80px)', right:0, bottom:'clamp(64px,8vw,110px)', height:'1px', background:'linear-gradient(to right, rgba(201,168,76,.2), transparent 80%)', pointerEvents:'none' }} />
+      <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
+        {/* Full-bleed photo */}
+        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 20%' }} />
+        {/* Bottom-to-top fade */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
+        {/* Left-side fade */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.88) 0%, rgba(7,13,7,0.52) 32%, rgba(7,13,7,0.10) 58%, transparent 75%)', zIndex:1 }} />
+        {/* Top navbar fade */}
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
 
-        <div style={{ position:'relative', zIndex:2, maxWidth:'920px' }}>
+        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)' }}><div style={{ maxWidth:'920px' }}>
           <div className="eyebrow" style={{ color:'rgba(201,168,76,.6)', marginBottom:'clamp(28px,3.5vw,52px)', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .25s both' }}>
             The Story of Solomon Stephen
           </div>
@@ -121,7 +116,7 @@ export default function AboutPage() {
               <span key={tag} style={{ fontFamily:'DM Sans', fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(250,247,242,.55)', border:'1px solid rgba(250,247,242,.12)', padding:'7px 16px', borderRadius:'1px' }}>{tag}</span>
             ))}
           </div>
-        </div>
+        </div></div>
 
         <div style={{ position:'absolute', bottom:'clamp(32px,4vw,52px)', right:'clamp(24px,5vw,80px)', zIndex:2, display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .85s both' }}>
           <span style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(250,247,242,.22)', writingMode:'vertical-rl' }}>Scroll</span>
