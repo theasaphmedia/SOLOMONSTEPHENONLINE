@@ -98,27 +98,21 @@ export default function BooksPage() {
       {/* ── Hero — typographic, no photo of Solomon ── */}
       <section style={{ height:'100vh', minHeight:'640px', background:'#050A05', position:'relative', overflow:'hidden' }}>
 
-        {/* Floating book covers — decorative background art */}
-        <div style={{ position:'absolute', right:'6%', top:'8%', width:'clamp(130px,17vw,240px)', aspectRatio:'3/4', zIndex:1, opacity:0.22, transform:'rotate(9deg)' }}>
+        {/* Floating book covers — visible background art */}
+        <div style={{ position:'absolute', right:'5%', top:'6%', width:'clamp(160px,20vw,280px)', aspectRatio:'3/4', zIndex:1, opacity:0.65, transform:'rotate(9deg)' }}>
           <Image src="/images/book-cost-of-ignorance.png" alt="" fill style={{ objectFit:'contain' }} />
         </div>
-        <div style={{ position:'absolute', right:'24%', top:'22%', width:'clamp(110px,14vw,200px)', aspectRatio:'3/4', zIndex:0, opacity:0.13, transform:'rotate(-6deg)' }}>
+        <div style={{ position:'absolute', right:'26%', top:'18%', width:'clamp(130px,16vw,230px)', aspectRatio:'3/4', zIndex:0, opacity:0.42, transform:'rotate(-6deg)' }}>
           <Image src="/images/book-sons-not-slaves-march.png" alt="" fill style={{ objectFit:'contain' }} />
         </div>
-        <div style={{ position:'absolute', right:'11%', top:'48%', width:'clamp(120px,15vw,220px)', aspectRatio:'3/4', zIndex:2, opacity:0.11, transform:'rotate(4deg)' }}>
+        <div style={{ position:'absolute', right:'10%', top:'50%', width:'clamp(140px,17vw,250px)', aspectRatio:'3/4', zIndex:2, opacity:0.32, transform:'rotate(4deg)' }}>
           <Image src="/images/book-sons-not-slaves-april.png" alt="" fill style={{ objectFit:'contain' }} />
         </div>
 
-        {/* Atmosphere gradients */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.99) 0%, rgba(5,10,5,0.90) 28%, rgba(5,10,5,0.65) 58%, rgba(5,10,5,0.50) 100%)', zIndex:3 }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(5,10,5,0.95) 0%, rgba(5,10,5,0.72) 38%, rgba(5,10,5,0.25) 65%, transparent 100%)', zIndex:3 }} />
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'200px', background:'linear-gradient(to bottom, rgba(5,10,5,0.85) 0%, transparent 100%)', zIndex:4 }} />
-
-        {/* Subtle gold glow mid-right */}
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 45% 55% at 72% 42%, rgba(201,168,76,0.06) 0%, transparent 70%)', zIndex:4, pointerEvents:'none' }} />
-
-        {/* Big watermark number */}
-        <div style={{ position:'absolute', right:'-2%', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(200px,30vw,420px)', fontWeight:400, color:'rgba(201,168,76,0.03)', lineHeight:1, pointerEvents:'none', userSelect:'none', letterSpacing:'-.05em', zIndex:5 }}>04</div>
+        {/* Gradients — same weights as music/gallery */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.97) 0%, rgba(5,10,5,0.80) 28%, rgba(5,10,5,0.30) 58%, transparent 82%)', zIndex:3 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(5,10,5,0.88) 0%, rgba(5,10,5,0.52) 32%, rgba(5,10,5,0.10) 58%, transparent 75%)', zIndex:3 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(5,10,5,0.65) 0%, transparent 100%)', zIndex:4 }} />
 
 
         {/* Text — anchored bottom, font sized to fit without overflow */}
