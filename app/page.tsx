@@ -11,14 +11,13 @@ const stats = [
   { value: 3,    suffix: '',  label: 'Monthly Gatherings' },
   { value: 6,    suffix: '+', label: 'Original Releases' },
   { value: 4,    suffix: '',  label: 'Published Books' },
-  { value: 2020, suffix: '',  label: 'Studios Founded' },
 ]
 
 const pillars = [
   { num: '01', title: 'Ministry', sub: 'The Worship Nation', desc: 'Three recurring gatherings each month — MDWE, TSH, and Synantesis — creating spaces for authentic encounter with God.', href: '/events',   img: '/images/gallery-congregation-worship.jpg' },
   { num: '02', title: 'Music',    sub: 'Original Worship',   desc: 'Songs born from personal devotion and shaped into anthems for corporate worship — sound that ushers in the presence of God.', href: '/music',    img: '/images/gallery-solomon-worship-raise.jpg' },
-  { num: '03', title: 'Studios',  sub: 'TWN Studios',        desc: 'A world-class recording and production space in Ajah, Lagos — built for Kingdom-minded creatives who refuse to compromise.', href: '/studios',  img: '/images/stage-lights-concert.jpg' },
-  { num: '04', title: 'Books',    sub: 'Published Works',    desc: 'Written with the same theological depth that marks his spoken ministry — truths that place the reader in direct confrontation with Scripture.', href: '/books',   img: '/images/solomon-cream-suit-books.png' },
+  { num: '03', title: 'Studios',  sub: 'TWN Studios',        desc: 'A world-class recording and production space in Ajah, Lagos — built for Kingdom-minded creatives who refuse to compromise.', href: '/studios',  img: '/images/studio-home.png' },
+  { num: '04', title: 'Books',    sub: 'Published Works',    desc: 'Written with the same theological depth that marks his spoken ministry — truths that place the reader in direct confrontation with Scripture.', href: '/books',   img: '/images/book-home.png' },
 ]
 
 const tracks = [
@@ -31,7 +30,7 @@ const books = [
   { title: 'The Cost of Ignorance',   img: '/images/book-cost-of-ignorance.png',    href: 'https://selar.com/v8561k6070',    comingSoon: false },
   { title: 'Sons Not Slaves (March)', img: '/images/book-sons-not-slaves-march.png', href: 'https://selar.com/41x076wbk1',    comingSoon: false },
   { title: 'Sons Not Slaves (April)', img: '/images/book-sons-not-slaves-april.png', href: 'https://selar.com/8z43781b2n',    comingSoon: false },
-  { title: 'Go In This Thy Might',    img: '/images/solomon-cream-suit-books.png',   href: '',                                comingSoon: true  },
+  { title: 'Go In This Thy Might',    img: '/images/book-go-in-this-thy-might.png',   href: '',                                comingSoon: true  },
 ]
 
 function CountUp({ target, suffix }: { target: number; suffix: string }) {

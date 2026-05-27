@@ -148,11 +148,7 @@ export default function AboutPage() {
               <div style={{ position:'absolute', top:'clamp(20px,3vw,40px)', left:'clamp(20px,3vw,40px)', width:52, height:52, borderTop:'2px solid rgba(201,168,76,.85)', borderLeft:'2px solid rgba(201,168,76,.85)' }} />
               <div style={{ position:'absolute', bottom:'clamp(20px,3vw,40px)', right:'clamp(20px,3vw,40px)', width:52, height:52, borderBottom:'2px solid rgba(201,168,76,.85)', borderRight:'2px solid rgba(201,168,76,.85)' }} />
             </div>
-            {/* Year badge */}
-            <div style={{ position:'absolute', bottom:'clamp(20px,3vw,40px)', left:'clamp(20px,3vw,40px)', background:'rgba(13,27,13,.85)', backdropFilter:'blur(8px)', padding:'12px 18px' }}>
-              <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'32px', fontWeight:400, color:'#C9A84C', lineHeight:1 }}>2014</div>
-              <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(250,247,242,.5)', marginTop:'4px' }}>Ministry Founded</div>
-            </div>
+
           </div>
 
           {/* Text */}
