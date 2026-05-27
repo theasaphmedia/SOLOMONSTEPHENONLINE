@@ -68,7 +68,7 @@ export default function ContactPage() {
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
-        .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
+        .eyebrow::before{content:'';width:28px;height:1px;background:#C9A84C;}
         input:focus, textarea:focus { border-bottom-color:#C9A84C !important; }
         input::placeholder, textarea::placeholder { color:#8A9A8A; }
         textarea { resize:vertical; min-height:120px; }
@@ -175,4 +175,12 @@ export default function ContactPage() {
                 Langbasa Road, Ajah<br />
                 Lagos, Nigeria
               </div>
-  
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}

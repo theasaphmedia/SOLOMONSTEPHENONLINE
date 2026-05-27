@@ -131,4 +131,29 @@ export default function GalleryPage() {
       {/* Lightbox */}
       {lightbox !== null && (
         <div className="lb-bg" onClick={() => setLightbox(null)}>
-          <div style={{ position:'absolute', top:'20px', right:'24px', zIndex:1, c
+          <div style={{ position:'absolute', top:'20px', right:'24px', zIndex:1, cursor:'pointer' }} onClick={() => setLightbox(null)}>
+            <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.22em', color:'rgba(250,247,242,.5)', textTransform:'uppercase' }}>Close ×</span>
+          </div>
+          <div style={{ position:'absolute', left:'16px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1, padding:'12px' }}
+            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i - 1 + filtered.length) % filtered.length : null) }}>
+            <span style={{ fontSize:'28px', color:'rgba(250,247,242,.45)' }}>‹</span>
+          </div>
+          <div style={{ position:'relative', maxWidth:'90vw', maxHeight:'88vh' }} onClick={e => e.stopPropagation()}>
+            <Image src={filtered[lightbox].src} alt={filtered[lightbox].alt} width={1400} height={1000}
+              style={{ maxWidth:'90vw', maxHeight:'88vh', objectFit:'contain', display:'block' }} />
+          </div>
+          <div style={{ position:'absolute', right:'16px', top:'50%', transform:'translateY(-50%)', cursor:'pointer', zIndex:1, padding:'12px' }}
+            onClick={e => { e.stopPropagation(); setLightbox(i => i !== null ? (i + 1) % filtered.length : null) }}>
+            <span style={{ fontSize:'28px', color:'rgba(250,247,242,.45)' }}>›</span>
+          </div>
+          <div style={{ position:'absolute', bottom:'20px', left:'50%', transform:'translateX(-50%)', textAlign:'center' }}>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.18em', color:'rgba(250,247,242,.32)' }}>{lightbox + 1} / {filtered.length}</div>
+            <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'14px', fontStyle:'italic', color:'rgba(250,247,242,.42)', marginTop:'4px' }}>{filtered[lightbox].alt}</div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
+    </main>
+  )
+}

@@ -75,7 +75,7 @@ export default function TaiDigitalPage() {
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
-        .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
+        .eyebrow::before{content:'';width:28px;height:1px;background:#C9A84C;}
         .svc-row { border-top:1px solid rgba(201,168,76,0.15); padding:clamp(28px,3.5vw,48px) 0;
           display:grid; grid-template-columns:clamp(48px,6vw,80px) clamp(160px,22vw,280px) 1fr;
           align-items:start; gap:clamp(16px,3vw,48px); transition:background 0.4s; }
@@ -222,4 +222,12 @@ export default function TaiDigitalPage() {
             }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.35)'; (e.currentTarget as HTMLElement).style.color='#3D4B3D' }}
-            >theasaphinnovatio
+            >theasaphinnovations@gmail.com</a>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </main>
+  )
+}
