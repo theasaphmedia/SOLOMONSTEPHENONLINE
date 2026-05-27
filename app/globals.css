@@ -117,88 +117,205 @@ body:has(button:hover) .cursor-ring {
   opacity: 0.3;
 }
 
-/* ── Scroll Reveal System ────────────────────────────── */
+/* ── Scroll Reveal System — Sophisticated blur+scale+3D ─ */
+
+/* Base reveal: rises with blur dissolve */
 .rv {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+  transform: translateY(52px) scale(0.96);
+  filter: blur(5px);
+  will-change: opacity, transform, filter;
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1.05s var(--ease-out),
+    filter 0.85s var(--ease-out);
 }
 .rv.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
 }
-.rv.d1 { transition-delay: 0.08s; }
-.rv.d2 { transition-delay: 0.16s; }
-.rv.d3 { transition-delay: 0.24s; }
-.rv.d4 { transition-delay: 0.32s; }
-.rv.d5 { transition-delay: 0.40s; }
 
-/* Fade only (no translate) */
+/* Stagger delay helpers */
+.rv.d1 { transition-delay: 0.08s; }
+.rv.d2 { transition-delay: 0.18s; }
+.rv.d3 { transition-delay: 0.28s; }
+.rv.d4 { transition-delay: 0.40s; }
+.rv.d5 { transition-delay: 0.52s; }
+
+/* Fade only — pure atmospheric dissolve */
 .rv-fade {
   opacity: 0;
-  transition: opacity 1s var(--ease-out);
+  filter: blur(3px);
+  transition: opacity 1.2s var(--ease-out), filter 1s var(--ease-out);
 }
-.rv-fade.is-visible { opacity: 1; }
+.rv-fade.is-visible { opacity: 1; filter: blur(0); }
 
-/* Slide from left */
+/* Left reveal — 3D hinge from the right */
 .rv-left {
   opacity: 0;
-  transform: translateX(-40px);
-  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+  transform: translateX(-64px) rotateY(-10deg);
+  filter: blur(6px);
+  transform-origin: right center;
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1.1s var(--ease-out),
+    filter 0.9s var(--ease-out);
 }
-.rv-left.is-visible { opacity: 1; transform: translateX(0); }
+.rv-left.is-visible {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+  filter: blur(0);
+}
 
-/* Slide from right */
+/* Right reveal — 3D hinge from the left */
 .rv-right {
   opacity: 0;
-  transform: translateX(40px);
-  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+  transform: translateX(64px) rotateY(10deg);
+  filter: blur(6px);
+  transform-origin: left center;
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1.1s var(--ease-out),
+    filter 0.9s var(--ease-out);
 }
-.rv-right.is-visible { opacity: 1; transform: translateX(0); }
+.rv-right.is-visible {
+  opacity: 1;
+  transform: translateX(0) rotateY(0deg);
+  filter: blur(0);
+}
 
-/* Scale reveal */
+/* Scale reveal — dramatic emerge from small */
 .rv-scale {
   opacity: 0;
-  transform: scale(0.94);
-  transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+  transform: scale(0.82) translateY(28px);
+  filter: blur(10px);
+  transition:
+    opacity 1.1s var(--ease-out),
+    transform 1.2s var(--ease-spring),
+    filter 1s var(--ease-out);
 }
-.rv-scale.is-visible { opacity: 1; transform: scale(1); }
+.rv-scale.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
 
-/* ── Word Clip Animation ─────────────────────────────── */
-.wc { display: inline-block; overflow: hidden; vertical-align: bottom; }
+/* ── Word Clip Animation — 3D perspective sweep ──────── */
+.wc {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  perspective: 700px;
+}
 .wi {
   display: inline-block;
-  animation: wordIn 0.9s var(--ease-out) both;
+  animation: wordIn 1.05s var(--ease-out) both;
 }
 @keyframes wordIn {
-  from { transform: translateY(105%); }
-  to   { transform: translateY(0); }
+  from {
+    transform: translateY(115%) rotateX(28deg);
+    opacity: 0;
+    filter: blur(3px);
+  }
+  to {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0);
+  }
 }
 
-/* ── Page Load Animations ────────────────────────────── */
+/* ── Gold Draw Lines ──────────────────────────────────── */
+.draw-line {
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1.4s var(--ease-out);
+}
+.draw-line.line-drawn { transform: scaleX(1); }
+
+/* ── Keyframes Library ───────────────────────────────── */
+
+/* Scroll progress bar shimmer */
+@keyframes shimmerBar {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Per-character text reveal */
+@keyframes charIn {
+  from {
+    opacity: 0;
+    transform: translateY(65%) rotateZ(5deg) scale(0.8);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateZ(0deg) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hero image gentle breathe */
+@keyframes breathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%       { transform: scale(1.025) translateY(-6px); }
+}
+
+/* Gold text shimmer sweep */
+@keyframes goldShimmer {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating lift */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+/* Pulse ring glow */
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0); }
+  50%       { box-shadow: 0 0 0 14px rgba(201,168,76,0.10); }
+}
+
+/* Fade up — for page load sequencing */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(28px) scale(0.97); filter: blur(4px); }
+  to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; filter: blur(4px); }
+  to   { opacity: 1; filter: blur(0); }
 }
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-32px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from { opacity: 0; transform: translateX(-40px) rotateY(-6deg); filter: blur(5px); }
+  to   { opacity: 1; transform: translateX(0) rotateY(0); filter: blur(0); }
 }
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to   { opacity: 1; transform: scale(1); }
+  from { opacity: 0; transform: scale(0.86); filter: blur(8px); }
+  to   { opacity: 1; transform: scale(1); filter: blur(0); }
 }
 @keyframes lineGrow {
   from { transform: scaleX(0); }
   to   { transform: scaleX(1); }
 }
 @keyframes countUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(16px) scale(0.9); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Reveal text from clip — for titles */
+@keyframes revealClip {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+
+/* Subtle page wipe in */
+@keyframes pageEnterBlur {
+  from { opacity: 0; transform: translateY(20px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 /* ── Buttons ─────────────────────────────────────────── */
@@ -430,11 +547,7 @@ body:has(button:hover) .cursor-ring {
 
 /* ── Page transition ─────────────────────────────────── */
 .page-enter {
-  animation: pageEnter 0.6s var(--ease-out) both;
-}
-@keyframes pageEnter {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  animation: pageEnterBlur 0.75s var(--ease-out) both;
 }
 
 /* ── Responsive helpers ──────────────────────────────── */
@@ -463,59 +576,58 @@ body:has(button:hover) .cursor-ring {
 }
 
 /* ═══════════════════════════════════════════════════════
-   MOBILE — Quality animations. Faster, lighter, no large shifts.
+   MOBILE — Felt on touch. Blur reveals, quicker, no 3D.
    ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  /* Lighter mobile reveals — subtle fade-up, no stagger */
-  .rv, .rv-up, .rv-fade {
+  /* Mobile reveals — blur+fade, no large translate or 3D rotation */
+  .rv {
     opacity: 0;
-    transform: translateY(14px) !important;
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out !important;
+    transform: translateY(22px) scale(0.97) !important;
+    filter: blur(4px) !important;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, filter 0.5s ease-out !important;
   }
-  .rv-left {
+  .rv-left, .rv-right {
     opacity: 0;
-    transform: translateY(14px) !important;
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out !important;
-  }
-  .rv-right {
-    opacity: 0;
-    transform: translateY(14px) !important;
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out !important;
+    transform: translateY(20px) !important;
+    filter: blur(4px) !important;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out, filter 0.5s ease-out !important;
   }
   .rv-scale {
     opacity: 0;
-    transform: scale(0.97) !important;
-    transition: opacity 0.4s ease-out, transform 0.4s ease-out !important;
+    transform: scale(0.93) !important;
+    filter: blur(5px) !important;
+    transition: opacity 0.65s ease-out, transform 0.65s ease-out, filter 0.55s ease-out !important;
+  }
+  .rv-fade {
+    opacity: 0;
+    filter: blur(4px) !important;
+    transition: opacity 0.6s ease-out, filter 0.5s ease-out !important;
   }
 
-  /* Revealed state */
-  .rv.is-visible, .rv.vis, .rv.rv-in,
-  .rv-left.is-visible, .rv-left.vis, .rv-left.rv-in,
-  .rv-right.is-visible, .rv-right.vis, .rv-right.rv-in,
-  .rv-scale.is-visible, .rv-scale.vis, .rv-scale.rv-in,
-  .rv-up.is-visible, .rv-up.vis, .rv-up.rv-in,
-  .rv-fade.is-visible, .rv-fade.vis {
+  /* Revealed state on mobile — clean */
+  .rv.is-visible, .rv-left.is-visible, .rv-right.is-visible,
+  .rv-scale.is-visible, .rv-fade.is-visible {
     opacity: 1 !important;
     transform: none !important;
+    filter: blur(0) !important;
   }
 
-  /* No stagger delays on mobile — all at once */
-  .d1, .d2, .d3, .d4, .d5, .d6, .d7, .d8 {
-    transition-delay: 0ms !important;
-    animation-delay: 0ms !important;
-  }
+  /* Reduce stagger on mobile — still feels alive, not delayed */
+  .rv.d1 { transition-delay: 0.04s !important; }
+  .rv.d2 { transition-delay: 0.08s !important; }
+  .rv.d3 { transition-delay: 0.12s !important; }
+  .rv.d4 { transition-delay: 0.16s !important; }
+  .rv.d5 { transition-delay: 0.20s !important; }
 
-  /* Word clips — instant */
+  /* Word clips — shorter on mobile */
   .wi {
-    animation-duration: 0.001ms !important;
+    animation-duration: 0.65s !important;
     animation-delay: 0.001ms !important;
   }
 
   /* Cursor — hidden on touch */
   .cursor-dot, .cursor-ring { display: none !important; }
   body { cursor: auto !important; }
-
-  /* WhatsApp bubble safe zone */
 }
 
 /* WhatsApp safe padding for bottom-right bubble */

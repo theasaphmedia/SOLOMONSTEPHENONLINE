@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import AnimationEngine from "@/components/AnimationEngine";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://solomonstephen.com"),
@@ -45,9 +46,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        {/* Custom LERP cursor — hidden on mobile via CSS */}
+        <div className="cursor-dot" aria-hidden="true" />
+        <div className="cursor-ring" aria-hidden="true" />
         <Navbar />
         {children}
         <WhatsAppFloat />
+        <AnimationEngine />
       </body>
     </html>
   );
