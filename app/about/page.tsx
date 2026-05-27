@@ -94,11 +94,11 @@ export default function AboutPage() {
       <section style={{ background:'#080F08', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,5vw,80px) clamp(64px,8vw,110px)', position:'relative', overflow:'hidden' }}>
         {/* Background photo */}
         <div style={{ position:'absolute', inset:0 }}>
-          <Image src="/images/gallery-solomon-worship-raise.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 25%', opacity:0.6 }} priority />
+          <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 20%', opacity:0.85 }} priority />
         </div>
         {/* Gradient layers */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #080F08 30%, rgba(8,15,8,.72) 58%, rgba(8,15,8,.25) 100%)' }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(105deg, rgba(8,15,8,.88) 0%, rgba(8,15,8,.45) 55%, transparent 100%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #080F08 20%, rgba(8,15,8,.6) 52%, rgba(8,15,8,.15) 100%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(105deg, rgba(8,15,8,.7) 0%, rgba(8,15,8,.3) 50%, transparent 100%)' }} />
         {/* Gold glow */}
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 50% 60% at 12% 88%, rgba(201,168,76,.08) 0%, transparent 60%)', pointerEvents:'none' }} />
         {/* Animated orbs */}
