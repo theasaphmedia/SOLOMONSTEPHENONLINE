@@ -486,4 +486,9 @@ export default function StudiosPage() {
             <a href={FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
           </div>
         </div>
-      </sec
+      </section>
+
+      <Footer />
+    </main>
+  )
+}
