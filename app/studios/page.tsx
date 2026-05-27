@@ -173,7 +173,7 @@ export default function StudiosPage() {
           <div className="rv metrics-row" style={{ display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:'1px', background:'rgba(201,168,76,.08)', borderRadius:'2px', overflow:'hidden', marginBottom:'clamp(56px,7vw,96px)' }}>
             {[['6','Studio Services'],['60+','Guest Capacity'],['4K','Video Capability'],['24/7','Booking Support']].map(([n,l]) => (
               <div key={l} style={{ background:'#0D1117', padding:'clamp(24px,3vw,40px) clamp(20px,3vw,36px)' }}>
-                <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(36px,5vw,60px)', fontWeight:400, color:'#C9A84C', lineHeight:1, marginBottom:'8px' }}>{n}</div>
+                <div data-count={n !== '24/7' ? n : undefined} style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(36px,5vw,60px)', fontWeight:400, color:'#C9A84C', lineHeight:1, marginBottom:'8px' }}>{n}</div>
                 <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(240,237,232,.35)' }}>{l}</div>
               </div>
             ))}
@@ -486,9 +486,4 @@ export default function StudiosPage() {
             <a href={FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
           </div>
         </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+      </sec
