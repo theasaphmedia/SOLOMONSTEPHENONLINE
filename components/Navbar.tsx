@@ -35,36 +35,7 @@ export default function Navbar() {
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  // Custom cursor
-  useEffect(() => {
-    const dot  = document.createElement('div')
-    const ring = document.createElement('div')
-    dot.className  = 'cursor-dot'
-    ring.className = 'cursor-ring'
-    document.body.appendChild(dot)
-    document.body.appendChild(ring)
-
-    let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0
-    const move = (e: MouseEvent) => {
-      mouseX = e.clientX; mouseY = e.clientY
-      dot.style.left = mouseX + 'px'
-      dot.style.top  = mouseY + 'px'
-    }
-    const animate = () => {
-      ringX += (mouseX - ringX) * 0.12
-      ringY += (mouseY - ringY) * 0.12
-      ring.style.left = ringX + 'px'
-      ring.style.top  = ringY + 'px'
-      requestAnimationFrame(animate)
-    }
-    window.addEventListener('mousemove', move)
-    animate()
-    return () => {
-      window.removeEventListener('mousemove', move)
-      dot.remove()
-      ring.remove()
-    }
-  }, [])
+  // Cursor is handled globally by AnimationEngine + layout.tsx cursor divs
 
   return (
     <>
@@ -111,7 +82,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="nav-desktop">
-          {navLinks.filter(l => l.href !== '/').slice(0, 6).map(link => (
+          {navLinks.filter(l => l.href !== '/' && l.href !== '/contact').map(link => (
             <Link key={link.href} href={link.href} style={{
               fontFamily:    'DM Sans, sans-serif',
               fontSize:      '11px',

@@ -93,27 +93,31 @@ export default function StudiosPage() {
   return (
     <main style={{ background:'#09090E', color:'#F0EDE8', overflowX:'hidden' }}>
       <style>{`
-        /* reveals */
-        .rv{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
-        .rv.vis{opacity:1;transform:none}
-        .rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}
+        /* reveals — blur + scale + vertical rise */
+        .rv{opacity:0;transform:translateY(48px) scale(0.96);filter:blur(5px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.05s cubic-bezier(.16,1,.3,1),filter .85s cubic-bezier(.16,1,.3,1)}
+        .rv.vis{opacity:1;transform:none;filter:blur(0)}
+        .rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.22s}.rv.d3{transition-delay:.34s}.rv.d4{transition-delay:.46s}
         /* keyframes */
-        @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
-        @keyframes pulseGold{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 0 6px rgba(201,168,76,.12)}}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(36px) scale(.97);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+        @keyframes pulseGold{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 0 10px rgba(201,168,76,.14)}}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes shimmerBar{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        @keyframes charIn{from{opacity:0;transform:translateY(65%) rotateZ(5deg) scale(.8);filter:blur(4px)}to{opacity:1;transform:none;filter:blur(0)}}
         /* eyebrow */
         .ew{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:rgba(201,168,76,.65);display:flex;align-items:center;gap:10px}
         .ew::before{content:'';width:24px;height:1px;background:rgba(201,168,76,.5)}
         /* gold line */
         .gl{height:1px;background:linear-gradient(90deg,rgba(201,168,76,.5) 0%,transparent 100%)}
         /* service card */
-        .svc-card{border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);padding:clamp(20px,2.5vw,32px);border-radius:2px;transition:all .4s cubic-bezier(.16,1,.3,1);cursor:default}
-        .svc-card:hover{border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.04);transform:translateY(-4px)}
+        .svc-card{border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);padding:clamp(20px,2.5vw,32px);border-radius:2px;transition:border-color .4s cubic-bezier(.16,1,.3,1),background .4s,transform .5s cubic-bezier(.16,1,.3,1),box-shadow .4s;cursor:default;position:relative;overflow:hidden}
+        .svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#C9A84C,#E8C96A,#C9A84C);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+        .svc-card:hover{border-color:rgba(201,168,76,.25);background:rgba(201,168,76,.05);transform:translateY(-8px) scale(1.01);box-shadow:0 24px 48px rgba(0,0,0,.28),0 0 0 1px rgba(201,168,76,.08)}
+        .svc-card:hover::before{transform:scaleX(1)}
         /* capability row */
-        .cap-row{display:grid;grid-template-columns:56px 1fr 1fr;gap:0 clamp(24px,4vw,60px);padding:clamp(22px,3vw,36px) 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:default;transition:background .35s}
-        .cap-row:hover{background:rgba(201,168,76,.03)}
-        .cap-num{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;color:rgba(201,168,76,.35);padding-top:4px;transition:color .3s;user-select:none}
-        .cap-row:hover .cap-num{color:#C9A84C}
+        .cap-row{display:grid;grid-template-columns:56px 1fr 1fr;gap:0 clamp(24px,4vw,60px);padding:clamp(22px,3vw,36px) 0;border-bottom:1px solid rgba(255,255,255,.06);cursor:default;transition:background .4s,padding-left .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
+        .cap-row:hover{background:rgba(201,168,76,.025);padding-left:12px;box-shadow:inset 3px 0 0 #C9A84C}
+        .cap-num{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.18em;color:rgba(201,168,76,.35);padding-top:4px;transition:color .35s,transform .35s;user-select:none}
+        .cap-row:hover .cap-num{color:#C9A84C;transform:translateX(4px)}
         /* faq */
         .faq-item{border-bottom:1px solid rgba(255,255,255,.06);overflow:hidden}
         /* service chip */
@@ -232,19 +236,99 @@ export default function StudiosPage() {
             </div>
             <div className="rv d2">
               <div className="ew" style={{ marginBottom:'clamp(20px,2.5vw,28px)' }}>Location</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:'16px' }}>
-                {[
-                  ['Address', 'Kenny T. Kay Building, beside Azkol Fuel Station, Langbasa Road, Ajah, Lagos'],
-                  ['Capacity', 'Up to 60 guests for live events and showcases'],
-                  ['Phone / WA', '+234 814 579 9098'],
-                  ['Email', 'twnstudiosglobal@gmail.com'],
-                  ['Social', '@twnstudiosglobal — Instagram · TikTok · Facebook'],
-                ].map(([lbl, val]) => (
-                  <div key={lbl} style={{ display:'flex', gap:'16px' }}>
-                    <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'#C9A84C', minWidth:'76px', paddingTop:'2px', flexShrink:0 }}>{lbl}</span>
-                    <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', lineHeight:1.65, color:'rgba(240,237,232,.5)' }}>{val}</span>
+              <div style={{ display:'flex', flexDirection:'column' }}>
+
+                {/* ── Address → Google Maps ── */}
+                <a
+                  href="https://maps.google.com/?q=Kenny+T+Kay+Building+beside+Azkol+Fuel+Station+Langbasa+Road+Ajah+Lagos"
+                  target="_blank" rel="noopener noreferrer"
+                  style={{ display:'flex', gap:'14px', padding:'14px 0', borderBottom:'1px solid rgba(255,255,255,.05)', textDecoration:'none', transition:'all .3s', borderRadius:'1px' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.paddingLeft = '6px'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.paddingLeft = '0'}
+                >
+                  <span style={{ color:'#C9A84C', flexShrink:0, marginTop:'1px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s-8-5.6-8-12a8 8 0 0 1 16 0c0 6.4-8 12-8 12z"/><circle cx="12" cy="10" r="3"/></svg>
+                  </span>
+                  <div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.6)', marginBottom:'4px' }}>Address — Open in Maps ↗</div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', lineHeight:1.65, color:'rgba(240,237,232,.65)' }}>Kenny T. Kay Building, beside Azkol Fuel Station, Langbasa Road, Ajah, Lagos</div>
                   </div>
-                ))}
+                </a>
+
+                {/* ── Capacity ── */}
+                <div style={{ display:'flex', gap:'14px', padding:'14px 0', borderBottom:'1px solid rgba(255,255,255,.05)' }}>
+                  <span style={{ color:'#C9A84C', flexShrink:0, marginTop:'1px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  </span>
+                  <div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.6)', marginBottom:'4px' }}>Capacity</div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', lineHeight:1.65, color:'rgba(240,237,232,.65)' }}>Up to 60 guests for live events and showcases</div>
+                  </div>
+                </div>
+
+                {/* ── Phone — click to call + WhatsApp ── */}
+                <div style={{ display:'flex', gap:'14px', padding:'14px 0', borderBottom:'1px solid rgba(255,255,255,.05)' }}>
+                  <span style={{ color:'#C9A84C', flexShrink:0, marginTop:'1px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.89a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+                  </span>
+                  <div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.6)', marginBottom:'6px' }}>Phone / WhatsApp</div>
+                    <div style={{ display:'flex', gap:'10px', flexWrap:'wrap' }}>
+                      <a href="tel:+2348145799098" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', color:'rgba(240,237,232,.65)', textDecoration:'none', padding:'5px 12px', border:'1px solid rgba(255,255,255,.1)', borderRadius:'20px', display:'inline-flex', alignItems:'center', gap:'6px', transition:'all .25s' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,.5)'; (e.currentTarget as HTMLElement).style.color='#C9A84C' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(255,255,255,.1)'; (e.currentTarget as HTMLElement).style.color='rgba(240,237,232,.65)' }}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.17h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.89a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+                        Call
+                      </a>
+                      <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', color:'rgba(240,237,232,.65)', textDecoration:'none', padding:'5px 12px', border:'1px solid rgba(255,255,255,.1)', borderRadius:'20px', display:'inline-flex', alignItems:'center', gap:'6px', transition:'all .25s' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(37,211,102,.5)'; (e.currentTarget as HTMLElement).style.color='#25D366' }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(255,255,255,.1)'; (e.currentTarget as HTMLElement).style.color='rgba(240,237,232,.65)' }}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Email ── */}
+                <a href={`mailto:${EMAIL}`} style={{ display:'flex', gap:'14px', padding:'14px 0', borderBottom:'1px solid rgba(255,255,255,.05)', textDecoration:'none', transition:'all .3s', borderRadius:'1px' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.paddingLeft = '6px'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.paddingLeft = '0'}
+                >
+                  <span style={{ color:'#C9A84C', flexShrink:0, marginTop:'1px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+                  </span>
+                  <div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.6)', marginBottom:'4px' }}>Email ↗</div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'13px', color:'rgba(240,237,232,.65)' }}>{EMAIL}</div>
+                  </div>
+                </a>
+
+                {/* ── Social — three separate links ── */}
+                <div style={{ display:'flex', gap:'14px', padding:'14px 0' }}>
+                  <span style={{ color:'#C9A84C', flexShrink:0, marginTop:'1px' }}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  </span>
+                  <div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(201,168,76,.6)', marginBottom:'8px' }}>Social — @twnstudiosglobal</div>
+                    <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
+                      {[
+                        { label:'Instagram', url: IG,       color:'#E4405F' },
+                        { label:'TikTok',    url: TIKTOK,   color:'#ffffff' },
+                        { label:'Facebook',  url: FACEBOOK, color:'#1877F2' },
+                      ].map(s => (
+                        <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer"
+                          style={{ fontFamily:'DM Sans,sans-serif', fontSize:'11px', letterSpacing:'.1em', color:'rgba(240,237,232,.5)', textDecoration:'none', padding:'5px 12px', border:'1px solid rgba(255,255,255,.1)', borderRadius:'20px', transition:'all .25s' }}
+                          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor=s.color; (e.currentTarget as HTMLElement).style.color=s.color }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(255,255,255,.1)'; (e.currentTarget as HTMLElement).style.color='rgba(240,237,232,.5)' }}
+                        >{s.label} ↗</a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
@@ -360,129 +444,4 @@ export default function StudiosPage() {
             </div>
           </div>
 
-          {/* notes — optional */}
-          <div className="rv d3" style={{ marginBottom:'clamp(32px,4vw,48px)' }}>
-            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'10px', letterSpacing:'.22em', textTransform:'uppercase', color:'rgba(240,237,232,.3)', marginBottom:'14px' }}>
-              Notes — optional
-            </div>
-            <textarea
-              className="b-input"
-              rows={3}
-              placeholder="Tell us about your project — what are you working on?"
-              value={bNotes}
-              onChange={e => setBNotes(e.target.value)}
-              style={{ resize:'vertical' }}
-            />
-          </div>
-
-          {/* action buttons */}
-          <div className="rv d4" style={{ display:'flex', gap:'12px', flexWrap:'wrap', alignItems:'center' }}>
-            <button className="btn-wa" onClick={sendWA}>
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Chat on WhatsApp
-            </button>
-            <button className="btn-em" onClick={sendEmail}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
-              Send via Email
-            </button>
-          </div>
-
-          {/* reassurance note */}
-          <p className="rv" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'12px', color:'rgba(240,237,232,.25)', marginTop:'24px', lineHeight:1.7 }}>
-            We respond to all enquiries within 24 hours. All sessions include an in-house engineer and studio hospitality.
-          </p>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════ GALLERY */}
-      <section style={{ background:'#09090E', padding:'clamp(80px,10vw,140px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(255,255,255,.04)' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
-          <div className="ew rv" style={{ marginBottom:'clamp(14px,2vw,20px)' }}>Inside the Space</div>
-          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(30px,4.5vw,56px)', fontWeight:400, color:'#F0EDE8', lineHeight:1.05, margin:'0 0 clamp(36px,4.5vw,60px)' }}>
-            See where your<br /><em style={{ color:'#C9A84C' }}>sound comes alive.</em>
-          </h2>
-
-          {/* masonry grid — 5 photos, zero repeats */}
-          <div className="gal-masonry rv" style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gridTemplateRows:'340px 280px', gap:'10px' }}>
-            {/* large left: stage */}
-            <div className="gal-big gal-frame rv" style={{ gridColumn:'1 / 2', gridRow:'1 / 3' }}>
-              <Image src="/images/twn-studio-stage.jpg" alt="The stage" fill style={{ objectFit:'cover', objectPosition:'center 20%' }} />
-              <div style={{ position:'absolute', bottom:'18px', left:'18px', fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.25em', textTransform:'uppercase', color:'rgba(255,255,255,.5)' }}>The Stage</div>
-            </div>
-            {/* top center: lights */}
-            <div className="gal-frame rv d1">
-              <Image src="/images/twn-studio-lights.jpg" alt="Stage lighting" fill style={{ objectFit:'cover', objectPosition:'center 15%' }} />
-              <div style={{ position:'absolute', bottom:'14px', left:'14px', fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.25em', textTransform:'uppercase', color:'rgba(255,255,255,.5)' }}>Stage Lighting</div>
-            </div>
-            {/* top right: seats */}
-            <div className="gal-frame rv d2">
-              <Image src="/images/twn-studio-seats.jpg" alt="Seating" fill style={{ objectFit:'cover', objectPosition:'center center' }} />
-              <div style={{ position:'absolute', bottom:'14px', left:'14px', fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.25em', textTransform:'uppercase', color:'rgba(255,255,255,.5)' }}>Seating — 60+</div>
-            </div>
-            {/* bottom center: wide */}
-            <div className="gal-frame rv d1">
-              <Image src="/images/twn-studio-wide.jpg" alt="Full room" fill style={{ objectFit:'cover', objectPosition:'center 25%' }} />
-              <div style={{ position:'absolute', bottom:'14px', left:'14px', fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.25em', textTransform:'uppercase', color:'rgba(255,255,255,.5)' }}>Full Room</div>
-            </div>
-            {/* bottom right: amp */}
-            <div className="gal-frame rv d2">
-              <Image src="/images/twn-studio-amp.jpg" alt="Studio gear" fill style={{ objectFit:'cover', objectPosition:'center center' }} />
-              <div style={{ position:'absolute', bottom:'14px', left:'14px', fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.25em', textTransform:'uppercase', color:'rgba(255,255,255,.5)' }}>Live Percussion</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════ FAQ */}
-      <section style={{ background:'#0D1117', padding:'clamp(80px,10vw,140px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(255,255,255,.04)' }}>
-        <div style={{ maxWidth:'800px', margin:'0 auto' }}>
-          <div className="ew rv" style={{ marginBottom:'clamp(14px,2vw,20px)' }}>FAQ</div>
-          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(28px,4vw,48px)', fontWeight:400, color:'#F0EDE8', lineHeight:1.1, margin:'0 0 clamp(36px,4.5vw,56px)' }}>
-            Common questions,<br /><em style={{ color:'#C9A84C' }}>honest answers.</em>
-          </h2>
-          <div>
-            {FAQS.map((f, i) => (
-              <div key={i} className="faq-item rv" style={{ transitionDelay:`${i*.06}s` }}>
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  style={{ width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center', padding:'clamp(18px,2.5vw,24px) 0', background:'transparent', border:'none', cursor:'pointer', textAlign:'left', gap:'16px' }}
-                >
-                  <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(14px,1.5vw,16px)', color: openFaq===i ? '#C9A84C' : '#F0EDE8', transition:'color .3s', lineHeight:1.4 }}>{f.q}</span>
-                  <span style={{ fontFamily:'DM Sans,sans-serif', fontSize:'20px', color:'rgba(201,168,76,.5)', flexShrink:0, transition:'transform .35s', transform: openFaq===i ? 'rotate(45deg)' : 'none' }}>+</span>
-                </button>
-                <div style={{ maxHeight: openFaq===i ? '300px' : '0', overflow:'hidden', transition:'max-height .5s cubic-bezier(.16,1,.3,1)' }}>
-                  <p style={{ fontFamily:'DM Sans,sans-serif', fontSize:'14px', lineHeight:1.85, color:'rgba(240,237,232,.45)', paddingBottom:'clamp(18px,2.5vw,24px)', margin:0 }}>{f.a}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════════════════════════════════════════════ FINAL CTA */}
-      <section style={{ background:'#09090E', padding:'clamp(100px,12vw,160px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(201,168,76,.07)', textAlign:'center' }}>
-        <div style={{ maxWidth:'700px', margin:'0 auto' }}>
-          <div className="ew rv" style={{ justifyContent:'center', marginBottom:'clamp(20px,2.5vw,32px)', color:'rgba(201,168,76,.55)' }}>TWN Studios International</div>
-          <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(38px,7vw,88px)', fontWeight:400, color:'#F0EDE8', lineHeight:.9, letterSpacing:'-.02em', margin:'0 0 clamp(20px,2.5vw,32px)' }}>
-            Your sound<br />is <em style={{ color:'#C9A84C' }}>waiting.</em>
-          </h2>
-          <p className="rv d2" style={{ fontFamily:'DM Sans,sans-serif', fontSize:'clamp(14px,1.5vw,16px)', lineHeight:1.85, color:'rgba(240,237,232,.4)', margin:'0 auto clamp(36px,5vw,56px)', maxWidth:'440px' }}>
-            Artists. Ministers. Creators. Brands. If your work demands excellence and anointing in the same room — TWN Studios is your space.
-          </p>
-          <div className="rv d3" style={{ display:'flex', gap:'12px', justifyContent:'center', flexWrap:'wrap' }}>
-            <button className="btn-gold" onClick={scrollToBook} style={{ animation:'pulseGold 3s infinite' }}>Book a Session</button>
-            <a href={IG}       target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Instagram</button></a>
-            <a href={TIKTOK}   target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">TikTok</button></a>
-            <a href={FACEBOOK} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none' }}><button className="btn-outline">Facebook</button></a>
-          </div>
-        </div>
-      </section>
-
-
-
-      <Footer />
-    </main>
-  )
-}
+          {/* notes — optio
