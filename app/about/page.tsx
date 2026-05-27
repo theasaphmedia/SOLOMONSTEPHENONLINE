@@ -300,7 +300,7 @@ export default function AboutPage() {
               { src:'/images/book-cost-of-ignorance.png',     title:'The Cost of Ignorance' },
               { src:'/images/book-sons-not-slaves-march.png', title:'Sons Not Slaves (March)' },
               { src:'/images/book-sons-not-slaves-april.png', title:'Sons Not Slaves (April)' },
-              { src:'/images/solomon-cream-suit-books.png',   title:'Solomon Stephen, Author' },
+              { src:'/images/book-go-in-this-thy-might.png',   title:'Go In This Thy Might' },
             ].map((b, i) => (
               <div key={i} className="img-zoom rv-scale" style={{ transitionDelay:`${i * 0.09}s`, borderRadius:'2px', overflow:'hidden', aspectRatio:'3/4', position:'relative', background:'#E0D9CE' }}>
                 <Image src={b.src} alt={b.title} fill style={{ objectFit:'cover' }} />

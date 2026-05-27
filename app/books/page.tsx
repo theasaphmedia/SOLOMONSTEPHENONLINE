@@ -43,7 +43,7 @@ const books = [
     desc: "God's presence forms and equips — but dependence must never transfer from the Giver to what the Giver gave. A devotional on carrying the power of encounter into the field without making the encounter itself an idol.",
     theme: 'Calling · Dependence · Courage',
     href: '',
-    img: '/images/solomon-cream-suit-books.png',
+    img: '/images/book-go-in-this-thy-might.png',
     accent: '#C9A84C',
     comingSoon: true,
   },
