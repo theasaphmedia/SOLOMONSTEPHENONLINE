@@ -1,9 +1,148 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
+
+const testimonials = [
+  {
+    quote: "Solomon Stephen's worship is not performance — it is encounter. Every time he leads, something shifts in the room.",
+    name: "Pastor Emmanuel Eze",
+    title: "Senior Pastor, Lagos",
+  },
+  {
+    quote: "CROSSOVER was the soundtrack of my year. The anointing on that project is tangible — you feel it in your spirit.",
+    name: "Adaeze Okonkwo",
+    title: "Listener, Enugu",
+  },
+  {
+    quote: "I attended MDWE for the first time not knowing what to expect. I left a different person. That midweek gathering changed my life.",
+    name: "Tunde Adeyemi",
+    title: "MDWE Attendee, Lagos",
+  },
+  {
+    quote: "The Slaughter House is not for the faint-hearted — and that is exactly why it is powerful. It strips everything away.",
+    name: "Chisom Nwosu",
+    title: "TSH Attendee",
+  },
+]
+
+function TestimonialsSection() {
+  return (
+    <section style={{ background:'#F7F4F0', padding:'clamp(80px,10vw,130px) clamp(24px,4vw,80px)' }}>
+      <div style={{ maxWidth:'1280px', margin:'0 auto' }}>
+        <div style={{ textAlign:'center', marginBottom:'clamp(48px,6vw,80px)' }}>
+          <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.65)', marginBottom:'20px' }}>What People Say</div>
+          <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(36px,5.5vw,64px)', fontWeight:400, color:'#111240', lineHeight:1.05, margin:0, letterSpacing:'-.01em' }}>
+            Changed by <em style={{ color:'#C9A84C' }}>presence.</em>
+          </h2>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'clamp(20px,3vw,36px)' }}>
+          {testimonials.map((t, i) => (
+            <div key={i} style={{
+              background:'#FFFFFF',
+              padding:'clamp(28px,3.5vw,44px)',
+              borderTop:'2px solid rgba(201,168,76,0.25)',
+              display:'flex', flexDirection:'column', gap:'20px',
+              transition:'transform .35s cubic-bezier(.16,1,.3,1), box-shadow .35s',
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform='translateY(-4px)'; (e.currentTarget as HTMLElement).style.boxShadow='0 16px 48px rgba(17,18,64,0.07)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform='none'; (e.currentTarget as HTMLElement).style.boxShadow='none' }}
+            >
+              <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(15px,1.6vw,19px)', fontStyle:'italic', color:'rgba(17,18,64,0.72)', lineHeight:1.75, flex:1 }}>
+                &ldquo;{t.quote}&rdquo;
+              </div>
+              <div style={{ borderTop:'1px solid rgba(17,18,64,0.08)', paddingTop:'16px' }}>
+                <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', fontWeight:500, color:'#111240', marginBottom:'4px' }}>{t.name}</div>
+                <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'.08em', color:'rgba(17,18,64,0.4)', textTransform:'uppercase' }}>{t.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function NewsletterSection() {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+    setLoading(true); setError('')
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name }),
+      })
+      if (!res.ok) throw new Error('Failed')
+      setSent(true)
+    } catch {
+      setError('Something went wrong. Try again.')
+    } finally {
+      setLoading(false)
+    }
+  }, [email, name])
+
+  return (
+    <section style={{ background:'#0D1B0D', borderTop:'1px solid rgba(201,168,76,0.1)', padding:'clamp(72px,10vw,120px) clamp(24px,4vw,80px)' }}>
+      <div style={{ maxWidth:'640px', margin:'0 auto', textAlign:'center' }}>
+        <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)', marginBottom:'clamp(20px,3vw,32px)' }}>Stay Connected</div>
+        <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(36px,6vw,64px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.05, margin:'0 0 clamp(16px,2vw,24px)', letterSpacing:'-.01em' }}>
+          Don&apos;t miss a <em style={{ color:'#C9A84C' }}>moment.</em>
+        </h2>
+        <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.4vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)', margin:'0 0 clamp(32px,4vw,48px)' }}>
+          New music, gatherings, books, and updates — delivered when it matters.
+        </p>
+
+        {sent ? (
+          <div style={{ padding:'32px', border:'1px solid rgba(201,168,76,0.25)', background:'rgba(201,168,76,0.05)' }}>
+            <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(20px,3vw,28px)', color:'#C9A84C', marginBottom:'8px' }}>You&apos;re in.</div>
+            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', color:'rgba(250,247,242,0.45)', letterSpacing:'.05em' }}>Check your inbox for a welcome note.</div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+            <input
+              type="text"
+              placeholder="Your name (optional)"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              style={{ width:'100%', background:'rgba(250,247,242,0.04)', border:'1px solid rgba(250,247,242,0.1)', color:'#FAF7F2', fontFamily:"'DM Sans',sans-serif", fontSize:'14px', padding:'14px 18px', outline:'none', boxSizing:'border-box', transition:'border-color .3s' }}
+              onFocus={e => (e.target.style.borderColor='rgba(201,168,76,0.4)')}
+              onBlur={e => (e.target.style.borderColor='rgba(250,247,242,0.1)')}
+            />
+            <div style={{ display:'flex', gap:'12px', flexWrap:'wrap' }}>
+              <input
+                type="email"
+                required
+                placeholder="Your email address"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{ flex:1, minWidth:'200px', background:'rgba(250,247,242,0.04)', border:'1px solid rgba(250,247,242,0.1)', color:'#FAF7F2', fontFamily:"'DM Sans',sans-serif", fontSize:'14px', padding:'14px 18px', outline:'none', boxSizing:'border-box', transition:'border-color .3s' }}
+                onFocus={e => (e.target.style.borderColor='rgba(201,168,76,0.4)')}
+                onBlur={e => (e.target.style.borderColor='rgba(250,247,242,0.1)')}
+              />
+              <button type="submit" disabled={loading}
+                style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'.2em', textTransform:'uppercase', padding:'14px 28px', background:'#C9A84C', color:'#0D1B0D', border:'none', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, transition:'opacity .3s,background .3s', whiteSpace:'nowrap', fontWeight:500 }}
+              >
+                {loading ? 'Sending…' : 'Subscribe'}
+              </button>
+            </div>
+            {error && <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'12px', color:'rgba(220,100,100,0.8)', margin:0 }}>{error}</p>}
+          </form>
+        )}
+      </div>
+    </section>
+  )
+}
+
 
 const HERO_IMG = { src: '/images/solomon-green-suit-hero.png', pos: '55% 18%' }
 
@@ -426,6 +565,12 @@ export default function HomePage() {
           <Link href="/contact" className="rv d3 cta-outline">Get In Touch</Link>
         </div>
       </section>
+
+      {/* ══ TESTIMONIALS ══ */}
+      <TestimonialsSection />
+
+      {/* ══ NEWSLETTER ══ */}
+      <NewsletterSection />
 
       <Footer />
     </main>

@@ -8,5 +8,6 @@ export const metadata: Metadata = {
     url: "https://solomonstephen.com/events",
     title: "TWN Gatherings — Solomon Stephen",
     description: "MDWE, The Slaughter House, and Synantesis — worship gatherings in Lagos, Nigeria."
+    images: [{ url: '/images/gallery-congregation-worship.jpg', width: 1200, height: 630, alt: 'TWN Gatherings — MDWE, TSH, Synantesis' }]
   }
 }

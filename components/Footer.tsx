@@ -1,15 +1,18 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
 
 const pages = [
-  { href: '/about',   label: 'About'    },
-  { href: '/music',   label: 'Music'    },
-  { href: '/studios', label: 'Studios'  },
-  { href: '/books',   label: 'Books'    },
-  { href: '/events',  label: 'Events'   },
-  { href: '/gallery', label: 'Gallery'  },
-  { href: '/contact', label: 'Contact'  },
+  { href: '/about',       label: 'About'      },
+  { href: '/music',       label: 'Music'      },
+  { href: '/studios',     label: 'Studios'    },
+  { href: '/books',       label: 'Books'      },
+  { href: '/events',      label: 'Events'     },
+  { href: '/gallery',     label: 'Gallery'    },
+  { href: '/contact',     label: 'Contact'    },
+  { href: '/tai-digital', label: 'TAI Digital'},
+  { href: '/press',       label: 'Press'      },
 ]
 
 const socials = [
@@ -20,6 +23,46 @@ const socials = [
   { label: 'TWN',        url: 'https://www.instagram.com/theworshipnation_twn' },
   { label: 'Studios',    url: 'https://www.instagram.com/twnstudiosglobal' },
 ]
+
+function FooterNewsletter() {
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email) return
+    setLoading(true)
+    try {
+      await fetch('/api/newsletter', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      setSent(true)
+    } finally { setLoading(false) }
+  }
+
+  if (sent) return (
+    <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'12px', color:'rgba(201,168,76,0.6)', letterSpacing:'.05em' }}>
+      ✓ You&apos;re subscribed.
+    </div>
+  )
+
+  return (
+    <form onSubmit={submit} style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
+      <input
+        type="email" required placeholder="your@email.com" value={email}
+        onChange={e => setEmail(e.target.value)}
+        style={{ flex:1, minWidth:'160px', background:'rgba(250,247,242,0.05)', border:'1px solid rgba(250,247,242,0.1)', color:'#FAF7F2', fontFamily:"'DM Sans',sans-serif", fontSize:'12px', padding:'10px 14px', outline:'none' }}
+        onFocus={e => (e.target.style.borderColor='rgba(201,168,76,0.4)')}
+        onBlur={e => (e.target.style.borderColor='rgba(250,247,242,0.1)')}
+      />
+      <button type="submit" disabled={loading}
+        style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', padding:'10px 18px', background:'rgba(201,168,76,0.15)', border:'1px solid rgba(201,168,76,0.3)', color:'#C9A84C', cursor:'pointer', transition:'all .3s', opacity: loading ? 0.6 : 1 }}
+      >{loading ? '…' : 'Join'}</button>
+    </form>
+  )
+}
 
 export default function Footer() {
   return (
@@ -86,42 +129,15 @@ export default function Footer() {
               ))}
             </div>
           </div>
+
+          <div>
+            <p className="ft-label">Stay Updated</p>
+            <FooterNewsletter />
+          </div>
         </div>
 
         {/* RIGHT */}
         <div className="ft-right">
           <div style={{ width:'100%' }}>
             <p className="ft-label ft-pages-label">Pages</p>
-            <div className="ft-pages">
-              {pages.map(({ href, label }) => (
-                <Link key={href} href={href} className="ft-link">{label}</Link>
-              ))}
-            </div>
-          </div>
-
-          <a href="https://selar.com/showlove/solomonstephen" target="_blank" rel="noopener noreferrer" className="ft-selar"
-            style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'#C9A84C', textDecoration:'none', padding:'12px 24px', border:'1px solid rgba(201,168,76,0.3)', transition:'all 0.3s', whiteSpace:'nowrap' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,0.06)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.3)'; (e.currentTarget as HTMLElement).style.background='transparent' }}
-          >Browse Books →</a>
-        </div>
-      </div>
-
-      <div className="ft-bar">
-        <div className="ft-bar-inner">
-          <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
-            © {new Date().getFullYear()} Solomon Stephen. All rights reserved.
-          </p>
-          <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
-            Crafted by{' '}
-            <a href="https://theasaphmedia.com" target="_blank" rel="noopener noreferrer"
-              style={{ color:'rgba(201,168,76,0.45)', transition:'color 0.3s' }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color='#C9A84C'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,0.45)'}
-            >TAI Digital</a>
-          </p>
-        </div>
-      </div>
-    </footer>
-  )
-}
+            <div clas

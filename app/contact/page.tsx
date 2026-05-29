@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
@@ -38,13 +39,33 @@ export default function ContactPage() {
     return () => obs.disconnect()
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = React.useState(false)
+  const [error, setError] = React.useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Build mailto with subject and body
-    const subject = encodeURIComponent(`[${inquiryTypes.find(t => t.id === selected)?.label ?? 'Inquiry'}] from ${name}`)
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nType: ${selected ?? 'general'}\n\n${message}`)
-    window.open(`mailto:theasaphmedia@gmail.com?subject=${subject}&body=${body}`, '_self')
-    setSent(true)
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: name.split(' ')[0] || name,
+          lastName: name.split(' ').slice(1).join(' ') || '',
+          email,
+          subject: category,
+          message,
+        }),
+      })
+      if (!res.ok) throw new Error('Failed to send')
+      setSent(true)
+      setName(''); setEmail(''); setMessage(''); setCategory('')
+    } catch {
+      setError('Something went wrong. Please email theasaphmedia@gmail.com directly.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const inputStyle = {
@@ -68,7 +89,7 @@ export default function ContactPage() {
         .wi{display:inline-block;animation:wordIn 1s cubic-bezier(0.16,1,0.3,1) both;}
         @keyframes wordIn{from{transform:translateY(108%)}to{transform:translateY(0)}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
-        .eyebrow::before{content:'';width:28px;height:1px;background:#C9A84C;}
+        .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
         input:focus, textarea:focus { border-bottom-color:#C9A84C !important; }
         input::placeholder, textarea::placeholder { color:#8A9A8A; }
         textarea { resize:vertical; min-height:120px; }
@@ -132,14 +153,15 @@ export default function ContactPage() {
                   <label style={{ fontFamily:'DM Sans, sans-serif', fontSize:'10px', letterSpacing:'0.22em', textTransform:'uppercase', color:'#8A9A8A', display:'block', marginBottom:'8px' }}>Your Message</label>
                   <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Tell Solomon what's on your mind..." required style={{ ...inputStyle, resize:'vertical', minHeight:'120px' }} />
                 </div>
-                <button type="submit" style={{
+                {error && <p style={{ fontFamily:"DM Sans,sans-serif", fontSize:"13px", color:"#C0392B", marginBottom:"8px" }}>{error}</p>}
+                <button type="submit" disabled={loading} style={{
                   alignSelf:'flex-start', fontFamily:'DM Sans, sans-serif', fontSize:'11px', letterSpacing:'0.18em', textTransform:'uppercase',
                   padding:'16px 40px', background:'#1A2E1A', color:'#FAF7F2', border:'none', cursor:'pointer',
                   transition:'background 0.3s, transform 0.3s'
                 }}
                   onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#2A4A2A'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)' }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='#1A2E1A'; (e.currentTarget as HTMLElement).style.transform='none' }}
-                >Send Message →</button>
+                >{loading ? 'Sending…' : 'Send Message →'}</button>
               </form>
             ) : (
               <div style={{ padding:'40px', background:'rgba(201,168,76,0.06)', border:'1px solid rgba(201,168,76,0.2)', textAlign:'center' }}>

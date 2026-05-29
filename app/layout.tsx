@@ -1,4 +1,26 @@
 import type { Metadata } from "next";
+import Script from "next/script";
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Solomon Stephen",
+  "url": "https://solomonstephen.com",
+  "image": "https://solomonstephen.com/images/solomon-green-suit-hero.png",
+  "sameAs": [
+    "https://www.instagram.com/thesolomonsteph",
+    "https://www.youtube.com/@thesolomonsteph",
+    "https://www.facebook.com/thesolomonsteph",
+    "https://www.tiktok.com/@thesolomonsteph",
+    "https://open.spotify.com/artist/7l1GQgXjGCQxlXRxIlHnJw",
+    "https://music.apple.com/ng/artist/solomon-stephen/1440574453"
+  ],
+  "jobTitle": ["Gospel Minister", "Worship Leader", "Music Producer", "Author"],
+  "worksFor": { "@type": "Organization", "name": "The Worship Nation" },
+  "address": { "@type": "PostalAddress", "addressLocality": "Lagos", "addressCountry": "NG" },
+  "knowsAbout": ["Worship Music", "Gospel Ministry", "Music Production", "Christian Literature"]
+}
+
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -38,6 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -46,14 +69,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        {/* Custom LERP cursor — hidden on mobile via CSS */}
-        <div className="cursor-dot" aria-hidden="true" />
-        <div className="cursor-ring" aria-hidden="true" />
-        <Navbar />
-        {children}
-        <WhatsAppFloat />
-        <AnimationEngine />
-      </body>
-    </html>
-  );
-}
+        {/* Google Analytics GA4 */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              strategy="afterInteractive"
+            />
+  

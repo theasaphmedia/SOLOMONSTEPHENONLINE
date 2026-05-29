@@ -1,5 +1,37 @@
 'use client'
 
+// JSON-LD for music page
+const musicSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MusicGroup",
+      "name": "Solomon Stephen",
+      "url": "https://solomonstephen.com/music",
+      "genre": ["Gospel", "Worship", "Christian"],
+      "sameAs": [
+        "https://open.spotify.com/artist/7l1GQgXjGCQxlXRxIlHnJw",
+        "https://music.apple.com/ng/artist/solomon-stephen/1440574453",
+        "https://www.youtube.com/@thesolomonsteph"
+      ]
+    },
+    {
+      "@type": "MusicRecording",
+      "name": "CROSSOVER",
+      "byArtist": { "@type": "MusicGroup", "name": "Solomon Stephen" },
+      "url": "https://www.youtube.com/watch?v=c8KAM_l151s",
+      "inAlbum": { "@type": "MusicAlbum", "name": "CROSSOVER" }
+    },
+    {
+      "@type": "MusicRecording",
+      "name": "AIKU",
+      "byArtist": { "@type": "MusicGroup", "name": "Solomon Stephen" },
+      "url": "https://www.youtube.com/watch?v=EPA7cFLHg2c"
+    }
+  ]
+}
+
+
 import { useEffect, useState, useRef, useCallback } from 'react'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
@@ -153,7 +185,9 @@ export default function MusicPage() {
         document.head.appendChild(s)
       }
     }
-    return () => {
+    return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(musicSchema) }} />) => {
       if (tickRef.current) clearInterval(tickRef.current)
       playerRef.current?.destroy?.()
     }
@@ -705,5 +739,7 @@ export default function MusicPage() {
 
       <Footer />
     </main>
+    </>  
   )
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

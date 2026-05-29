@@ -91,17 +91,24 @@ export default function AboutPage() {
       `}</style>
 
       {/* ══ HERO ══ */}
-      <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
-        {/* Full-bleed photo */}
-        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 20%' }} />
-        {/* Bottom-to-top fade */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
-        {/* Left-side fade */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.88) 0%, rgba(7,13,7,0.52) 32%, rgba(7,13,7,0.10) 58%, transparent 75%)', zIndex:1 }} />
-        {/* Top navbar fade */}
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
+      <section style={{ background:'#080F08', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,5vw,80px) clamp(64px,8vw,110px)', position:'relative', overflow:'hidden' }}>
+        {/* Background photo */}
+        <div style={{ position:'absolute', inset:0 }}>
+          <Image src="/images/gallery-solomon-standing-deep.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 18%', opacity:0.55 }} priority />
+        </div>
+        {/* Gradient layers */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #080F08 30%, rgba(8,15,8,.72) 58%, rgba(8,15,8,.25) 100%)' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(105deg, rgba(8,15,8,.88) 0%, rgba(8,15,8,.45) 55%, transparent 100%)' }} />
+        {/* Gold glow */}
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 50% 60% at 12% 88%, rgba(201,168,76,.08) 0%, transparent 60%)', pointerEvents:'none' }} />
+        {/* Animated orbs */}
+        <div style={{ position:'absolute', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle, rgba(201,168,76,.06) 0%, transparent 70%)', top:'-80px', right:'8%', animation:'float 10s ease-in-out infinite', pointerEvents:'none' }} />
+        {/* Vertical accent line */}
+        <div style={{ position:'absolute', top:0, bottom:0, left:'clamp(24px,5vw,80px)', width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.14) 30%, rgba(201,168,76,.14) 70%, transparent)', pointerEvents:'none' }} />
+        {/* Horizontal accent line */}
+        <div style={{ position:'absolute', left:'clamp(24px,5vw,80px)', right:0, bottom:'clamp(64px,8vw,110px)', height:'1px', background:'linear-gradient(to right, rgba(201,168,76,.2), transparent 80%)', pointerEvents:'none' }} />
 
-        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)' }}><div style={{ maxWidth:'920px' }}>
+        <div style={{ position:'relative', zIndex:2, maxWidth:'920px' }}>
           <div className="eyebrow" style={{ color:'rgba(201,168,76,.6)', marginBottom:'clamp(28px,3.5vw,52px)', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .25s both' }}>
             The Story of Solomon Stephen
           </div>
@@ -116,7 +123,7 @@ export default function AboutPage() {
               <span key={tag} style={{ fontFamily:'DM Sans', fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(250,247,242,.55)', border:'1px solid rgba(250,247,242,.12)', padding:'7px 16px', borderRadius:'1px' }}>{tag}</span>
             ))}
           </div>
-        </div></div>
+        </div>
 
         <div style={{ position:'absolute', bottom:'clamp(32px,4vw,52px)', right:'clamp(24px,5vw,80px)', zIndex:2, display:'flex', flexDirection:'column', alignItems:'center', gap:'10px', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .85s both' }}>
           <span style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.28em', textTransform:'uppercase', color:'rgba(250,247,242,.22)', writingMode:'vertical-rl' }}>Scroll</span>
@@ -148,7 +155,11 @@ export default function AboutPage() {
               <div style={{ position:'absolute', top:'clamp(20px,3vw,40px)', left:'clamp(20px,3vw,40px)', width:52, height:52, borderTop:'2px solid rgba(201,168,76,.85)', borderLeft:'2px solid rgba(201,168,76,.85)' }} />
               <div style={{ position:'absolute', bottom:'clamp(20px,3vw,40px)', right:'clamp(20px,3vw,40px)', width:52, height:52, borderBottom:'2px solid rgba(201,168,76,.85)', borderRight:'2px solid rgba(201,168,76,.85)' }} />
             </div>
-
+            {/* Year badge */}
+            <div style={{ position:'absolute', bottom:'clamp(20px,3vw,40px)', left:'clamp(20px,3vw,40px)', background:'rgba(13,27,13,.85)', backdropFilter:'blur(8px)', padding:'12px 18px' }}>
+              <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'32px', fontWeight:400, color:'#C9A84C', lineHeight:1 }}>2014</div>
+              <div style={{ fontFamily:'DM Sans', fontSize:'9px', letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(250,247,242,.5)', marginTop:'4px' }}>Ministry Founded</div>
+            </div>
           </div>
 
           {/* Text */}
@@ -187,7 +198,8 @@ export default function AboutPage() {
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 80% at 5% 50%, rgba(201,168,76,.06) 0%, transparent 60%)', pointerEvents:'none' }} />
         {/* Ghost watermark */}
         <div style={{ position:'absolute', right:'-0.04em', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(160px,22vw,320px)', fontWeight:700, color:'rgba(201,168,76,.04)', lineHeight:1, pointerEvents:'none', userSelect:'none', whiteSpace:'nowrap' }}>TWN</div>
-        {/* Decorative lines removed */}
+        {/* Decorative lines */}
+        <div style={{ position:'absolute', top:'20%', left:'clamp(24px,5vw,80px)', width:'1px', height:'60%', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.1), transparent)', pointerEvents:'none' }} />
         <div style={{ maxWidth:'860px', margin:'0 auto', position:'relative', zIndex:1 }}>
           <div className="rv" style={{ display:'flex', gap:'clamp(16px,2vw,32px)', marginBottom:'clamp(24px,3vw,40px)', alignItems:'flex-start' }}>
             <div style={{ width:'2px', background:'#C9A84C', flexShrink:0, alignSelf:'stretch', minHeight:'60px', opacity:.55 }} />
@@ -296,7 +308,7 @@ export default function AboutPage() {
               { src:'/images/book-cost-of-ignorance.png',     title:'The Cost of Ignorance' },
               { src:'/images/book-sons-not-slaves-march.png', title:'Sons Not Slaves (March)' },
               { src:'/images/book-sons-not-slaves-april.png', title:'Sons Not Slaves (April)' },
-              { src:'/images/book-go-in-this-thy-might.png',   title:'Go In This Thy Might' },
+              { src:'/images/solomon-cream-suit-books.png',   title:'Solomon Stephen, Author' },
             ].map((b, i) => (
               <div key={i} className="img-zoom rv-scale" style={{ transitionDelay:`${i * 0.09}s`, borderRadius:'2px', overflow:'hidden', aspectRatio:'3/4', position:'relative', background:'#E0D9CE' }}>
                 <Image src={b.src} alt={b.title} fill style={{ objectFit:'cover' }} />
