@@ -54,13 +54,13 @@ export default function ContactPage() {
           firstName: name.split(' ')[0] || name,
           lastName: name.split(' ').slice(1).join(' ') || '',
           email,
-          subject: category,
+          subject: selected || '',
           message,
         }),
       })
       if (!res.ok) throw new Error('Failed to send')
       setSent(true)
-      setName(''); setEmail(''); setMessage(''); setCategory('')
+      setName(''); setEmail(''); setMessage(''); setSelected(null)
     } catch {
       setError('Something went wrong. Please email theasaphmedia@gmail.com directly.')
     } finally {
