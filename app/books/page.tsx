@@ -91,13 +91,13 @@ export default function BooksPage() {
       { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
     )
     document.querySelectorAll('.rv, .rv-left, .rv-right, .rv-scale').forEach(el => obs.observe(el))
-    return (
-    <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(booksSchema) }} />) => obs.disconnect()
+    return () => obs.disconnect()
   }, [])
 
   return (
-    <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(booksSchema) }} />
+      <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
       <style>{`
         .rv { opacity:0; transform:translateY(32px); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
         .rv.is-visible { opacity:1; transform:none; }

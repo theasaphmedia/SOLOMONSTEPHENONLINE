@@ -185,9 +185,7 @@ export default function MusicPage() {
         document.head.appendChild(s)
       }
     }
-    return (
-    <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(musicSchema) }} />) => {
+    return () => {
       if (tickRef.current) clearInterval(tickRef.current)
       playerRef.current?.destroy?.()
     }
@@ -292,7 +290,9 @@ export default function MusicPage() {
   const queueList = activeTab === 'releases' ? releaseTracks : currentTracks
 
   return (
-    <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(musicSchema) }} />
+      <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
       <style>{`
         /* ── Animations ── */
         .rv{opacity:0;transform:translateY(32px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}

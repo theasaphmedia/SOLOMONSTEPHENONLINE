@@ -98,9 +98,7 @@ export default function StudiosPage() {
       { threshold: 0.07, rootMargin: '0px 0px -30px 0px' }
     )
     document.querySelectorAll('.rv').forEach(el => obs.observe(el))
-    return (
-    <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(studiosSchema) }} />) => obs.disconnect()
+    return () => obs.disconnect()
   }, [])
 
   /* booking helpers */
@@ -122,7 +120,9 @@ export default function StudiosPage() {
 
   /* ─── render ──────────────────────────────────────────────────── */
   return (
-    <main style={{ background:'#09090E', color:'#F0EDE8', overflowX:'hidden' }}>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(studiosSchema) }} />
+      <main style={{ background:'#09090E', color:'#F0EDE8', overflowX:'hidden' }}>
       <style>{`
         /* reveals — blur + scale + vertical rise */
         .rv{opacity:0;transform:translateY(48px) scale(0.96);filter:blur(5px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1.05s cubic-bezier(.16,1,.3,1),filter .85s cubic-bezier(.16,1,.3,1)}
