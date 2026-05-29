@@ -12,9 +12,12 @@ const services = [
 ]
 
 const portfolio = [
-  { id:'01', name:'ttconline.org', title:'The Transformation Camp', label:'Ministry Website', stack:['Next.js','TypeScript','Framer Motion'], desc:'A multi-page website for a transformative Christian camp ministry. Light design, rich animations, real content. Built to represent a movement.', url:'https://ttconline.org', img:'/images/solomon-green-blazer-tai.png', live:true },
-  { id:'02', name:'PulpitFlow', title:'Real-Time Preaching System', label:'Mobile App', stack:['Flutter','Riverpod','Supabase','API.Bible'], desc:'Redefines how ministers prepare and deliver messages. Replaces printed notes, WhatsApp screenshots, and hand signals — one seamless system.', url:'#', img:'/images/solomon-photo2.png', live:false },
-  { id:'03', name:'solomonstephen.com', title:'This Website', label:'Personal Brand', stack:['Next.js','TypeScript','React 19'], desc:'A showcase of what TAI Digital builds — animated, content-rich, world-class. The personal platform of Solomon Stephen.', url:'https://solomonstephen.com', img:'/images/solomon-green-suit-hero.png', live:true },
+  { id:'01', name:'ttconline.org', title:'The Transformation Camp', label:'Ministry Website', stack:['Next.js','TypeScript','Framer Motion'], desc:'A multi-page website for a transformative Christian camp ministry. Light design, rich animations, real content. Built to represent a movement.', url:'https://ttconline.org', live:true,
+    favicon:'T', faviconBg:'linear-gradient(135deg,#1A3A5C 0%,#0D2340 100%)', faviconColor:'#E8C87A', bgGradient:'linear-gradient(135deg,#0D2340 0%,#1A3A5C 40%,#243F66 100%)', accent:'#4A90D9' },
+  { id:'02', name:'PulpitFlow', title:'Real-Time Preaching System', label:'Mobile App', stack:['Flutter','Riverpod','Supabase','API.Bible'], desc:'Redefines how ministers prepare and deliver messages. Replaces printed notes, WhatsApp screenshots, and hand signals — one seamless system.', url:'#', live:false,
+    favicon:'P', faviconBg:'linear-gradient(135deg,#4A148C 0%,#6A1FC2 100%)', faviconColor:'#E8C87A', bgGradient:'linear-gradient(135deg,#1A0A2E 0%,#2D1057 40%,#3D1A72 100%)', accent:'#AB47BC' },
+  { id:'03', name:'solomonstephen.com', title:'This Website', label:'Personal Brand', stack:['Next.js','TypeScript','React 19'], desc:'A showcase of what TAI Digital builds — animated, content-rich, world-class. The personal platform of Solomon Stephen.', url:'https://solomonstephen.com', live:true,
+    favicon:'S', faviconBg:'linear-gradient(135deg,#0D1B0D 0%,#1A3A1A 100%)', faviconColor:'#C9A84C', bgGradient:'linear-gradient(135deg,#071407 0%,#0D1B0D 40%,#1A2E1A 100%)', accent:'#C9A84C' },
 ]
 
 const ticker = ['Next.js','React','TypeScript','Flutter','Dart','Supabase','Figma','Vercel','Node.js','Tailwind CSS','Riverpod','REST API','PostgreSQL','Git','Design Systems','Framer Motion']
@@ -670,14 +673,33 @@ export default function TaiDigitalPage() {
 
                 <div className="cspot" />
 
-                <div className="port-img" style={{ aspectRatio:'16/10', position:'relative', overflow:'hidden', background:'#E8E4DE' }}>
-                  <Image src={p.img} alt={p.title} fill style={{ objectFit:'cover', objectPosition:'top center' }} />
-                  <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom,transparent 45%,rgba(17,18,64,.65) 100%)' }} />
-                  <div style={{ position:'absolute', top:'14px', left:'14px', display:'flex', alignItems:'center', gap:'7px', background:'rgba(17,18,64,.85)', padding:'5px 10px' }}>
-                    <div style={{ width:'5px', height:'5px', borderRadius:'50%', background:p.live?'#4CAF50':'rgba(201,168,76,.7)', flexShrink:0, boxShadow:p.live?'0 0 6px rgba(76,175,80,.7)':'none' }} />
-                    <span style={{ fontFamily:"'Space Mono',monospace", fontSize:'9px', letterSpacing:'.2em', color:p.live?'rgba(76,175,80,.9)':'rgba(201,168,76,.7)' }}>{p.live?'LIVE':'PENDING'}</span>
+                {/* Browser Chrome Mockup */}
+                <div style={{ position:'relative', overflow:'hidden' }}>
+                  <div style={{ background:'rgba(20,20,20,0.95)', padding:'10px 14px', display:'flex', alignItems:'center', gap:'10px', borderBottom:'1px solid rgba(255,255,255,0.06)' }}>
+                    <div style={{ display:'flex', gap:'5px', flexShrink:0 }}>
+                      <div style={{ width:10,height:10,borderRadius:'50%',background:'#FF5F57' }} />
+                      <div style={{ width:10,height:10,borderRadius:'50%',background:'#FFBD2E' }} />
+                      <div style={{ width:10,height:10,borderRadius:'50%',background:'#28C940' }} />
+                    </div>
+                    <div style={{ flex:1,background:'rgba(255,255,255,0.06)',borderRadius:'4px',padding:'5px 10px',display:'flex',alignItems:'center',gap:'7px',minWidth:0 }}>
+                      <div style={{ width:14,height:14,borderRadius:'3px',background:p.faviconBg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
+                        <span style={{ fontFamily:"'DM Sans',sans-serif",fontSize:'8px',fontWeight:700,color:p.faviconColor,lineHeight:1 }}>{p.favicon}</span>
+                      </div>
+                      <span style={{ fontFamily:"'DM Sans',sans-serif",fontSize:'10px',color:'rgba(255,255,255,0.45)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap' }}>{p.name}</span>
+                    </div>
                   </div>
-                  <span style={{ position:'absolute', bottom:'14px', right:'14px', fontFamily:"'Space Mono',monospace", fontSize:'10px', color:'rgba(255,255,255,.3)', letterSpacing:'.15em' }}>{p.id}</span>
+                  <div style={{ height:'160px',background:p.bgGradient,position:'relative',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden' }}>
+                    <div style={{ position:'absolute',width:'200px',height:'200px',borderRadius:'50%',border:`1px solid ${p.accent}18`,top:'50%',left:'50%',transform:'translate(-50%,-50%)' }} />
+                    <div style={{ position:'absolute',width:'130px',height:'130px',borderRadius:'50%',border:`1px solid ${p.accent}28`,top:'50%',left:'50%',transform:'translate(-50%,-50%)' }} />
+                    <div style={{ width:'60px',height:'60px',borderRadius:'12px',background:p.faviconBg,border:`1px solid ${p.accent}30`,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:`0 8px 32px ${p.accent}20` }}>
+                      <span style={{ fontFamily:"'Cormorant Garamond',serif",fontSize:'26px',fontWeight:600,color:p.faviconColor,lineHeight:1 }}>{p.favicon}</span>
+                    </div>
+                    <div style={{ position:'absolute',top:'14px',left:'14px',display:'flex',alignItems:'center',gap:'7px' }}>
+                      <div style={{ width:'5px',height:'5px',borderRadius:'50%',background:p.live?'#4CAF50':'rgba(201,168,76,.7)',boxShadow:p.live?'0 0 6px rgba(76,175,80,.7)':'none' }} />
+                      <span style={{ fontFamily:"'Space Mono',monospace",fontSize:'9px',letterSpacing:'.2em',color:p.live?'rgba(76,175,80,.9)':'rgba(201,168,76,.7)' }}>{p.live?'LIVE':'PENDING'}</span>
+                    </div>
+                    <span style={{ position:'absolute',bottom:'12px',right:'12px',fontFamily:"'Space Mono',monospace",fontSize:'9px',color:`${p.accent}50`,letterSpacing:'.15em' }}>{p.label}</span>
+                  </div>
                 </div>
 
                 <div style={{ padding:'clamp(18px,2.5vw,28px)', flex:1, display:'flex', flexDirection:'column', position:'relative', zIndex:3 }}>

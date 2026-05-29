@@ -7,7 +7,7 @@ import Footer from '@/components/Footer'
 
 const facts = [
   { label: 'Ministry Name',   value: 'The Worship Nation (TWN)' },
-  { label: 'Founded',         value: '2020' },
+
   { label: 'Based In',        value: 'Lagos, Nigeria' },
   { label: 'Genres',          value: 'Gospel Worship · Afrobeats Gospel · Contemporary Christian' },
   { label: 'Published Books', value: '4 Titles (Selar, Amazon)' },
@@ -17,8 +17,11 @@ const facts = [
 ]
 
 const releases = [
-  { year: '2023', title: 'CROSSOVER', type: 'EP', desc: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
-  { year: '2024', title: 'AIKU (All I Know Is You)', type: 'Single', desc: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
+  { year: '', title: 'CROSSOVER', type: 'EP', desc: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
+  { year: '', title: 'AIKU (All I Know Is You)', type: 'Single', desc: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
+  { year: '', title: 'The Mighty God', type: 'Single', desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
+  { year: '', title: 'Resolute', type: 'Single', desc: 'A bold declaration of unwavering faith — standing firm, immovable, anchored in the promises of God.' },
+  { year: '', title: 'Alaabo Mi', type: 'Single', desc: 'My Praise — a Yoruba-language offering of pure adoration, surrendered wholly to the Lord.' },
 ]
 
 const pressQuotes = [
@@ -113,7 +116,7 @@ export default function PressPage() {
                 Solomon Stephen is a gospel minister, worship leader, music producer, published author, and founder of The Worship Nation (TWN) and TWN Studios — based in Lagos, Nigeria. His ministry centres on one conviction: that the presence of God is the only atmosphere in which people truly change.
               </p>
               <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.95, color:'rgba(250,247,242,0.55)', margin:'0 0 24px' }}>
-                Since founding TWN in 2020, Solomon has built three recurring monthly gatherings — the Mid Day Worship Experience (MDWE), The Slaughter House (TSH), and Synantesis — each one a distinct and intentional encounter designed to bring people into the undiluted presence of God.
+                Solomon has built three recurring monthly gatherings — the Mid Day Worship Experience (MDWE), The Slaughter House (TSH), and Synantesis — each one a distinct and intentional encounter designed to bring people into the undiluted presence of God.
               </p>
               <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.95, color:'rgba(250,247,242,0.55)', margin:0 }}>
                 As a recording artist, his releases include the EP <em>CROSSOVER</em> and the single <em>AIKU (All I Know Is You)</em>, available on all major streaming platforms. He is also the author of four published titles, including <em>The Cost of Ignorance</em> and <em>Sons Not Slaves</em>.
