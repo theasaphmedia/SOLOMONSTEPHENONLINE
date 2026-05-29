@@ -128,7 +128,27 @@ export default function PressPage() {
           </div>
         </section>
 
+
         {/* RELEASES */}
+        <section style={{ background:'#0D1B0D', padding:'clamp(60px,8vw,100px) clamp(24px,4vw,80px)' }}>
+          <div style={{ maxWidth:'900px', margin:'0 auto' }}>
+            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.45)', marginBottom:'40px' }} className="rv">Discography</div>
+            {releases.map((r, i) => (
+              <div key={i} className={`rv d${i + 1}`} style={{ borderTop:'1px solid rgba(250,247,242,.07)', padding:'clamp(24px,3vw,40px) 0', display:'grid', gridTemplateColumns:'80px 1fr', gap:'24px 40px', alignItems:'start' }}>
+                <div>
+                  <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'.1em', color:'rgba(201,168,76,0.55)', marginBottom:'4px' }}>{r.year}</div>
+                  <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.15em', textTransform:'uppercase', color:'rgba(250,247,242,.25)' }}>{r.type}</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(22px,3vw,36px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.1, marginBottom:'12px' }}>{r.title}</div>
+                  <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', lineHeight:1.8, color:'rgba(250,247,242,0.42)', margin:0 }}>{r.desc}</p>
+                </div>
+              </div>
+            ))}
+            <div style={{ borderTop:'1px solid rgba(250,247,242,.07)', paddingTop:'24px' }} />
+          </div>
+        </section>
+
         {/* PRESS PHOTOS */}
         <section style={{ background:'#0A1A0A', padding:'clamp(60px,8vw,100px) clamp(24px,4vw,80px)' }}>
           <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
