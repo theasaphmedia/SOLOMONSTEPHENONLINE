@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/books',       label: 'Books' },
   { href: '/events',      label: 'Events' },
   { href: '/gallery',     label: 'Gallery' },
+  { href: '/press',       label: 'Press' },
   { href: '/contact',     label: 'Contact' },
   { href: '/tai-digital', label: 'TAI Digital' },
 ]
