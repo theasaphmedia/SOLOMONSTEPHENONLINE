@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Large video files (serve via CDN instead)
+public/videos/studio-hero.mp4
