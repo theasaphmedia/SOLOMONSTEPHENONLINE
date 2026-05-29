@@ -78,9 +78,18 @@ export default function TaiDigitalPage() {
 
     /* reveal observer */
     const obs = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('rv'); obs.unobserve(e.target) } })
-    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' })
-    document.querySelectorAll('[class*="anim-"]').forEach(el => obs.observe(el))
+      entries.forEach(e => {
+        if (!e.isIntersecting) return
+        if (e.target.classList.contains('words-block')) {
+          // cascade rv to all anim-word children (they're clipped by overflow:hidden — can't self-observe)
+          e.target.querySelectorAll('.anim-word').forEach((w: Element) => w.classList.add('rv'))
+        } else {
+          e.target.classList.add('rv')
+        }
+        obs.unobserve(e.target)
+      })
+    }, { threshold: 0, rootMargin: '0px 0px -20px 0px' })
+    document.querySelectorAll('[class*="anim-"],.words-block').forEach(el => obs.observe(el))
 
     /* scramble headings */
     const t1 = setTimeout(() => { if (h1Ref.current) scramble(h1Ref.current, 'The Asaph', 1100) }, 380)
@@ -251,7 +260,7 @@ export default function TaiDigitalPage() {
         .anim-wipe  { clip-path:inset(0 100% 0 0); transition:clip-path 1.1s cubic-bezier(.16,1,.3,1); }
         .anim-wipe.rv { clip-path:inset(0 0% 0 0); }
 
-        .anim-up    { opacity:0; transform:translateY(32px) blur(4px); filter:blur(4px); transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),filter .7s; }
+        .anim-up    { opacity:0; transform:translateY(32px); filter:blur(4px); transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1),filter .7s; }
         .anim-up.rv { opacity:1; transform:none; filter:blur(0); }
 
         .anim-flip  { opacity:0; transform:perspective(700px) rotateX(50deg) translateY(-16px); transform-origin:top center; transition:opacity .7s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1); }
@@ -575,12 +584,14 @@ export default function TaiDigitalPage() {
                 {'// about.the_agency'}
               </div>
 
+              <div className="words-block">
               <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(30px,4.5vw,58px)', fontWeight:400, color:'#111240', lineHeight:1.1, margin:'0 0 clamp(20px,2.5vw,32px)', letterSpacing:'-.01em' }}>
                 {['We','build','digital','infrastructure','that'].map((w, i) => (
                   <span key={i} className="word-clip"><span className="anim-word" style={{ transitionDelay:(i*.07)+'s' }}>{w}{' '}</span></span>
                 ))}
                 <span className="word-clip"><span className="anim-word" style={{ transitionDelay:'.4s', color:'#5B37BB', fontStyle:'italic' }}>carries meaning.</span></span>
               </h2>
+              </div>
 
               <p className="anim-up d2" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.35vw,16px)', lineHeight:1.9, color:'rgba(17,18,64,.5)', margin:'0 0 clamp(16px,2vw,24px)' }}>
                 Named after Asaph — the master musician and prophetic seer appointed by King David — TAI Digital carries that DNA into the digital age: creativity, spiritual depth, and the conviction that what we make should carry weight and meaning.
@@ -721,6 +732,7 @@ export default function TaiDigitalPage() {
             {'// start.new_project()'}
           </div>
 
+          <div className="words-block">
           <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(40px,6.5vw,84px)', fontWeight:400, color:'#F0EDE8', lineHeight:1.04, margin:'0 0 clamp(20px,2.5vw,32px)', letterSpacing:'-.01em' }}>
             {['Your','vision','deserves'].map((w,i) => (
               <span key={w} className="word-clip"><span className="anim-word" style={{ transitionDelay:(i*.08)+'s' }}>{w}{' '}</span></span>
