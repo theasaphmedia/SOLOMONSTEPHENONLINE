@@ -4,15 +4,15 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 const pages = [
-  { href: '/about',       label: 'About'      },
-  { href: '/music',       label: 'Music'      },
-  { href: '/studios',     label: 'Studios'    },
-  { href: '/books',       label: 'Books'      },
-  { href: '/events',      label: 'Events'     },
-  { href: '/gallery',     label: 'Gallery'    },
-  { href: '/contact',     label: 'Contact'    },
-  { href: '/tai-digital', label: 'TAI Digital'},
-  { href: '/press',       label: 'Press'      },
+  { href: '/about',       label: 'About'       },
+  { href: '/music',       label: 'Music'       },
+  { href: '/studios',     label: 'Studios'     },
+  { href: '/books',       label: 'Books'       },
+  { href: '/events',      label: 'Events'      },
+  { href: '/gallery',     label: 'Gallery'     },
+  { href: '/contact',     label: 'Contact'     },
+  { href: '/tai-digital', label: 'TAI Digital' },
+  { href: '/press',       label: 'Press'       },
 ]
 
 const socials = [
@@ -68,7 +68,6 @@ export default function Footer() {
   return (
     <footer style={{ background: '#0D1B0D', color: '#FAF7F2' }}>
       <style>{`
-        /* Desktop */
         .ft-body { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,5vw,80px); padding: clamp(56px,7vw,96px) clamp(24px,4vw,64px); max-width: 1280px; margin: 0 auto; }
         .ft-pages { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 40px; }
         .ft-link { font-family:'DM Sans',sans-serif; font-size:13px; color:rgba(250,247,242,0.38); text-decoration:none; transition:color .3s; }
@@ -82,8 +81,6 @@ export default function Footer() {
         .ft-pages .ft-link { text-align:right; }
         .ft-bar { border-top:1px solid rgba(201,168,76,0.07); padding:18px clamp(24px,4vw,64px); }
         .ft-bar-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; }
-
-        /* Mobile */
         @media(max-width:640px) {
           .ft-body { grid-template-columns:1fr; gap:36px; padding:44px 24px 36px; }
           .ft-right { align-items:flex-start; }
@@ -140,4 +137,36 @@ export default function Footer() {
         <div className="ft-right">
           <div style={{ width:'100%' }}>
             <p className="ft-label ft-pages-label">Pages</p>
-            <div clas
+            <div className="ft-pages">
+              {pages.map(({ href, label }) => (
+                <Link key={href} href={href} className="ft-link">{label}</Link>
+              ))}
+            </div>
+          </div>
+
+          <a href="https://selar.com/showlove/solomonstephen" target="_blank" rel="noopener noreferrer" className="ft-selar"
+            style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'#C9A84C', textDecoration:'none', padding:'12px 24px', border:'1px solid rgba(201,168,76,0.3)', transition:'all 0.3s', whiteSpace:'nowrap' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor='#C9A84C'; (e.currentTarget as HTMLElement).style.background='rgba(201,168,76,0.06)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor='rgba(201,168,76,0.3)'; (e.currentTarget as HTMLElement).style.background='transparent' }}
+          >Browse Books →</a>
+        </div>
+      </div>
+
+      <div className="ft-bar">
+        <div className="ft-bar-inner">
+          <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
+            © {new Date().getFullYear()} Solomon Stephen. All rights reserved.
+          </p>
+          <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
+            Crafted by{' '}
+            <a href="https://theasaphmedia.com" target="_blank" rel="noopener noreferrer"
+              style={{ color:'rgba(201,168,76,0.45)', transition:'color 0.3s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.color='#C9A84C'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,0.45)'}
+            >TAI Digital</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  )
+}

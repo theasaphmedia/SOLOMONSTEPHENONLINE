@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     url: "https://solomonstephen.com/about",
     title: "About Solomon Stephen",
-    description: "Gospel minister, worship leader, music producer, author, and founder of TWN Studios — Lagos, Nigeria."
+    description: "Gospel minister, worship leader, music producer, author, and founder of TWN Studios — Lagos, Nigeria.",
     images: [{ url: '/images/solomon-photo.png', width: 1200, height: 630, alt: 'Solomon Stephen — Gospel Minister' }]
   }
 }

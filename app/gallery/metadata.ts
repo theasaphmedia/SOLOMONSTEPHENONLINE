@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     url: "https://solomonstephen.com/gallery",
     title: "Gallery — Solomon Stephen",
-    description: "Worship moments, ministry gatherings, and studio sessions by Solomon Stephen."
+    description: "Worship moments, ministry gatherings, and studio sessions by Solomon Stephen.",
     images: [{ url: '/images/gallery-solomon-worship-intense.jpg', width: 1200, height: 630, alt: 'Gallery — Solomon Stephen' }]
   }
 }
