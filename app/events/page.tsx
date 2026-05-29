@@ -34,9 +34,40 @@ const eventsSchema = {
   ]
 }
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
+
+const LOC = 'TWN Studios, Langbasa Road, Ajah, Lagos, Nigeria'
+
+function gcalLink(title: string, details: string, location: string, rrule: string, start: string, end: string) {
+  const fmt = (s: string) => s.replace(/[-:]/g, '')
+  const base = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+  return `${base}&text=${encodeURIComponent(title)}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}&dates=${fmt(start)}/${fmt(end)}&recur=${encodeURIComponent(rrule)}`
+}
+
+function downloadICS(title: string, description: string, location: string, rrule: string, dtstart: string, dtend: string) {
+  const stamp = new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z'
+  const ics = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Solomon Stephen//Events//EN',
+    'BEGIN:VEVENT',
+    `DTSTART;TZID=Africa/Lagos:${dtstart.replace(/[-:]/g,'')}00`,
+    `DTEND;TZID=Africa/Lagos:${dtend.replace(/[-:]/g,'')}00`,
+    `RRULE:${rrule}`,
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${description}`,
+    `LOCATION:${location}`,
+    `DTSTAMP:${stamp}`,
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+  const blob = new Blob([ics], { type:'text/calendar' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a'); a.href = url; a.download = title.replace(/\s+/g,'-')+'.ics'; a.click()
+  URL.revokeObjectURL(url)
+}
 
 const gatherings = [
   {
