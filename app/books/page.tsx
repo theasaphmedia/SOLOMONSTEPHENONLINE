@@ -1,36 +1,5 @@
 'use client'
 
-const booksSchema = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Book",
-      "name": "The Cost of Ignorance",
-      "author": { "@type": "Person", "name": "Solomon Stephen" },
-      "url": "https://selar.com/v8561k6070",
-      "inLanguage": "en",
-      "genre": "Christian Literature"
-    },
-    {
-      "@type": "Book",
-      "name": "Sons Not Slaves — March Edition",
-      "author": { "@type": "Person", "name": "Solomon Stephen" },
-      "url": "https://selar.com/41x076wbk1",
-      "inLanguage": "en",
-      "genre": "Christian Devotional"
-    },
-    {
-      "@type": "Book",
-      "name": "Sons Not Slaves — April Edition",
-      "author": { "@type": "Person", "name": "Solomon Stephen" },
-      "url": "https://selar.com/8z43781b2n",
-      "inLanguage": "en",
-      "genre": "Christian Devotional"
-    }
-  ]
-}
-
-
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -74,7 +43,7 @@ const books = [
     desc: "God's presence forms and equips — but dependence must never transfer from the Giver to what the Giver gave. A devotional on carrying the power of encounter into the field without making the encounter itself an idol.",
     theme: 'Calling · Dependence · Courage',
     href: '',
-    img: '/images/solomon-cream-suit-books.png',
+    img: '/images/book-go-in-this-thy-might.png',
     accent: '#C9A84C',
     comingSoon: true,
   },
@@ -95,9 +64,7 @@ export default function BooksPage() {
   }, [])
 
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(booksSchema) }} />
-      <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
+    <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
       <style>{`
         .rv { opacity:0; transform:translateY(32px); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
         .rv.is-visible { opacity:1; transform:none; }
@@ -115,7 +82,7 @@ export default function BooksPage() {
         @keyframes float2{0%,100%{transform:translateY(0) rotate(6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
         @keyframes heroIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
         .eyebrow{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.32em;text-transform:uppercase;color:#C9A84C;display:flex;align-items:center;gap:12px;}
-        .eyebrow::before{content:\'\';width:28px;height:1px;background:#C9A84C;}
+        .eyebrow::before{content:'';width:28px;height:1px;background:#C9A84C;}
         .book-card { background:#fff; border-radius:2px; overflow:hidden; transition:transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s cubic-bezier(0.16,1,0.3,1); }
         .book-card:hover { transform:translateY(-8px); box-shadow:0 24px 56px rgba(13,27,13,0.12); }
         .img-zoom { overflow:hidden; }
@@ -128,36 +95,20 @@ export default function BooksPage() {
         .book-strip:hover { background:rgba(201,168,76,0.04); }
       `}</style>
 
-      {/* ── Hero — typographic, no photo of Solomon ── */}
+      {/* ── Hero ── */}
       <section style={{ height:'100vh', minHeight:'640px', background:'#050A05', position:'relative', overflow:'hidden' }}>
 
-        {/* Floating book covers — decorative background art */}
-        <div style={{ position:'absolute', right:'6%', top:'8%', width:'clamp(130px,17vw,240px)', aspectRatio:'3/4', zIndex:1, opacity:0.22, transform:'rotate(9deg)' }}>
-          <Image src="/images/book-cost-of-ignorance.png" alt="" fill style={{ objectFit:'contain' }} />
-        </div>
-        <div style={{ position:'absolute', right:'24%', top:'22%', width:'clamp(110px,14vw,200px)', aspectRatio:'3/4', zIndex:0, opacity:0.13, transform:'rotate(-6deg)' }}>
-          <Image src="/images/book-sons-not-slaves-march.png" alt="" fill style={{ objectFit:'contain' }} />
-        </div>
-        <div style={{ position:'absolute', right:'11%', top:'48%', width:'clamp(120px,15vw,220px)', aspectRatio:'3/4', zIndex:2, opacity:0.11, transform:'rotate(4deg)' }}>
-          <Image src="/images/book-sons-not-slaves-april.png" alt="" fill style={{ objectFit:'contain' }} />
-        </div>
+        {/* Full-bleed background */}
+        <Image src="/images/books-hero-bg-v2.png" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center center' }} />
 
-        {/* Atmosphere gradients */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.99) 0%, rgba(5,10,5,0.90) 28%, rgba(5,10,5,0.65) 58%, rgba(5,10,5,0.50) 100%)', zIndex:3 }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(5,10,5,0.95) 0%, rgba(5,10,5,0.72) 38%, rgba(5,10,5,0.25) 65%, transparent 100%)', zIndex:3 }} />
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'200px', background:'linear-gradient(to bottom, rgba(5,10,5,0.85) 0%, transparent 100%)', zIndex:4 }} />
+        {/* Gradients — same weights as music/gallery */}
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(5,10,5,0.97) 0%, rgba(5,10,5,0.80) 28%, rgba(5,10,5,0.30) 58%, transparent 82%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(5,10,5,0.88) 0%, rgba(5,10,5,0.52) 32%, rgba(5,10,5,0.10) 58%, transparent 75%)', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(5,10,5,0.65) 0%, transparent 100%)', zIndex:2 }} />
 
-        {/* Subtle gold glow mid-right */}
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 45% 55% at 72% 42%, rgba(201,168,76,0.06) 0%, transparent 70%)', zIndex:4, pointerEvents:'none' }} />
 
-        {/* Big watermark number */}
-        <div style={{ position:'absolute', right:'-2%', top:'50%', transform:'translateY(-50%)', fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(200px,30vw,420px)', fontWeight:400, color:'rgba(201,168,76,0.03)', lineHeight:1, pointerEvents:'none', userSelect:'none', letterSpacing:'-.05em', zIndex:5 }}>04</div>
-
-        {/* Vertical rule */}
-        <div style={{ position:'absolute', left:'clamp(24px,4vw,80px)', top:0, bottom:0, width:'1px', background:'linear-gradient(to bottom, transparent, rgba(201,168,76,.12) 30%, rgba(201,168,76,.12) 70%, transparent)', pointerEvents:'none', zIndex:5 }} />
-
-        {/* Text — anchored bottom, font sized to fit without overflow */}
-        <div style={{ position:'absolute', inset:0, zIndex:6, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(48px,6vw,72px)', animation:'heroIn .9s .15s both' }}>
+        {/* Text */}
+        <div style={{ position:'absolute', inset:0, zIndex:3, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(80px,10vw,120px) clamp(24px,4vw,80px) clamp(48px,6vw,72px)', animation:'heroIn .9s .15s both' }}>
           <div style={{ maxWidth:'640px' }}>
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'9px', letterSpacing:'.45em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'clamp(20px,3vw,36px)', display:'flex', alignItems:'center', gap:'14px' }}>
               <span style={{ display:'inline-block', width:'28px', height:'1px', background:'rgba(201,168,76,.4)' }} />
@@ -254,8 +205,7 @@ export default function BooksPage() {
         </div>
       </section>
 
-            <Footer />
+      <Footer />
     </main>
-    </>
   )
 }
