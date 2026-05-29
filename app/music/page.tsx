@@ -57,7 +57,6 @@ const releaseTracks: Track[] = [
   { id: 'TnEp0kiJBfI', title: 'RIVERS OF JOY',  scripture: '',              desc: 'Spontaneous prophetic worship — a live encounter with the river that never runs dry.' },
   { id: '6TYabI5QCO4', title: 'Awesome God',     scripture: 'Psalm 48:1',   desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
   { id: 'q1-eDXBpMkY', title: 'Alagbada Ina',   scripture: 'Exodus 3:2',   desc: 'The God clothed in fire — a Yoruba-infused anthem from the burning bush encounter.', noEmbed: true },
-  { id: 'Ao_ZC3oHi9c', title: 'There Is No One', scripture: 'Isaiah 46:9', desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.', noEmbed: true },
 ]
 
 const CHANNEL = 'https://www.youtube.com/@thesolomonsteph'
@@ -552,16 +551,7 @@ export default function MusicPage() {
               </div>
             </div>
 
-            {/* Progress */}
-            <div style={{ opacity: isNoEmbed ? .25 : 1 }}>
-              <div className="prog-bar" onClick={handleSeek}>
-                <div className="prog-fill" style={{ width:`${progress * 100}%` }} />
-              </div>
-              <div style={{ display:'flex', justifyContent:'space-between', marginTop:'8px' }}>
-                <span style={{ fontFamily:'DM Sans', fontSize:'11px', color:'rgba(250,247,242,.35)', fontVariantNumeric:'tabular-nums' }}>{fmtTime(curTime)}</span>
-                <span style={{ fontFamily:'DM Sans', fontSize:'11px', color:'rgba(250,247,242,.2)', fontVariantNumeric:'tabular-nums' }}>{fmtTime(dur)}</span>
-              </div>
-            </div>
+
 
             {/* Controls */}
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'8px' }}>
@@ -580,20 +570,22 @@ export default function MusicPage() {
             </div>
 
             {/* Streaming links */}
-            <div style={{ display:'flex', gap:'10px', flexWrap:'wrap', paddingTop:'20px', borderTop:'1px solid rgba(201,168,76,.07)', alignItems:'center' }}>
-              <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginRight:'4px' }}>Stream on</span>
-              <a href="https://open.spotify.com/artist/6ubyZLnmL3c8jLnMADm3y6" target="_blank" rel="noopener noreferrer" className="stream-pill stream-spotify">
+            <div style={{ paddingTop:'20px', borderTop:'1px solid rgba(201,168,76,.07)' }}>
+              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(201,168,76,.4)', marginBottom:'12px' }}>Stream on</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+              <a href="https://open.spotify.com/artist/6ubyZLnmL3c8jLnMADm3y6" target="_blank" rel="noopener noreferrer" className="stream-pill stream-spotify" style={{ width:'100%', justifyContent:'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
                 Spotify
               </a>
-              <a href="https://music.apple.com/us/artist/solomon-stephen/1206709559" target="_blank" rel="noopener noreferrer" className="stream-pill stream-apple">
+              <a href="https://music.apple.com/us/artist/solomon-stephen/1206709559" target="_blank" rel="noopener noreferrer" className="stream-pill stream-apple" style={{ width:'100%', justifyContent:'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 00-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 00-1.877-.726 10.496 10.496 0 00-1.564-.15c-.04-.003-.083-.01-.124-.013H5.986c-.152.01-.303.017-.455.026C4.786.07 4.043.15 3.34.428 2.1.958 1.084 1.846.577 3.1a8.898 8.898 0 00-.42 2.143C.113 5.569.08 5.91.072 6.251.01 7.169 0 8.09 0 9.01v5.928c0 .917.01 1.83.072 2.744.008.332.04.665.085.995.094.717.293 1.4.657 2.025.62 1.063 1.554 1.772 2.75 2.077.52.133 1.05.2 1.58.236.57.04 1.14.055 1.71.057h9.315c.573-.002 1.146-.017 1.718-.058.54-.037 1.076-.107 1.6-.247 1.197-.313 2.122-1.015 2.74-2.073.365-.629.565-1.313.657-2.03.047-.34.076-.68.085-1.015.063-.918.072-1.84.072-2.76V9.01c-.004-.92-.013-1.836-.076-2.753zM14.684 4.25h1.326v4.007l-1.326-1.327V4.25zm-3.28 0h1.326v3.01l-1.326-1.327V4.25zm-3.28 0h1.326v3.01L7.124 5.933V4.25zM12 17.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8.5c-1.93 0-3.5 1.57-3.5 3.5S10.07 16 12 16s3.5-1.57 3.5-3.5S13.93 9 12 9z"/></svg>
                 Apple Music
               </a>
-              <a href={CHANNEL} target="_blank" rel="noopener noreferrer" className="stream-pill stream-youtube">
+              <a href={CHANNEL} target="_blank" rel="noopener noreferrer" className="stream-pill stream-youtube" style={{ width:'100%', justifyContent:'center' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
                 YouTube
               </a>
+              </div>
             </div>
 
             </div>{/* /player-body-pad */}

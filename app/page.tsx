@@ -144,7 +144,7 @@ function NewsletterSection() {
 }
 
 
-const HERO_IMG = { src: '/images/solomon-green-suit-hero.png', pos: '55% 18%' }
+const HERO_IMG = { src: '/images/solomon-green-suit-hero.png', pos: '55% 0%' }
 
 const stats = [
   { value: 3,    suffix: '',  label: 'Monthly Gatherings' },
