@@ -49,15 +49,15 @@ interface Track {
 }
 
 const releaseTracks: Track[] = [
-  { id: 'TnEp0kiJBfI', title: 'Latest Release', scripture: '',             desc: 'The newest sound from Solomon Stephen — a fresh move of God captured in worship.' },
-  { id: 'c8KAM_l151s', title: 'CROSSOVER', scripture: 'Psalm 23',     desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
-  { id: '3QzaY8iNAwY', title: 'The Mighty God', scripture: 'Isaiah 9:6',   desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
-  { id: 'WNcheACl92Q', title: 'Resolute',      scripture: '',               desc: 'A bold declaration of unwavering faith — standing firm, immovable, anchored in the promises of God.' },
-  { id: 'eDVCqljVb-s', title: 'Alaabo Mi',     scripture: '',               desc: 'My Praise — a Yoruba-language offering of pure adoration, surrendered wholly to the Lord.' },
-  { id: 'EPA7cFLHg2c', title: 'AIKU', scripture: 'Rev 1:17–18',  desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
-  { id: '6TYabI5QCO4', title: 'Awesome God', scripture: 'Psalm 48:1',   desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
-  { id: 'q1-eDXBpMkY', title: 'Alagbada Ina', scripture: 'Exodus 3:2',   desc: 'The God clothed in fire — a Yoruba-infused anthem from the burning bush encounter.', noEmbed: true },
-  { id: 'Ao_ZC3oHi9c', title: 'There Is No One', scripture: 'Isaiah 46:9',  desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.', noEmbed: true },
+  { id: 'WNcheACl92Q', title: 'Resolute',        scripture: '',              desc: 'A bold declaration of unwavering faith — standing firm, immovable, anchored in the promises of God.' },
+  { id: 'eDVCqljVb-s', title: 'Alaabo Mi',       scripture: '',              desc: 'My Praise — a Yoruba-language offering of pure adoration, surrendered wholly to the Lord.' },
+  { id: '3QzaY8iNAwY', title: 'The Mighty God',  scripture: 'Isaiah 9:6',   desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
+  { id: 'c8KAM_l151s', title: 'CROSSOVER',       scripture: 'Psalm 23',     desc: 'A prophetic declaration of passing through — beyond every limitation, into the fullness of God.' },
+  { id: 'EPA7cFLHg2c', title: 'AIKU',            scripture: 'Rev 1:17-18',  desc: 'Death could not hold Him. A bold, triumphant anthem declaring the resurrection power of Jesus.' },
+  { id: 'TnEp0kiJBfI', title: 'RIVERS OF JOY',  scripture: '',              desc: 'Spontaneous prophetic worship — a live encounter with the river that never runs dry.' },
+  { id: '6TYabI5QCO4', title: 'Awesome God',     scripture: 'Psalm 48:1',   desc: 'A live worship experience capturing the atmosphere of surrender and awe in the presence of God.' },
+  { id: 'q1-eDXBpMkY', title: 'Alagbada Ina',   scripture: 'Exodus 3:2',   desc: 'The God clothed in fire — a Yoruba-infused anthem from the burning bush encounter.', noEmbed: true },
+  { id: 'Ao_ZC3oHi9c', title: 'There Is No One', scripture: 'Isaiah 46:9', desc: 'A tender declaration of the uniqueness and incomparability of God. Intimate. Personal. True.', noEmbed: true },
 ]
 
 const CHANNEL = 'https://www.youtube.com/@thesolomonsteph'
