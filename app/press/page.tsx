@@ -19,9 +19,9 @@ const facts = [
 const releases = [
   { year: '', title: 'CROSSOVER', type: 'EP', desc: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
   { year: '', title: 'AIKU (All I Know Is You)', type: 'Single', desc: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
-  { year: '', title: 'The Mighty God', type: 'Single', desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
-  { year: '', title: 'Resolute', type: 'Single', desc: 'A bold declaration of unwavering faith — standing firm, immovable, anchored in the promises of God.' },
-  { year: '', title: 'Alaabo Mi', type: 'Single', desc: 'My Praise — a Yoruba-language offering of pure adoration, surrendered wholly to the Lord.' },
+  { year: '2017', title: 'The Mighty God', type: 'Single', desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
+  { year: '2024', title: 'Resolute', type: 'Single', desc: 'A bold declaration of unwavering faith — standing firm, immovable, anchored in the promises of God.' },
+  { year: '2024', title: 'Alaabo Mi', type: 'Single', desc: 'My Praise — a Yoruba-language offering of pure adoration, surrendered wholly to the Lord.' },
 ]
 
 const pressQuotes = [
