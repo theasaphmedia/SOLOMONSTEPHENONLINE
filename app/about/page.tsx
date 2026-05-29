@@ -94,7 +94,7 @@ export default function AboutPage() {
       <section style={{ background:'#080F08', minHeight:'100vh', display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,180px) clamp(24px,5vw,80px) clamp(64px,8vw,110px)', position:'relative', overflow:'hidden' }}>
         {/* Background photo */}
         <div style={{ position:'absolute', inset:0 }}>
-          <Image src="/images/gallery-solomon-standing-deep.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 18%', opacity:0.55 }} priority />
+          <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill style={{ objectFit:'cover', objectPosition:'center 18%', opacity:0.55 }} priority />
         </div>
         {/* Gradient layers */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #080F08 30%, rgba(8,15,8,.72) 58%, rgba(8,15,8,.25) 100%)' }} />
@@ -308,7 +308,7 @@ export default function AboutPage() {
               { src:'/images/book-cost-of-ignorance.png',     title:'The Cost of Ignorance' },
               { src:'/images/book-sons-not-slaves-march.png', title:'Sons Not Slaves (March)' },
               { src:'/images/book-sons-not-slaves-april.png', title:'Sons Not Slaves (April)' },
-              { src:'/images/solomon-cream-suit-books.png',   title:'Solomon Stephen, Author' },
+              { src:'/images/book-go-in-this-thy-might.png',  title:'Go In This Thy Might' },
             ].map((b, i) => (
               <div key={i} className="img-zoom rv-scale" style={{ transitionDelay:`${i * 0.09}s`, borderRadius:'2px', overflow:'hidden', aspectRatio:'3/4', position:'relative', background:'#E0D9CE' }}>
                 <Image src={b.src} alt={b.title} fill style={{ objectFit:'cover' }} />
