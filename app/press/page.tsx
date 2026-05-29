@@ -17,23 +17,13 @@ const facts = [
 ]
 
 const releases = [
-  { year: '', title: 'CROSSOVER', type: 'EP', desc: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
-  { year: '', title: 'AIKU (All I Know Is You)', type: 'Single', desc: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
+  { year: '2024', title: 'Resolute',       type: 'Single', desc: 'A bold declaration of unwavering faith — standing firm when the storm rages.' },
+  { year: '2024', title: 'Alaabo Mi',      type: 'Single', desc: 'My Praise — a Yoruba-language offering of pure adoration to the Most High.' },
   { year: '2017', title: 'The Mighty God', type: 'Single', desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
-  { year: '2024', title: 'Resolute', type: 'Single', desc: 'A bold declaration of unwavering faith — standing firm, immovable, anchored in the promises of God.' },
-  { year: '2024', title: 'Alaabo Mi', type: 'Single', desc: 'My Praise — a Yoruba-language offering of pure adoration, surrendered wholly to the Lord.' },
+  { year: '',     title: 'CROSSOVER',      type: 'EP',     desc: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
+  { year: '',     title: 'AIKU',           type: 'Single', desc: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
 ]
 
-const pressQuotes = [
-  {
-    text: "Solomon Stephen's worship does not perform — it presences. His voice carries weight that compels the room to stillness.",
-    source: "TWN Church Review",
-  },
-  {
-    text: "CROSSOVER is one of the finest gospel worship projects to come out of Lagos in recent years — raw, Spirit-filled, and deeply anointed.",
-    source: "Gospel Sounds Africa",
-  },
-]
 
 export default function PressPage() {
   const [entered, setEntered] = useState(false)
@@ -119,7 +109,7 @@ export default function PressPage() {
                 Solomon has built three recurring monthly gatherings — the Mid Day Worship Experience (MDWE), The Slaughter House (TSH), and Synantesis — each one a distinct and intentional encounter designed to bring people into the undiluted presence of God.
               </p>
               <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.95, color:'rgba(250,247,242,0.55)', margin:0 }}>
-                As a recording artist, his releases include the EP <em>CROSSOVER</em> and the single <em>AIKU (All I Know Is You)</em>, available on all major streaming platforms. He is also the author of four published titles, including <em>The Cost of Ignorance</em> and <em>Sons Not Slaves</em>.
+                As a recording artist, his releases include the EP <em>CROSSOVER</em> and the single <em>AIKU</em>, available on all major streaming platforms. He is also the author of four published titles, including <em>The Cost of Ignorance</em> and <em>Sons Not Slaves</em>.
               </p>
             </div>
           </div>
@@ -139,40 +129,6 @@ export default function PressPage() {
         </section>
 
         {/* RELEASES */}
-        <section style={{ background:'#0D1B0D', padding:'clamp(60px,8vw,100px) clamp(24px,4vw,80px)' }}>
-          <div style={{ maxWidth:'900px', margin:'0 auto' }}>
-            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.45)', marginBottom:'40px' }} className="rv">Discography</div>
-            {releases.map((r, i) => (
-              <div key={i} className={`rv d${i + 1}`} style={{ borderTop:'1px solid rgba(250,247,242,.07)', padding:'clamp(24px,3vw,40px) 0', display:'grid', gridTemplateColumns:'80px 1fr', gap:'24px 40px', alignItems:'start' }}>
-                <div>
-                  <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'.1em', color:'rgba(201,168,76,0.55)', marginBottom:'4px' }}>{r.year}</div>
-                  <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.15em', textTransform:'uppercase', color:'rgba(250,247,242,.25)' }}>{r.type}</div>
-                </div>
-                <div>
-                  <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(22px,3vw,36px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.1, marginBottom:'12px' }}>{r.title}</div>
-                  <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', lineHeight:1.8, color:'rgba(250,247,242,0.42)', margin:0 }}>{r.desc}</p>
-                </div>
-              </div>
-            ))}
-            <div style={{ borderTop:'1px solid rgba(250,247,242,.07)', paddingTop:'24px' }} />
-          </div>
-        </section>
-
-        {/* PRESS QUOTES */}
-        <section style={{ background:'#111240', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
-          <div style={{ maxWidth:'900px', margin:'0 auto' }}>
-            <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.45)', marginBottom:'48px' }} className="rv">Press Quotes</div>
-            {pressQuotes.map((q, i) => (
-              <div key={i} className={`rv d${i + 1}`} style={{ borderLeft:'2px solid rgba(201,168,76,0.3)', paddingLeft:'clamp(20px,3vw,36px)', marginBottom:'40px' }}>
-                <p style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(18px,2.2vw,26px)', fontStyle:'italic', color:'rgba(250,247,242,0.75)', lineHeight:1.65, margin:'0 0 16px' }}>
-                  &ldquo;{q.text}&rdquo;
-                </p>
-                <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'.18em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)' }}>{q.source}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* PRESS PHOTOS */}
         <section style={{ background:'#0A1A0A', padding:'clamp(60px,8vw,100px) clamp(24px,4vw,80px)' }}>
           <div style={{ maxWidth:'1200px', margin:'0 auto' }}>

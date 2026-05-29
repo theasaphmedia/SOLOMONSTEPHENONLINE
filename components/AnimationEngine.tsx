@@ -14,11 +14,10 @@ export default function AnimationEngine() {
       bar = document.createElement('div')
       bar.id = 'scroll-progress'
       bar.style.cssText = `
-        position:fixed;top:0;left:0;right:0;height:3px;z-index:99999;
+        position:fixed;top:0;left:0;right:0;height:2px;z-index:99999;
         pointer-events:none;transform-origin:left;transform:scaleX(0);
-        background:linear-gradient(90deg,#C9A84C 0%,#E8C96A 40%,#FAF7F2 60%,#E8C96A 80%,#C9A84C 100%);
-        background-size:300% 100%;animation:shimmerBar 2.2s linear infinite;
-        box-shadow:0 0 8px rgba(201,168,76,0.5);
+        background:linear-gradient(90deg,#C9A84C 0%,#E8C96A 50%,#C9A84C 100%);
+        box-shadow:0 0 8px rgba(201,168,76,0.6);transition:transform 0.1s linear;
       `
       document.body.appendChild(bar)
     }
@@ -47,120 +46,114 @@ export default function AnimationEngine() {
       const el = document.elementFromPoint(mx, my)
       const isHot = !!el?.closest('a,button,input,textarea,[role="button"],[data-magnetic]')
       if (isHot) {
-        ring.style.width = '58px'
-        ring.style.height = '58px'
+        ring.style.width = '58px'; ring.style.height = '58px'
         ring.style.background = 'rgba(201,168,76,0.1)'
-        ring.style.borderColor = '#C9A84C'
-        ring.style.opacity = '0.9'
+        ring.style.borderColor = '#C9A84C'; ring.style.opacity = '0.9'
       } else {
-        ring.style.width = '36px'
-        ring.style.height = '36px'
+        ring.style.width = '36px'; ring.style.height = '36px'
         ring.style.background = 'transparent'
-        ring.style.borderColor = 'rgba(201,168,76,0.55)'
-        ring.style.opacity = '0.6'
+        ring.style.borderColor = 'rgba(201,168,76,0.55)'; ring.style.opacity = '0.6'
       }
     }
 
     // ─── 3. SCROLL HANDLER ────────────────────────────────────
     const onScroll = () => {
-      const cy  = window.scrollY
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      if (bar) bar.style.transform = `scaleX(${max > 0 ? cy / max : 0})`
+      const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)
+      if (bar) bar.style.transform = `scaleX(${Math.min(p, 1)})`
     }
 
-    // ─── 4. SCROLL REVEAL — blur + scale + 3D ────────────────
+    // ─── 4. SCROLL REVEAL ─────────────────────────────────────
     const setupScrollReveal = () => {
-      const SEL = '.rv,.rv-left,.rv-right,.rv-scale,.rv-fade'
-      const els = document.querySelectorAll(SEL)
-      if (!els.length) return undefined
-
       const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
-          if (!e.isIntersecting) return
-          ;(e.target as HTMLElement).classList.add('is-visible')
-          obs.unobserve(e.target)
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible')
+            obs.unobserve(e.target)
+          }
         })
-      }, { threshold: isMobile ? 0.08 : 0.12, rootMargin: '0px 0px -40px 0px' })
-
-      els.forEach(el => {
-        if (!(el as HTMLElement).classList.contains('is-visible')) {
-          obs.observe(el)
-        }
-      })
-
+      }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' })
+      document.querySelectorAll('.rv,.rv-left,.rv-right,.rv-scale,.anim-up,.anim-wipe,.anim-twist,.anim-flip,.anim-left,.anim-scale')
+        .forEach(el => { if (!el.classList.contains('is-visible')) obs.observe(el) })
       return obs
     }
 
     // ─── 5. COUNTER ANIMATION ─────────────────────────────────
     const setupCounters = () => {
-      document.querySelectorAll('[data-count]').forEach(el => {
-        if ((el as HTMLElement).dataset.counted) return
-        ;(el as HTMLElement).dataset.counted = '1'
-
-        const obs = new IntersectionObserver(entries => {
-          entries.forEach(e => {
-            if (!e.isIntersecting) return
-            obs.unobserve(e.target)
-            const raw = (e.target as HTMLElement).dataset.count || ''
-            const num = parseFloat(raw.replace(/[^0-9.]/g, ''))
-            const suf = raw.replace(/^[\d.]+/, '')
-            if (isNaN(num)) return
-            const dur = 2200, t0 = performance.now()
-            const tick = (now: number) => {
-              const p = Math.min((now - t0) / dur, 1)
-              const v = 1 - Math.pow(1 - p, 4)           // ease-out quartic
-              const n = Number.isInteger(num) ? Math.round(v * num) : +(v * num).toFixed(1)
-              e.target.textContent = n + suf
-              if (p < 1) requestAnimationFrame(tick)
-            }
-            requestAnimationFrame(tick)
-          })
-        }, { threshold: 0.5 })
-        obs.observe(el)
-      })
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return
+          const el = e.target as HTMLElement
+          const target = parseInt(el.dataset.count || '0', 10)
+          if (!target) return
+          let start = 0
+          const dur = 1800
+          const step = (ts: number, st: number) => {
+            const prog = Math.min((ts - st) / dur, 1)
+            const ease = 1 - Math.pow(1 - prog, 3)
+            el.textContent = Math.round(ease * target).toLocaleString() + (el.dataset.suffix || '')
+            if (prog < 1) requestAnimationFrame(t => step(t, st))
+          }
+          requestAnimationFrame(t => { start = t; step(t, start) })
+          obs.unobserve(el)
+        })
+      }, { threshold: 0.5 })
+      document.querySelectorAll('[data-count]').forEach(el => obs.observe(el))
     }
 
-    // ─── 6. MAGNETIC BUTTONS ──────────────────────────────────
+    // ─── 6. MAGNETIC BUTTONS (auto-detect + data-magnetic) ────
     const setupMagnetic = () => {
       if (isMobile) return
-      document.querySelectorAll('[data-magnetic]').forEach(el => {
-        if ((el as HTMLElement).dataset.magneticInit) return
-        ;(el as HTMLElement).dataset.magneticInit = '1'
+      // Auto-detect common button/CTA selectors + explicit data-magnetic
+      const sel = [
+        '[data-magnetic]',
+        '.nav-cta',
+        '.btn-gold',
+        '.btn-ghost-dark',
+        '.stream-pill',
+        '.stream-spotify',
+        '.stream-apple',
+        '.stream-youtube',
+      ].join(',')
+      document.querySelectorAll(sel).forEach(el => {
         const h = el as HTMLElement
+        if (h.dataset.magInit) return
+        h.dataset.magInit = '1'
+        h.style.transition = 'transform 0.35s cubic-bezier(0.16,1,0.3,1)'
         h.addEventListener('mousemove', (e: Event) => {
           const me = e as MouseEvent
           const r  = h.getBoundingClientRect()
-          const dx = (me.clientX - (r.left + r.width  / 2)) * 0.38
-          const dy = (me.clientY - (r.top  + r.height / 2)) * 0.38
-          h.style.transition = 'transform 0.12s ease'
-          h.style.transform  = `translate(${dx}px,${dy}px)`
+          const dx = (me.clientX - (r.left + r.width  / 2)) * 0.32
+          const dy = (me.clientY - (r.top  + r.height / 2)) * 0.32
+          h.style.transform = `translate(${dx}px,${dy}px)`
         })
-        h.addEventListener('mouseleave', () => {
-          h.style.transition = 'transform 0.65s cubic-bezier(0.16,1,0.3,1)'
-          h.style.transform  = ''
-        })
+        h.addEventListener('mouseleave', () => { h.style.transform = '' })
       })
     }
 
-    // ─── 7. 3D CARD TILT ──────────────────────────────────────
+    // ─── 7. 3D TILT (auto-detect cards + data-tilt) ───────────
     const setupTilt = () => {
       if (isMobile) return
-      const SEL = '.book-card,.ministry-card,.book-slot,.stat-block,[data-tilt]'
-      document.querySelectorAll(SEL).forEach(el => {
+      const sel = [
+        '[data-tilt]',
+        '.port-card',
+        '.book-card',
+        '.book-strip',
+        '.portfolio-card',
+      ].join(',')
+      document.querySelectorAll(sel).forEach(el => {
         const h = el as HTMLElement
         if (h.dataset.tiltInit) return
         h.dataset.tiltInit = '1'
-
         h.addEventListener('mousemove', (e: Event) => {
           const me = e as MouseEvent
           const r  = h.getBoundingClientRect()
           const xP = (me.clientX - r.left) / r.width
           const yP = (me.clientY - r.top)  / r.height
-          const rX = (yP - 0.5) * -16
-          const rY = (xP - 0.5) * 16
+          const rX = (yP - 0.5) * -14
+          const rY = (xP - 0.5) * 14
           h.style.transition = 'transform 0.08s ease,box-shadow 0.08s ease'
-          h.style.transform  = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg) scale(1.03)`
-          h.style.boxShadow  = `${-rY * 1.2}px ${rX * 1.2}px 48px rgba(0,0,0,0.16),0 0 0 1px rgba(201,168,76,0.1)`
+          h.style.transform  = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg) scale(1.02)`
+          h.style.boxShadow  = `${-rY * 1.2}px ${rX * 1.2}px 40px rgba(0,0,0,0.14),0 0 0 1px rgba(201,168,76,0.08)`
         })
         h.addEventListener('mouseleave', () => {
           h.style.transition = 'transform 0.75s cubic-bezier(0.16,1,0.3,1),box-shadow 0.75s'
@@ -170,27 +163,26 @@ export default function AnimationEngine() {
       })
     }
 
-    // ─── 8. GLARE ON HOVER ────────────────────────────────────
+    // ─── 8. GLARE ON HOVER (auto-detect + data-glare) ─────────
     const setupGlare = () => {
       if (isMobile) return
-      document.querySelectorAll('[data-glare]').forEach(el => {
+      const sel = ['[data-glare]','.port-card','.portfolio-card','.book-card'].join(',')
+      document.querySelectorAll(sel).forEach(el => {
         const h = el as HTMLElement
         if (h.dataset.glareInit) return
         h.dataset.glareInit = '1'
         h.style.position = 'relative'
         h.style.overflow = 'hidden'
-
         const g = document.createElement('div')
         g.style.cssText = `
           position:absolute;inset:0;pointer-events:none;z-index:20;opacity:0;
           background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),
-            rgba(255,255,255,0.15) 0%,rgba(201,168,76,0.06) 30%,transparent 60%);
+            rgba(255,255,255,0.13) 0%,rgba(201,168,76,0.05) 35%,transparent 65%);
           transition:opacity 0.4s ease;
         `
         h.appendChild(g)
         h.addEventListener('mousemove', (e: Event) => {
-          const me = e as MouseEvent
-          const r  = h.getBoundingClientRect()
+          const me = e as MouseEvent; const r = h.getBoundingClientRect()
           h.style.setProperty('--gx', ((me.clientX - r.left) / r.width  * 100).toFixed(1) + '%')
           h.style.setProperty('--gy', ((me.clientY - r.top)  / r.height * 100).toFixed(1) + '%')
           g.style.opacity = '1'
@@ -203,10 +195,7 @@ export default function AnimationEngine() {
     const setupLines = () => {
       const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
-          if (e.isIntersecting) {
-            ;(e.target as HTMLElement).classList.add('line-drawn')
-            obs.unobserve(e.target)
-          }
+          if (e.isIntersecting) { (e.target as HTMLElement).classList.add('line-drawn'); obs.unobserve(e.target) }
         })
       }, { threshold: 0.4 })
       document.querySelectorAll('.draw-line').forEach(el => {
@@ -214,14 +203,13 @@ export default function AnimationEngine() {
       })
     }
 
-    // ─── 10. STAGGER CHILD REVEALS ────────────────────────────
+    // ─── 10. STAGGER CHILDREN ─────────────────────────────────
     const setupStagger = () => {
       const obs = new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (!e.isIntersecting) return
-          const children = e.target.querySelectorAll(':scope > .rv, :scope > [class*="rv"]')
-          children.forEach((ch, i) => {
-            ;(ch as HTMLElement).style.transitionDelay = `${i * (isMobile ? 0.06 : 0.11)}s`
+          e.target.querySelectorAll(':scope > .rv, :scope > [class*="rv"]').forEach((ch, i) => {
+            (ch as HTMLElement).style.transitionDelay = `${i * (isMobile ? 0.06 : 0.1)}s`
           })
           obs.unobserve(e.target)
         })
@@ -229,17 +217,14 @@ export default function AnimationEngine() {
       document.querySelectorAll('[data-stagger]').forEach(el => obs.observe(el))
     }
 
-    // ─── 11. TEXT CHAR SPLIT REVEALS ──────────────────────────
+    // ─── 11. CHAR SPLIT REVEALS ───────────────────────────────
     const setupCharSplit = () => {
       document.querySelectorAll('[data-split]').forEach(el => {
         if ((el as HTMLElement).dataset.splitDone) return
         ;(el as HTMLElement).dataset.splitDone = '1'
         const text = el.textContent || ''
         el.innerHTML = text.split('').map((ch, i) =>
-          `<span class="ch" style="
-            display:inline-block;
-            animation:charIn 0.75s cubic-bezier(0.16,1,0.3,1) ${i * 0.028}s both;
-          ">${ch === ' ' ? '&nbsp;' : ch}</span>`
+          `<span class="ch" style="display:inline-block;animation:charIn 0.75s cubic-bezier(0.16,1,0.3,1) ${i * 0.028}s both">${ch === ' ' ? '&nbsp;' : ch}</span>`
         ).join('')
       })
     }
@@ -260,8 +245,98 @@ export default function AnimationEngine() {
       }
     }
 
-    // ─── INIT ────────────────────────────────────────────────
+    // ─── 13. TOUCH RIPPLE (mobile) ────────────────────────────
+    const setupTouchRipple = () => {
+      if (!isMobile) return
+      const style = document.createElement('style')
+      style.textContent = `
+        @keyframes ripple{0%{transform:scale(0);opacity:0.5}100%{transform:scale(4);opacity:0}}
+        .ripple-el{position:relative;overflow:hidden}
+        .ripple-wave{position:absolute;border-radius:50%;background:rgba(201,168,76,0.25);
+          animation:ripple 0.55s ease-out forwards;pointer-events:none;transform:scale(0);}
+      `
+      document.head.appendChild(style)
+
+      const addRipple = (e: TouchEvent) => {
+        const target = e.currentTarget as HTMLElement
+        const r = target.getBoundingClientRect()
+        const touch = e.touches[0]
+        const size = Math.max(r.width, r.height) * 2
+        const x = touch.clientX - r.left - size / 2
+        const y = touch.clientY - r.top  - size / 2
+        const wave = document.createElement('span')
+        wave.className = 'ripple-wave'
+        wave.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px;`
+        target.appendChild(wave)
+        setTimeout(() => wave.remove(), 600)
+      }
+
+      document.querySelectorAll('a,button,.nav-cta,.stream-pill,.stream-spotify,.stream-apple,.stream-youtube').forEach(el => {
+        const h = el as HTMLElement
+        if (h.dataset.rippleInit) return
+        h.dataset.rippleInit = '1'
+        h.classList.add('ripple-el')
+        h.addEventListener('touchstart', addRipple as EventListener, { passive: true })
+      })
+    }
+
+    // ─── 14. TOUCH SWIPE MOMENTUM (horizontal containers) ─────
+    const setupTouchSwipe = () => {
+      if (!isMobile) return
+      document.querySelectorAll('[data-swipe]').forEach(el => {
+        const h = el as HTMLElement
+        if (h.dataset.swipeInit) return
+        h.dataset.swipeInit = '1'
+        let startX = 0, startScroll = 0, isDragging = false, vel = 0, lastX = 0, lastT = 0
+
+        h.addEventListener('touchstart', (e: TouchEvent) => {
+          startX = e.touches[0].clientX
+          startScroll = h.scrollLeft
+          isDragging = true
+          vel = 0
+        }, { passive: true })
+
+        h.addEventListener('touchmove', (e: TouchEvent) => {
+          if (!isDragging) return
+          const now = Date.now()
+          const dx = e.touches[0].clientX - startX
+          vel = (e.touches[0].clientX - lastX) / (now - lastT + 1) * 16
+          lastX = e.touches[0].clientX; lastT = now
+          h.scrollLeft = startScroll - dx
+        }, { passive: true })
+
+        h.addEventListener('touchend', () => {
+          isDragging = false
+          const momentum = () => {
+            if (Math.abs(vel) < 0.5) return
+            h.scrollLeft -= vel
+            vel *= 0.88
+            requestAnimationFrame(momentum)
+          }
+          momentum()
+        })
+      })
+    }
+
+    // ─── 15. HERO MOUSE PARALLAX (desktop) ────────────────────
+    const setupHeroParallax = () => {
+      if (isMobile) return
+      const heroes = document.querySelectorAll('[data-hero-parallax]') as NodeListOf<HTMLElement>
+      if (!heroes.length) return
+      const onMove = (e: MouseEvent) => {
+        const cx = (e.clientX / window.innerWidth  - 0.5) * 2
+        const cy = (e.clientY / window.innerHeight - 0.5) * 2
+        heroes.forEach(h => {
+          h.style.transform = `translate(${cx * 8}px, ${cy * 5}px) scale(1.03)`
+        })
+      }
+      window.addEventListener('mousemove', onMove, { passive: true })
+      return onMove
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────
     let rvObs: IntersectionObserver | undefined
+    let heroParallaxHandler: ((e: MouseEvent) => void) | undefined
 
     const init = () => {
       rvObs = setupScrollReveal()
@@ -272,17 +347,18 @@ export default function AnimationEngine() {
       setupLines()
       setupStagger()
       setupCharSplit()
+      setupTouchRipple()
+      setupTouchSwipe()
+      heroParallaxHandler = setupHeroParallax()
     }
 
     const timer = setTimeout(init, 120)
 
-    // Re-run interactive & reveal effects on SPA navigation
+    // Re-run on SPA navigation
     const mutObs = new MutationObserver(() => {
-      setupTilt()
-      setupGlare()
-      setupMagnetic()
-      setupScrollReveal()
-      setupLines()
+      setupTilt(); setupGlare(); setupMagnetic()
+      setupScrollReveal(); setupLines()
+      setupTouchRipple(); setupTouchSwipe()
     })
     mutObs.observe(document.body, { childList: true, subtree: true })
 
@@ -293,6 +369,7 @@ export default function AnimationEngine() {
       window.removeEventListener('scroll', onScroll)
       if (!isMobile) window.removeEventListener('mousemove', onMouseMove)
       if (pxHandler) window.removeEventListener('scroll', pxHandler)
+      if (heroParallaxHandler) window.removeEventListener('mousemove', heroParallaxHandler)
       cancelAnimationFrame(cursorRaf)
       clearTimeout(timer)
       mutObs.disconnect()

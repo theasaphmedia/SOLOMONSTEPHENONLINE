@@ -13,7 +13,7 @@ const personSchema = {
     "https://www.facebook.com/thesolomonsteph",
     "https://www.tiktok.com/@thesolomonsteph",
     "https://open.spotify.com/artist/7l1GQgXjGCQxlXRxIlHnJw",
-    "https://music.apple.com/ng/artist/solomon-stephen/1440574453"
+    "https://music.apple.com/us/artist/solomon-stephen/1206709559"
   ],
   "jobTitle": ["Gospel Minister", "Worship Leader", "Music Producer", "Author"],
   "worksFor": { "@type": "Organization", "name": "The Worship Nation" },
