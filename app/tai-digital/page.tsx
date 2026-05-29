@@ -743,6 +743,7 @@ export default function TaiDigitalPage() {
             <br />
             <span className="word-clip"><span className="anim-word" style={{ transitionDelay:'.50s' }}>digital presence.</span></span>
           </h2>
+          </div>
 
           <p className="anim-up d2" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,1.5vw,17px)', lineHeight:1.82, color:'rgba(240,237,232,.3)', margin:'0 auto clamp(40px,5vw,64px)', maxWidth:'520px' }}>
             Whether you need a website, a mobile app, or a complete brand identity — TAI Digital builds something you will be proud to share.
