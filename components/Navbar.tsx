@@ -189,7 +189,7 @@ export default function Navbar() {
               transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
               transitionDelay: `${0.1 + i * 0.05}s`,
             }}>
-              <Link href={link.href} onClick={() => setOpen(false)} style={{
+              <Link href={link.href} onClick={() => setOpen(false)} scroll={false} style={{
                 display: 'flex', alignItems: 'baseline', gap: '20px',
                 padding: 'clamp(10px,1.6vw,18px) 0',
                 textDecoration: 'none',

@@ -93,13 +93,13 @@ export default function AboutPage() {
       {/* ══ HERO ══ */}
       <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
         {/* Full-bleed photo */}
-        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 40%' }} />
+        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center bottom' }} />
         {/* Bottom-to-top fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
         {/* Left-side fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.88) 0%, rgba(7,13,7,0.52) 32%, rgba(7,13,7,0.10) 58%, transparent 75%)', zIndex:1 }} />
         {/* Top navbar fade */}
-        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.65) 0%, transparent 100%)', zIndex:1 }} />
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:'220px', background:'linear-gradient(to bottom, rgba(7,13,7,0.35) 0%, transparent 100%)', zIndex:1 }} />
 
         <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'clamp(120px,14vw,160px) clamp(32px,5vw,72px) clamp(48px,7vw,80px)' }}><div style={{ maxWidth:'920px' }}>
           <div className="eyebrow" style={{ color:'rgba(201,168,76,.6)', marginBottom:'clamp(28px,3.5vw,52px)', animation:'heroIn 1s cubic-bezier(.16,1,.3,1) .25s both' }}>
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
           {/* Photo */}
           <div className="bio-photo img-zoom rv-scale" style={{ position:'relative', minHeight:'clamp(480px,65vh,860px)' }}>
-            <Image src="/images/solomon-photo.png" alt="Solomon Stephen" fill style={{ objectFit:'cover', objectPosition:'center 40%' }} />
+            <Image src="/images/solomon-photo.png" alt="Solomon Stephen" fill style={{ objectFit:'cover', objectPosition:'center bottom' }} />
             {/* Corner brackets */}
             <div style={{ position:'absolute', inset:0, pointerEvents:'none' }}>
               <div style={{ position:'absolute', top:'clamp(20px,3vw,40px)', left:'clamp(20px,3vw,40px)', width:52, height:52, borderTop:'2px solid rgba(201,168,76,.85)', borderLeft:'2px solid rgba(201,168,76,.85)' }} />
