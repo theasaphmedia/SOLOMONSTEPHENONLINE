@@ -93,7 +93,7 @@ export default function AboutPage() {
       {/* ══ HERO ══ */}
       <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
         {/* Full-bleed photo */}
-        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center top' }} />
+        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 40%' }} />
         {/* Bottom-to-top fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
         {/* Left-side fade */}
@@ -142,7 +142,7 @@ export default function AboutPage() {
 
           {/* Photo */}
           <div className="bio-photo img-zoom rv-scale" style={{ position:'relative', minHeight:'clamp(480px,65vh,860px)' }}>
-            <Image src="/images/solomon-photo.png" alt="Solomon Stephen" fill style={{ objectFit:'cover', objectPosition:'center top' }} />
+            <Image src="/images/solomon-photo.png" alt="Solomon Stephen" fill style={{ objectFit:'cover', objectPosition:'center 40%' }} />
             {/* Corner brackets */}
             <div style={{ position:'absolute', inset:0, pointerEvents:'none' }}>
               <div style={{ position:'absolute', top:'clamp(20px,3vw,40px)', left:'clamp(20px,3vw,40px)', width:52, height:52, borderTop:'2px solid rgba(201,168,76,.85)', borderLeft:'2px solid rgba(201,168,76,.85)' }} />
