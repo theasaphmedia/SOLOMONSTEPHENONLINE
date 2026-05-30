@@ -23,6 +23,7 @@ const personSchema = {
 
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import NavbarConditional from "@/components/NavbarConditional";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import AnimationEngine from "@/components/AnimationEngine";
 
@@ -89,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Custom LERP cursor — hidden on mobile via CSS */}
         <div className="cursor-dot" aria-hidden="true" />
         <div className="cursor-ring" aria-hidden="true" />
-        <Navbar />
+        <NavbarConditional />
         {children}
         <WhatsAppFloat />
         <AnimationEngine />

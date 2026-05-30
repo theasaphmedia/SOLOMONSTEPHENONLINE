@@ -233,7 +233,13 @@ export default function AdminPage() {
     <div style={S.page}>
       <header style={S.header}>
         <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '20px' }}>Solomon Stephen <span style={{ color: '#C9A84C' }}>/ Admin</span></div>
-        <button onClick={logout} style={{ background: 'none', border: '1px solid rgba(201,168,76,0.2)', color: 'rgba(250,247,242,0.5)', borderRadius: '3px', padding: '8px 16px', cursor: 'pointer', fontSize: '12px', fontFamily: "'DM Sans',sans-serif" }}>Log out</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a href="/" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '7px', background: 'none', border: '1px solid rgba(201,168,76,0.2)', color: 'rgba(250,247,242,0.6)', borderRadius: '3px', padding: '8px 16px', cursor: 'pointer', fontSize: '12px', fontFamily: "'DM Sans',sans-serif", textDecoration: 'none', letterSpacing: '0.06em' }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            View Site
+          </a>
+          <button onClick={logout} style={{ background: 'none', border: '1px solid rgba(239,68,68,0.25)', color: 'rgba(239,68,68,0.6)', borderRadius: '3px', padding: '8px 16px', cursor: 'pointer', fontSize: '12px', fontFamily: "'DM Sans',sans-serif", letterSpacing: '0.06em' }}>Log out</button>
+        </div>
       </header>
 
       <div style={S.body}>
