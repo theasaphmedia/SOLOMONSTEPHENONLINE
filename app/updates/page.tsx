@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Footer from '@/components/Footer'
 
-type Tab = 'blog' | 'devotionals' | 'announcements'
+type Tab = 'blog' | 'devotionals'
 
 interface Post { id: string; title: string; excerpt: string; body: string; cover_url: string; category: string; published_at: string }
 interface Devotional { id: string; title: string; scripture: string; body: string; published_at: string }
-interface Announcement { id: string; title: string; body: string; link: string; link_label: string; expires_at: string }
 
 const CAT_COLORS: Record<string, string> = {
   article: '#C9A84C', testimony: '#7CB87C', update: '#7CA8C9', teaching: '#C97C7C',
@@ -18,17 +17,15 @@ export default function UpdatesPage() {
   const [tab, setTab] = useState<Tab>('blog')
   const [posts, setPosts] = useState<Post[]>([])
   const [devotionals, setDevotionals] = useState<Devotional[]>([])
-  const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState<Post | Devotional | null>(null)
 
   useEffect(() => {
     setLoading(true)
-    const urls: Record<Tab, string> = { blog: '/api/blog', devotionals: '/api/devotionals', announcements: '/api/announcements' }
+    const urls: Record<Tab, string> = { blog: '/api/blog', devotionals: '/api/devotionals' }
     fetch(urls[tab]).then(r => r.json()).then(data => {
       if (tab === 'blog') setPosts(Array.isArray(data) ? data : [])
       else if (tab === 'devotionals') setDevotionals(Array.isArray(data) ? data : [])
-      else setAnnouncements(Array.isArray(data) ? data : [])
       setLoading(false)
     }).catch(() => setLoading(false))
   }, [tab])
@@ -62,7 +59,7 @@ export default function UpdatesPage() {
 
         {/* Tabs */}
         <div style={{ borderBottom: '1px solid rgba(201,168,76,0.1)', paddingLeft: 'clamp(24px,5vw,96px)', paddingRight: 'clamp(24px,5vw,96px)', display: 'flex', gap: '4px' }}>
-          {(['blog', 'devotionals', 'announcements'] as Tab[]).map(t => (
+          {(['blog', 'devotionals'] as Tab[]).map(t => (
             <button key={t} onClick={() => { setTab(t); setSelected(null) }} style={{
               background: 'none', border: 'none', cursor: 'pointer',
               padding: '14px 24px',
@@ -71,7 +68,7 @@ export default function UpdatesPage() {
               borderBottom: tab === t ? '2px solid #C9A84C' : '2px solid transparent',
               marginBottom: '-1px', transition: 'all 0.2s',
             }}>
-              {t === 'blog' ? 'Blog' : t === 'devotionals' ? 'Devotionals' : 'Announcements'}
+              {t === 'blog' ? 'Blog' : 'Devotionals'}
             </button>
           ))}
         </div>
@@ -138,28 +135,6 @@ export default function UpdatesPage() {
           )}
 
           {/* ── ANNOUNCEMENTS ── */}
-          {!loading && tab === 'announcements' && (
-            announcements.length === 0 ? empty('Announcements') : (
-              <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {announcements.map(a => (
-                  <div key={a.id} style={{ background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.12)', borderRadius: '4px', padding: '24px 28px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '8px' }}>Announcement</div>
-                      <h3 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(20px,2.2vw,26px)', fontWeight: 400, color: '#FAF7F2', margin: '0 0 10px' }}>{a.title}</h3>
-                      {a.body && <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '14px', lineHeight: 1.8, color: 'rgba(250,247,242,0.5)', margin: '0 0 4px' }}>{a.body}</p>}
-                      {a.expires_at && <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', color: 'rgba(250,247,242,0.25)', marginTop: '8px' }}>Until {new Date(a.expires_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>}
-                    </div>
-                    {a.link && (
-                      <a href={a.link} target="_blank" rel="noopener noreferrer" style={{ flexShrink: 0, fontFamily: "'DM Sans',sans-serif", fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#080E08', background: '#C9A84C', padding: '10px 20px', borderRadius: '3px', textDecoration: 'none', whiteSpace: 'nowrap' }}>
-                        {a.link_label || 'Learn More'}
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )
-          )}
-        </section>
 
         {/* Blog/Devotional modal */}
         {selected && (

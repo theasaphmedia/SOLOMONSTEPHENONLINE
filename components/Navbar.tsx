@@ -19,8 +19,8 @@ const navLinks = [
 ]
 
 const updatesDropdown = [
-  { href: '/updates',            label: 'Blog & Devotionals' },
-  { href: '/updates?tab=announcements', label: 'Announcements' },
+  { href: '/updates',              label: 'Blog' },
+  { href: '/updates?tab=devotionals', label: 'Devotionals' },
 ]
 
 export default function Navbar() {
