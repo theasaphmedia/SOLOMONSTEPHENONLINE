@@ -115,6 +115,14 @@ const gatherings = [
 ]
 
 export default function EventsPage() {
+  const [specialEvents, setSpecialEvents] = useState<{id:string;title:string;date:string;time:string;location:string;description:string;type:string;is_online:boolean;link:string;flyer_url:string}[]>([])
+
+  useEffect(() => {
+    fetch('/api/events').then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setSpecialEvents(data)
+    }).catch(() => {})
+  }, [])
+
   const [entered, setEntered] = useState(false)
   const mainRef = useRef<HTMLElement>(null)
 
@@ -585,7 +593,47 @@ export default function EventsPage() {
         </div>
       </section>
 
-      {/* ══════════════════════════════ FOLLOW ══════════════════════════════ */}
+            {/* SPECIAL EVENTS FROM ADMIN */}
+      {specialEvents.length > 0 && (
+        <section style={{ background:'#0A1A0A', padding:'clamp(72px,9vw,112px) clamp(24px,4.5vw,88px)' }}>
+          <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'16px', marginBottom:'clamp(40px,5vw,64px)' }}>
+              <div style={{ width:'28px', height:'1px', background:'#C9A84C' }} />
+              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.35em', textTransform:'uppercase', color:'rgba(201,168,76,0.6)' }}>Special Events</div>
+            </div>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))', gap:'clamp(16px,2.5vw,24px)' }}>
+              {specialEvents.map(ev => (
+                <div key={ev.id} style={{ background:'#0D1B0D', border:'1px solid rgba(201,168,76,0.12)', borderRadius:'4px', overflow:'hidden' }}>
+                  {ev.flyer_url && (
+                    <div style={{ position:'relative', height:'180px', overflow:'hidden' }}>
+                      <img src={ev.flyer_url} alt={ev.title} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                    </div>
+                  )}
+                  <div style={{ padding:'20px 24px 24px' }}>
+                    <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)', marginBottom:'10px' }}>
+                      {ev.type.toUpperCase()} {ev.is_online && '\u00b7 ONLINE'}
+                    </div>
+                    <h3 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(22px,2.5vw,28px)', fontWeight:400, color:'#FAF7F2', margin:'0 0 12px', lineHeight:1.2 }}>{ev.title}</h3>
+                    <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'12px', color:'rgba(201,168,76,0.6)', marginBottom:'10px' }}>
+                      {new Date(ev.date).toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}
+                      {ev.time && <span> &middot; {ev.time}</span>}
+                    </div>
+                    {ev.location && <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'12px', color:'rgba(250,247,242,0.35)', marginBottom:'12px' }}>{ev.location}</div>}
+                    {ev.description && <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', lineHeight:1.75, color:'rgba(250,247,242,0.45)', margin:'0 0 16px' }}>{ev.description}</p>}
+                    {ev.link && (
+                      <a href={ev.link} target='_blank' rel='noopener noreferrer' style={{ display:'inline-block', fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'#080E08', background:'#C9A84C', padding:'10px 20px', borderRadius:'3px', textDecoration:'none' }}>
+                        Register / Join
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+{/* ══════════════════════════════ FOLLOW ══════════════════════════════ */}
       <section style={{ background:'#080D08', borderTop:'1px solid rgba(250,247,242,0.05)', padding:'clamp(80px,10vw,128px) clamp(24px,4.5vw,88px)' }}>
         <div className="follow-grid" style={{ maxWidth:'1320px', margin:'0 auto', display:'grid', gridTemplateColumns:'1fr 1fr', gap:'clamp(48px,7vw,112px)', alignItems:'center' }}>
           <div>

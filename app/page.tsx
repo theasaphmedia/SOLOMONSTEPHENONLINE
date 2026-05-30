@@ -200,6 +200,14 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 export default function HomePage() {
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null)
   const [hoveredBook, setHoveredBook] = useState<number | null>(null)
+  const [announcements, setAnnouncements] = useState<{id:string;title:string;body:string;link:string;link_label:string}[]>([])
+
+  useEffect(() => {
+    fetch('/api/announcements').then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setAnnouncements(data)
+    }).catch(() => {})
+  }, [])
+
 
   useEffect(() => {
     // Scroll reveal
@@ -216,6 +224,22 @@ export default function HomePage() {
 
   return (
     <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
+      {/* ANNOUNCEMENTS BANNER */}
+      {announcements.map(a => (
+        <div key={a.id} style={{ background:'#C9A84C', color:'#080E08', padding:'12px clamp(20px,4vw,48px)', display:'flex', alignItems:'center', justifyContent:'space-between', gap:'16px', flexWrap:'wrap' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
+            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.15em', textTransform:'uppercase' }}>Announcement</span>
+            <span style={{ width:'1px', height:'14px', background:'rgba(8,14,8,0.25)', display:'inline-block' }} />
+            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px' }}>{a.title}{a.body ? ` — ${a.body}` : ''}</span>
+          </div>
+          {a.link && (
+            <a href={a.link} target='_blank' rel='noopener noreferrer' style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.12em', textTransform:'uppercase', color:'#080E08', border:'1px solid rgba(8,14,8,0.3)', padding:'6px 14px', borderRadius:'2px', textDecoration:'none', whiteSpace:'nowrap' }}>
+              {a.link_label || 'Learn More'}
+            </a>
+          )}
+        </div>
+      ))}
+
       <style>{`
         .rv { opacity:0; transform:translateY(32px); transition:opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1); }
         .rv.is-visible { opacity:1; transform:none; }

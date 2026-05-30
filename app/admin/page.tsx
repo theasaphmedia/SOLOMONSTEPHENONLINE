@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import Image from 'next/image'
 
 type Tab = 'events' | 'blog' | 'devotionals' | 'announcements'
 
@@ -13,6 +14,74 @@ function CharCounter({ value, max }: { value: string; max: number }) {
   const len = value.length
   const color = len > max ? '#ef4444' : len > max * 0.85 ? '#f59e0b' : 'rgba(201,168,76,0.4)'
   return <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', color, marginLeft: '8px' }}>{len}/{max}</span>
+}
+
+function ImageUploader({ value, onChange, label = 'Image' }: { value: string; onChange: (url: string) => void; label?: string }) {
+  const [dragging, setDragging] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const upload = async (file: File) => {
+    if (!file.type.startsWith('image/')) return
+    setUploading(true)
+    const fd = new FormData()
+    fd.append('file', file)
+    const res = await fetch('/api/admin/upload', { method: 'POST', body: fd })
+    if (res.ok) {
+      const { url } = await res.json()
+      onChange(url)
+    }
+    setUploading(false)
+  }
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    setDragging(false)
+    const file = e.dataTransfer.files[0]
+    if (file) upload(file)
+  }
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) upload(file)
+  }
+
+  return (
+    <div>
+      <label style={{ display: 'block', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>
+        {label} <span style={{ color: 'rgba(250,247,242,0.3)', fontSize: '10px', fontStyle: 'italic', textTransform: 'none' as const, letterSpacing: 0 }}>(optional)</span>
+      </label>
+
+      {value ? (
+        <div style={{ position: 'relative', borderRadius: '4px', overflow: 'hidden', border: '1px solid rgba(201,168,76,0.2)' }}>
+          <Image src={value} alt="Preview" width={800} height={450} style={{ width: '100%', height: '180px', objectFit: 'cover', display: 'block' }} />
+          <button onClick={() => onChange('')} style={{ position: 'absolute', top: '8px', right: '8px', background: 'rgba(0,0,0,0.7)', border: 'none', color: '#fff', borderRadius: '3px', padding: '4px 10px', cursor: 'pointer', fontSize: '12px' }}>Remove</button>
+        </div>
+      ) : (
+        <div
+          onClick={() => inputRef.current?.click()}
+          onDragOver={e => { e.preventDefault(); setDragging(true) }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={onDrop}
+          style={{
+            border: `2px dashed ${dragging ? '#C9A84C' : 'rgba(201,168,76,0.2)'}`,
+            borderRadius: '4px', padding: '32px 20px', textAlign: 'center', cursor: 'pointer',
+            background: dragging ? 'rgba(201,168,76,0.05)' : 'rgba(255,255,255,0.02)',
+            transition: 'all 0.2s',
+          }}
+        >
+          <div style={{ fontSize: '28px', marginBottom: '8px' }}>📎</div>
+          <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '13px', color: 'rgba(250,247,242,0.6)', marginBottom: '6px' }}>
+            {uploading ? 'Uploading...' : 'Drag & drop or click to browse'}
+          </div>
+          <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', color: 'rgba(250,247,242,0.3)' }}>
+            JPG, PNG, WebP — any size (16:9 looks best)
+          </div>
+        </div>
+      )}
+      <input ref={inputRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={onFileChange} />
+    </div>
+  )
 }
 
 export default function AdminPage() {
@@ -28,13 +97,9 @@ export default function AdminPage() {
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
 
-  // Event form
   const [ev, setEv] = useState({ title: '', date: '', time: '', location: '', description: '', type: 'special', is_online: false, link: '', flyer_url: '' })
-  // Blog form
   const [bl, setBl] = useState({ title: '', excerpt: '', body: '', cover_url: '', category: 'article', published_at: new Date().toISOString().split('T')[0] })
-  // Devotional form
   const [dv, setDv] = useState({ title: '', scripture: '', body: '', published_at: new Date().toISOString().split('T')[0] })
-  // Announcement form
   const [an, setAn] = useState({ title: '', body: '', link: '', link_label: '', expires_at: '' })
 
   const load = useCallback(async (t: Tab) => {
@@ -54,7 +119,7 @@ export default function AdminPage() {
     setLoginError('')
     const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username, password }) })
     if (res.ok) setAuthed(true)
-    else setLoginError('Wrong password')
+    else setLoginError('Invalid credentials')
   }
 
   const logout = async () => {
@@ -131,10 +196,8 @@ export default function AdminPage() {
   const S = {
     page: { minHeight: '100vh', background: '#080E08', color: '#FAF7F2', fontFamily: "'DM Sans',sans-serif" } as React.CSSProperties,
     header: { background: '#0D1B0D', borderBottom: '1px solid rgba(201,168,76,0.12)', padding: '16px clamp(20px,4vw,48px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } as React.CSSProperties,
-    logo: { fontFamily: "'Cormorant Garamond',serif", fontSize: '20px', color: '#FAF7F2', letterSpacing: '0.02em' } as React.CSSProperties,
-    gold: { color: '#C9A84C' } as React.CSSProperties,
     body: { maxWidth: '900px', margin: '0 auto', padding: 'clamp(24px,4vw,48px) clamp(20px,4vw,48px)' } as React.CSSProperties,
-    tabs: { display: 'flex', gap: '4px', marginBottom: '32px', borderBottom: '1px solid rgba(201,168,76,0.1)', paddingBottom: '0' } as React.CSSProperties,
+    tabs: { display: 'flex', gap: '4px', marginBottom: '32px', borderBottom: '1px solid rgba(201,168,76,0.1)' } as React.CSSProperties,
     tab: (active: boolean): React.CSSProperties => ({ background: 'none', border: 'none', cursor: 'pointer', padding: '10px 20px', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase', color: active ? '#C9A84C' : 'rgba(250,247,242,0.4)', borderBottom: active ? '2px solid #C9A84C' : '2px solid transparent', marginBottom: '-1px', transition: 'all 0.2s' }),
     card: { background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.1)', borderRadius: '4px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
     label: { display: 'block', fontSize: '10px', letterSpacing: '0.2em', textTransform: 'uppercase' as const, color: 'rgba(201,168,76,0.6)', marginBottom: '8px' },
@@ -156,13 +219,9 @@ export default function AdminPage() {
         </div>
         <div style={{ background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.12)', borderRadius: '4px', padding: '32px' }}>
           <label style={S.label}>Username</label>
-          <input style={{ ...S.input, marginBottom: '14px' }} type="text" value={username}
-            onChange={e => setUsername(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && login()} placeholder="Admin username" autoFocus autoComplete="username" />
+          <input style={{ ...S.input, marginBottom: '14px' }} type="text" value={username} onChange={e => setUsername(e.target.value)} onKeyDown={e => e.key === 'Enter' && login()} placeholder="Admin username" autoFocus autoComplete="username" />
           <label style={S.label}>Password</label>
-          <input style={{ ...S.input, marginBottom: '16px' }} type="password" value={password}
-            onChange={e => setPassword(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && login()} placeholder="Admin password" autoComplete="current-password" />
+          <input style={{ ...S.input, marginBottom: '16px' }} type="password" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && login()} placeholder="Admin password" autoComplete="current-password" />
           {loginError && <div style={{ color: '#ef4444', fontSize: '13px', marginBottom: '12px' }}>{loginError}</div>}
           <button style={{ ...S.btn, width: '100%' }} onClick={login}>Enter</button>
         </div>
@@ -173,12 +232,11 @@ export default function AdminPage() {
   return (
     <div style={S.page}>
       <header style={S.header}>
-        <div style={S.logo}>Solomon Stephen <span style={S.gold}>/ Admin</span></div>
+        <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '20px' }}>Solomon Stephen <span style={{ color: '#C9A84C' }}>/ Admin</span></div>
         <button onClick={logout} style={{ background: 'none', border: '1px solid rgba(201,168,76,0.2)', color: 'rgba(250,247,242,0.5)', borderRadius: '3px', padding: '8px 16px', cursor: 'pointer', fontSize: '12px', fontFamily: "'DM Sans',sans-serif" }}>Log out</button>
       </header>
 
       <div style={S.body}>
-        {/* Tabs */}
         <div style={S.tabs}>
           {(['events', 'blog', 'devotionals', 'announcements'] as Tab[]).map(t => (
             <button key={t} style={S.tab(tab === t)} onClick={() => setTab(t)}>
@@ -209,7 +267,7 @@ export default function AdminPage() {
               <div style={{ ...S.row, marginBottom: '14px' }}>
                 <div>
                   <label style={S.label}>Type</label>
-                  <select style={{ ...S.input }} value={ev.type} onChange={e => setEv({ ...ev, type: e.target.value })}>
+                  <select style={S.input} value={ev.type} onChange={e => setEv({ ...ev, type: e.target.value })}>
                     <option value="special">Special Event</option>
                     <option value="mdwe">MDWE</option>
                     <option value="tsh">The Slaughter House</option>
@@ -227,21 +285,18 @@ export default function AdminPage() {
                 <label style={S.label}>Description <CharCounter value={ev.description} max={200} /></label>
                 <textarea style={{ ...S.textarea, minHeight: '80px' }} value={ev.description} onChange={e => setEv({ ...ev, description: e.target.value })} placeholder="Short description" maxLength={500} />
               </div>
-              <div style={{ ...S.row, marginBottom: '14px' }}>
-                <div>
-                  <label style={S.label}>Registration / Stream Link</label>
-                  <input style={S.input} value={ev.link} onChange={e => setEv({ ...ev, link: e.target.value })} placeholder="https://" />
-                </div>
-                <div>
-                  <label style={S.label}>Flyer Image URL</label>
-                  <input style={S.input} value={ev.flyer_url} onChange={e => setEv({ ...ev, flyer_url: e.target.value })} placeholder="https://..." />
-                </div>
+              <div style={{ marginBottom: '14px' }}>
+                <label style={S.label}>Registration / Stream Link</label>
+                <input style={S.input} value={ev.link} onChange={e => setEv({ ...ev, link: e.target.value })} placeholder="https://" />
               </div>
-              <div style={{ marginBottom: '20px' }}>
+              <div style={{ marginBottom: '14px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                   <input type="checkbox" checked={ev.is_online} onChange={e => setEv({ ...ev, is_online: e.target.checked })} />
                   <span style={{ fontSize: '13px', color: 'rgba(250,247,242,0.6)' }}>Online / Livestream event</span>
                 </label>
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <ImageUploader value={ev.flyer_url} onChange={url => setEv({ ...ev, flyer_url: url })} label="Event Flyer" />
               </div>
               <button style={S.btn} onClick={saveEvent} disabled={saving}>{saving ? 'Publishing...' : 'Publish Event'}</button>
             </div>
@@ -293,11 +348,10 @@ export default function AdminPage() {
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <label style={S.label}>Body</label>
-                <textarea style={{ ...S.textarea, minHeight: '200px' }} value={bl.body} onChange={e => setBl({ ...bl, body: e.target.value })} placeholder="Full post content..." />
+                <textarea style={{ ...S.textarea, minHeight: '220px' }} value={bl.body} onChange={e => setBl({ ...bl, body: e.target.value })} placeholder="Full post content..." />
               </div>
               <div style={{ marginBottom: '20px' }}>
-                <label style={S.label}>Cover Image URL</label>
-                <input style={S.input} value={bl.cover_url} onChange={e => setBl({ ...bl, cover_url: e.target.value })} placeholder="https://..." />
+                <ImageUploader value={bl.cover_url} onChange={url => setBl({ ...bl, cover_url: url })} label="Cover Image" />
               </div>
               <button style={S.btn} onClick={saveBlog} disabled={saving}>{saving ? 'Publishing...' : 'Publish Post'}</button>
             </div>
@@ -340,7 +394,7 @@ export default function AdminPage() {
               </div>
               <div style={{ marginBottom: '20px' }}>
                 <label style={S.label}>Body</label>
-                <textarea style={{ ...S.textarea, minHeight: '200px' }} value={dv.body} onChange={e => setDv({ ...dv, body: e.target.value })} placeholder="Devotional content..." />
+                <textarea style={{ ...S.textarea, minHeight: '220px' }} value={dv.body} onChange={e => setDv({ ...dv, body: e.target.value })} placeholder="Devotional content..." />
               </div>
               <button style={S.btn} onClick={saveDevotional} disabled={saving}>{saving ? 'Publishing...' : 'Publish Devotional'}</button>
             </div>
