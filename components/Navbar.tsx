@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -14,14 +14,20 @@ const navLinks = [
   { href: '/events',      label: 'Events' },
   { href: '/gallery',     label: 'Gallery' },
   { href: '/press',       label: 'Press' },
-  { href: '/updates',     label: 'Blog & Updates' },
   { href: '/contact',     label: 'Contact' },
   { href: '/tai-digital', label: 'TAI Digital' },
+]
+
+const updatesDropdown = [
+  { href: '/updates',            label: 'Blog & Devotionals' },
+  { href: '/updates?tab=announcements', label: 'Announcements' },
 ]
 
 export default function Navbar() {
   const [open, setOpen]         = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [dropOpen, setDropOpen] = useState(false)
+  const dropRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -48,6 +54,10 @@ export default function Navbar() {
         @media(min-width:769px) { .hamburger { display:none !important; } }
         @media(max-width:768px) { .nav-desktop { display:none !important; } .nav-cta { display:none !important; } }
         @media(pointer:coarse) { .cursor-dot, .cursor-ring { display:none !important; } }
+        .nav-dropdown { position:relative; }
+        .nav-dropdown-menu { position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); background:rgba(250,247,242,0.97); backdropFilter:blur(16px); border:1px solid rgba(201,168,76,0.15); borderRadius:4px; padding:8px 0; minWidth:200px; boxShadow:0 8px 32px rgba(0,0,0,0.12); zIndex:2000; }
+        .nav-dropdown-item { display:block; padding:11px 20px; fontFamily:'DM Sans,sans-serif'; fontSize:11px; letterSpacing:0.1em; textTransform:uppercase; color:#3D4B3D; textDecoration:none; transition:background 0.15s,color 0.15s; whiteSpace:nowrap; }
+        .nav-dropdown-item:hover { background:rgba(201,168,76,0.08); color:#C9A84C; }
       `}</style>
       {/* ── Main bar ── */}
       <header style={{
@@ -101,15 +111,38 @@ export default function Navbar() {
             >
               {link.label}
               {pathname === link.href && (
-                <span style={{
-                  position: 'absolute', bottom: 0, left: 0, right: 0,
-                  height: '1px', background: '#C9A84C',
-                  transformOrigin: 'left',
-                  animation: 'lineGrow 0.4s cubic-bezier(0.16,1,0.3,1) both',
-                }} />
+                <span style={{ position:'absolute', bottom:0, left:0, right:0, height:'1px', background:'#C9A84C', transformOrigin:'left', animation:'lineGrow 0.4s cubic-bezier(0.16,1,0.3,1) both' }} />
               )}
             </Link>
           ))}
+
+          {/* Blog & Updates dropdown */}
+          <div ref={dropRef} className="nav-dropdown"
+            onMouseEnter={() => setDropOpen(true)}
+            onMouseLeave={() => setDropOpen(false)}
+          >
+            <button style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500,
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              color: pathname?.startsWith('/updates') ? '#C9A84C' : scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)',
+              transition: 'color 0.3s', paddingBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px',
+            }}>
+              Blog & Updates
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" style={{ opacity: 0.6, transition: 'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }}>
+                <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {dropOpen && (
+              <div className="nav-dropdown-menu">
+                {updatesDropdown.map(item => (
+                  <Link key={item.href} href={item.href} className="nav-dropdown-item" onClick={() => setDropOpen(false)}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
           <Link href="/contact" className="nav-cta" style={{
             fontFamily:    "'DM Sans', sans-serif",
             fontSize:      '10px',
@@ -180,7 +213,7 @@ export default function Navbar() {
 
         {/* Menu nav links */}
         <nav style={{ position: 'relative', zIndex: 1, paddingLeft: 'clamp(20px,3vw,48px)' }}>
-          {navLinks.map((link, i) => (
+          {[...navLinks, { href: '/updates', label: 'Blog & Updates' }].map((link, i) => (
             <div key={link.href} style={{
               borderTop: '1px solid rgba(201,168,76,0.08)',
               opacity:   open ? 1 : 0,
