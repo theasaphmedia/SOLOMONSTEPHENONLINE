@@ -93,9 +93,9 @@ export default function AboutPage() {
       {/* ══ HERO ══ */}
       <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
         {/* Full-bleed photo */}
-        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 25%' }} />
+        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 10%' }} />
         {/* Bottom-to-top fade */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,0.97) 0%, rgba(7,13,7,0.80) 28%, rgba(7,13,7,0.30) 58%, transparent 82%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,1) 0%, rgba(7,13,7,0.97) 42%, rgba(7,13,7,0.45) 65%, transparent 85%)', zIndex:1 }} />
         {/* Left-side fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(7,13,7,0.88) 0%, rgba(7,13,7,0.52) 32%, rgba(7,13,7,0.10) 58%, transparent 75%)', zIndex:1 }} />
         {/* Top navbar fade */}
