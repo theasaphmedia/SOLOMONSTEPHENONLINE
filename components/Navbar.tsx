@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 const navLinks = [
   { href: '/',            label: 'Home' },
@@ -18,17 +18,19 @@ const navLinks = [
   { href: '/tai-digital', label: 'TAI Digital' },
 ]
 
-const updatesDropdown = [
-  { href: '/updates',              label: 'Blog' },
-  { href: '/updates?tab=devotionals', label: 'Devotionals' },
+const updatesLinks = [
+  { href: '/updates',     label: 'Blog' },
+  { href: '/updates#devotionals', label: 'Devotionals' },
 ]
 
 export default function Navbar() {
-  const [open, setOpen]         = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [dropOpen, setDropOpen] = useState(false)
+  const [open, setOpen]           = useState(false)
+  const [scrolled, setScrolled]   = useState(false)
+  const [dropOpen, setDropOpen]   = useState(false)
+  const [mobileUpdOpen, setMobileUpdOpen] = useState(false)
   const dropRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const router = useRouter()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -36,78 +38,74 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  useEffect(() => { setOpen(false) }, [pathname])
+  useEffect(() => { setOpen(false); setMobileUpdOpen(false) }, [pathname])
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [open])
 
-  // Cursor is handled globally by AnimationEngine + layout.tsx cursor divs
+  const closeMenu = () => { setOpen(false); setMobileUpdOpen(false) }
+
+  const linkColor = (href: string) =>
+    pathname === href ? '#C9A84C' : scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)'
 
   return (
     <>
       <style>{`
-        .nav-desktop { display:flex; align-items:center; gap:clamp(20px,2.5vw,38px); }
+        .nav-desktop { display:flex; align-items:center; gap:clamp(16px,2vw,32px); }
         .nav-cta { display:inline-block; }
         .hamburger { display:flex; }
         @media(min-width:769px) { .hamburger { display:none !important; } }
         @media(max-width:768px) { .nav-desktop { display:none !important; } .nav-cta { display:none !important; } }
-        @media(pointer:coarse) { .cursor-dot, .cursor-ring { display:none !important; } }
-        .nav-dropdown { position:relative; }
-        .nav-dropdown-menu { position:absolute; top:calc(100% + 12px); left:50%; transform:translateX(-50%); background:rgba(250,247,242,0.97); backdropFilter:blur(16px); border:1px solid rgba(201,168,76,0.15); borderRadius:4px; padding:8px 0; minWidth:200px; boxShadow:0 8px 32px rgba(0,0,0,0.12); zIndex:2000; }
-        .nav-dropdown-item { display:block; padding:11px 20px; fontFamily:'DM Sans,sans-serif'; fontSize:11px; letterSpacing:0.1em; textTransform:uppercase; color:#3D4B3D; textDecoration:none; transition:background 0.15s,color 0.15s; whiteSpace:nowrap; }
-        .nav-dropdown-item:hover { background:rgba(201,168,76,0.08); color:#C9A84C; }
+        @media(pointer:coarse) { .cursor-dot,.cursor-ring { display:none !important; } }
+        .drop-menu {
+          position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%);
+          background:rgba(250,247,242,0.98); backdrop-filter:blur(16px);
+          border:1px solid rgba(201,168,76,0.18); border-radius:4px;
+          padding:6px 0; min-width:180px;
+          box-shadow:0 8px 32px rgba(0,0,0,0.1); z-index:2000;
+        }
+        .drop-item {
+          display:block; padding:10px 20px;
+          font-family:'DM Sans',sans-serif; font-size:11px;
+          letter-spacing:0.1em; text-transform:uppercase;
+          color:#3D4B3D; text-decoration:none;
+          transition:background 0.15s,color 0.15s; white-space:nowrap;
+        }
+        .drop-item:hover { background:rgba(201,168,76,0.08); color:#C9A84C; }
       `}</style>
+
       {/* ── Main bar ── */}
       <header style={{
-        position:       'fixed',
-        top: 0, left: 0, right: 0,
-        zIndex:         1000,
-        padding:        '0 clamp(20px,4vw,56px)',
-        height:         scrolled ? '64px' : '80px',
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent: 'space-between',
-        background: open
-          ? 'transparent'
-          : scrolled
-            ? 'rgba(250,247,242,0.95)'
-            : 'rgba(250,247,242,0.0)',
-        backdropFilter:       !open && scrolled ? 'blur(14px)' : 'none',
+        position:'fixed', top:0, left:0, right:0, zIndex:1000,
+        padding:'0 clamp(20px,4vw,56px)',
+        height: scrolled ? '64px' : '80px',
+        display:'flex', alignItems:'center', justifyContent:'space-between',
+        background: open ? 'transparent' : scrolled ? 'rgba(250,247,242,0.95)' : 'transparent',
+        backdropFilter: !open && scrolled ? 'blur(14px)' : 'none',
         WebkitBackdropFilter: !open && scrolled ? 'blur(14px)' : 'none',
         borderBottom: !open && scrolled ? '1px solid rgba(201,168,76,0.12)' : 'none',
-        transition:   'height 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s',
+        transition:'height 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s',
       }}>
-
         {/* Logo */}
-        <Link href="/" style={{ zIndex: 1010, position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <Image
-            src="/images/solomon-stephen-logo.svg"
-            alt="Solomon Stephen"
-            width={48}
-            height={112}
-            style={{ height: scrolled ? '44px' : '56px', width: 'auto', transition: 'height 0.45s cubic-bezier(0.16,1,0.3,1)', filter: open ? 'brightness(10)' : !scrolled ? 'brightness(8)' : 'none' }}
-            priority
-          />
+        <Link href="/" onClick={closeMenu} style={{ zIndex:1010, position:'relative', display:'flex', alignItems:'center' }}>
+          <Image src="/images/solomon-stephen-logo.svg" alt="Solomon Stephen" width={48} height={112}
+            style={{ height: scrolled ? '44px' : '56px', width:'auto', transition:'height 0.45s cubic-bezier(0.16,1,0.3,1)', filter: open ? 'brightness(10)' : !scrolled ? 'brightness(8)' : 'none' }}
+            priority />
         </Link>
 
         {/* Desktop nav */}
         <nav className="nav-desktop">
           {navLinks.filter(l => l.href !== '/' && l.href !== '/contact').map(link => (
             <Link key={link.href} href={link.href} style={{
-              fontFamily:    'DM Sans, sans-serif',
-              fontSize:      '11px',
-              fontWeight:    500,
-              letterSpacing: '0.08em',
-              color:         pathname === link.href ? '#C9A84C' : scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)',
-              textTransform: 'uppercase',
-              transition:    'color 0.3s',
-              position:      'relative',
-              paddingBottom: '4px',
+              fontFamily:'DM Sans,sans-serif', fontSize:'11px', fontWeight:500,
+              letterSpacing:'0.08em', textTransform:'uppercase',
+              color: linkColor(link.href), transition:'color 0.3s',
+              position:'relative', paddingBottom:'4px', textDecoration:'none',
             }}
               onMouseEnter={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
-              onMouseLeave={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)' }}
+              onMouseLeave={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = linkColor(link.href) }}
             >
               {link.label}
               {pathname === link.href && (
@@ -117,168 +115,171 @@ export default function Navbar() {
           ))}
 
           {/* Blog & Updates dropdown */}
-          <div ref={dropRef} className="nav-dropdown"
+          <div ref={dropRef} style={{ position:'relative' }}
             onMouseEnter={() => setDropOpen(true)}
             onMouseLeave={() => setDropOpen(false)}
           >
             <button style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              fontFamily: 'DM Sans, sans-serif', fontSize: '11px', fontWeight: 500,
-              letterSpacing: '0.08em', textTransform: 'uppercase',
+              background:'none', border:'none', cursor:'pointer', padding:'0 0 4px',
+              fontFamily:'DM Sans,sans-serif', fontSize:'11px', fontWeight:500,
+              letterSpacing:'0.08em', textTransform:'uppercase',
               color: pathname?.startsWith('/updates') ? '#C9A84C' : scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)',
-              transition: 'color 0.3s', paddingBottom: '4px', display: 'flex', alignItems: 'center', gap: '5px',
+              display:'flex', alignItems:'center', gap:'5px', transition:'color 0.3s',
             }}>
               Blog & Updates
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" style={{ opacity: 0.6, transition: 'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }}>
-                <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+              <svg width="9" height="9" viewBox="0 0 9 9" fill="none" style={{ opacity:0.5, transition:'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }}>
+                <path d="M1.5 3L4.5 6L7.5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {dropOpen && (
-              <div className="nav-dropdown-menu">
-                {updatesDropdown.map(item => (
-                  <Link key={item.href} href={item.href} className="nav-dropdown-item" onClick={() => setDropOpen(false)}>
+              <div className="drop-menu">
+                {updatesLinks.map(item => (
+                  <Link key={item.href} href={item.href} className="drop-item" onClick={() => setDropOpen(false)}>
                     {item.label}
                   </Link>
                 ))}
               </div>
             )}
           </div>
+
           <Link href="/contact" className="nav-cta" style={{
-            fontFamily:    "'DM Sans', sans-serif",
-            fontSize:      '10px',
-            fontWeight:    500,
-            letterSpacing: '0.16em',
-            textTransform: 'uppercase',
-            padding:       '11px 28px',
-            background:    scrolled ? '#1A2E1A' : 'transparent',
-            color:         scrolled ? '#FAF7F2' : '#C9A84C',
-            border:        scrolled ? 'none' : '1px solid rgba(201,168,76,0.5)',
-            transition:    'background 0.3s, color 0.3s, border-color 0.3s',
+            fontFamily:"'DM Sans',sans-serif", fontSize:'10px', fontWeight:500,
+            letterSpacing:'0.16em', textTransform:'uppercase',
+            padding:'11px 28px', textDecoration:'none',
+            background: scrolled ? '#1A2E1A' : 'transparent',
+            color: scrolled ? '#FAF7F2' : '#C9A84C',
+            border: scrolled ? 'none' : '1px solid rgba(201,168,76,0.5)',
+            transition:'background 0.3s,color 0.3s,border-color 0.3s',
           }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#C9A84C'; (e.currentTarget as HTMLElement).style.color = '#0D1B0D' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = scrolled ? '#1A2E1A' : 'transparent'; (e.currentTarget as HTMLElement).style.color = scrolled ? '#FAF7F2' : '#C9A84C' }}
-          >
-            Get In Touch
-          </Link>
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='#C9A84C'; (e.currentTarget as HTMLElement).style.color='#0D1B0D' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background=scrolled?'#1A2E1A':'transparent'; (e.currentTarget as HTMLElement).style.color=scrolled?'#FAF7F2':'#C9A84C' }}
+          >Get In Touch</Link>
         </nav>
 
-        {/* Hamburger — mobile only */}
+        {/* Hamburger */}
         <button onClick={() => setOpen(!open)} className="hamburger" style={{
-          background: 'none', border: 'none', cursor: 'pointer',
-          padding: '8px', zIndex: 1010, position: 'relative',
-          flexDirection: 'column', gap: '5px', alignItems: 'flex-end',
+          background:'none', border:'none', cursor:'pointer',
+          padding:'8px', zIndex:1010, position:'relative',
+          flexDirection:'column', gap:'5px', alignItems:'flex-end',
         }} aria-label={open ? 'Close menu' : 'Open menu'}>
-          <span style={{
-            display: 'block', height: '1.5px', width: '28px',
-            background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
-            transform: open ? 'translateY(6.5px) rotate(45deg)' : 'none',
-            transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s',
-            transformOrigin: 'center',
-          }} />
-          <span style={{
-            display: 'block', height: '1.5px', width: open ? '28px' : '18px',
-            background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
-            opacity: open ? 0 : 1,
-            transition: 'opacity 0.3s, background 0.45s, width 0.4s',
-          }} />
-          <span style={{
-            display: 'block', height: '1.5px', width: '28px',
-            background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
-            transform: open ? 'translateY(-6.5px) rotate(-45deg)' : 'none',
-            transition: 'transform 0.45s cubic-bezier(0.16,1,0.3,1), background 0.45s',
-            transformOrigin: 'center',
-          }} />
+          {[
+            { w:'28px', t: open ? 'translateY(6.5px) rotate(45deg)' : 'none' },
+            { w: open ? '28px' : '18px', t:'none', o: open ? 0 : 1 },
+            { w:'28px', t: open ? 'translateY(-6.5px) rotate(-45deg)' : 'none' },
+          ].map((bar, i) => (
+            <span key={i} style={{
+              display:'block', height:'1.5px', width: bar.w,
+              background: open ? '#FAF7F2' : scrolled ? '#0D1B0D' : '#FAF7F2',
+              transform: bar.t, opacity: bar.o ?? 1,
+              transition:'transform 0.45s cubic-bezier(0.16,1,0.3,1),background 0.45s,width 0.4s,opacity 0.3s',
+              transformOrigin:'center',
+            }} />
+          ))}
         </button>
       </header>
 
-      {/* ── Full-screen overlay menu ── */}
+      {/* ── Mobile overlay menu ── */}
       <div style={{
-        position: 'fixed', inset: 0, zIndex: 999,
-        background: '#0D1B0D',
+        position:'fixed', inset:0, zIndex:999,
+        background:'#0D1B0D',
         opacity: open ? 1 : 0,
         pointerEvents: open ? 'all' : 'none',
-        transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)',
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: 'clamp(80px,10vw,120px) clamp(28px,6vw,80px)',
-        overflow: 'hidden',
+        transition:'opacity 0.45s cubic-bezier(0.16,1,0.3,1)',
+        overflow:'hidden',
       }}>
-        {/* Ambient gold glow */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse 60% 55% at 8% 90%, rgba(201,168,76,0.09) 0%, transparent 65%)',
-          pointerEvents: 'none',
-        }} />
-        {/* Thin gold vertical accent */}
-        <div style={{ position:'absolute', top:'15%', bottom:'15%', left:'clamp(28px,6vw,80px)', width:'1px', background:'rgba(201,168,76,0.12)', pointerEvents:'none' }} />
+        {/* Ambient glow */}
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 55% at 8% 90%, rgba(201,168,76,0.09) 0%, transparent 65%)', pointerEvents:'none' }} />
 
-        {/* Menu nav links */}
-        <nav style={{ position: 'relative', zIndex: 1, paddingLeft: 'clamp(20px,3vw,48px)' }}>
-          {[...navLinks, { href: '/updates', label: 'Blog & Updates' }].map((link, i) => (
-            <div key={link.href} style={{
-              borderTop: '1px solid rgba(201,168,76,0.08)',
-              opacity:   open ? 1 : 0,
-              transform: open ? 'translateY(0)' : 'translateY(20px)',
-              transitionProperty: 'opacity, transform',
-              transitionDuration: '0.6s',
-              transitionTimingFunction: 'cubic-bezier(0.16,1,0.3,1)',
-              transitionDelay: `${0.1 + i * 0.05}s`,
+        {/* Close button */}
+        <button onClick={closeMenu} style={{
+          position:'absolute', top:'28px', right:'24px', zIndex:10,
+          background:'none', border:'none', cursor:'pointer',
+          fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'0.15em',
+          textTransform:'uppercase', color:'rgba(250,247,242,0.5)', padding:'8px',
+        }}>✕ Close</button>
+
+        {/* Scrollable nav area — starts below header */}
+        <nav style={{
+          position:'absolute', top:'80px', left:0, right:0, bottom:0,
+          overflowY:'auto', padding:'24px 32px 40px',
+          display:'flex', flexDirection:'column', justifyContent:'center',
+        }}>
+          <div style={{ borderLeft:'1px solid rgba(201,168,76,0.12)', paddingLeft:'20px' }}>
+            {navLinks.map((link, i) => (
+              <div key={link.href} style={{
+                borderBottom:'1px solid rgba(201,168,76,0.07)',
+                opacity: open ? 1 : 0,
+                transform: open ? 'translateY(0)' : 'translateY(16px)',
+                transition:`opacity 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + i * 0.04}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + i * 0.04}s`,
+              }}>
+                <Link href={link.href} onClick={closeMenu} style={{
+                  display:'flex', alignItems:'center', gap:'16px',
+                  padding:'14px 0', textDecoration:'none',
+                  color: pathname === link.href ? '#C9A84C' : 'rgba(250,247,242,0.85)',
+                }}>
+                  <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.2em', color:'rgba(201,168,76,0.35)', minWidth:'22px' }}>
+                    {String(i + 1).padStart(2,'0')}
+                  </span>
+                  <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(16px,4vw,22px)', fontWeight:500, letterSpacing:'0.04em', textTransform:'uppercase' }}>
+                    {link.label}
+                  </span>
+                </Link>
+              </div>
+            ))}
+
+            {/* Blog & Updates — expandable */}
+            <div style={{
+              borderBottom:'1px solid rgba(201,168,76,0.07)',
+              opacity: open ? 1 : 0,
+              transform: open ? 'translateY(0)' : 'translateY(16px)',
+              transition:`opacity 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + navLinks.length * 0.04}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + navLinks.length * 0.04}s`,
             }}>
-              <Link href={link.href} onClick={() => setOpen(false)} scroll={false} style={{
-                display: 'flex', alignItems: 'baseline', gap: '20px',
-                padding: 'clamp(10px,1.6vw,18px) 0',
-                textDecoration: 'none',
-                color: pathname === link.href ? '#C9A84C' : '#FAF7F2',
-                transition: 'color 0.3s',
-              }}
-                onMouseEnter={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#C9A84C' }}
-                onMouseLeave={e => { if (pathname !== link.href) (e.currentTarget as HTMLElement).style.color = '#FAF7F2' }}
-              >
-                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.22em', color:'rgba(201,168,76,0.4)', minWidth:'28px' }}>
-                  {String(i + 1).padStart(2, '0')}
+              <button onClick={() => setMobileUpdOpen(!mobileUpdOpen)} style={{
+                background:'none', border:'none', cursor:'pointer', width:'100%',
+                display:'flex', alignItems:'center', gap:'16px', padding:'14px 0', textAlign:'left',
+                color: pathname?.startsWith('/updates') ? '#C9A84C' : 'rgba(250,247,242,0.85)',
+              }}>
+                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.2em', color:'rgba(201,168,76,0.35)', minWidth:'22px' }}>
+                  {String(navLinks.length + 1).padStart(2,'0')}
                 </span>
-                <span style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(28px,4.5vw,56px)', fontWeight:400, letterSpacing:'-0.01em', lineHeight:1 }}>
-                  {link.label}
+                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(16px,4vw,22px)', fontWeight:500, letterSpacing:'0.04em', textTransform:'uppercase', flex:1 }}>
+                  Blog & Updates
                 </span>
-              </Link>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ opacity:0.4, transition:'transform 0.3s', transform: mobileUpdOpen ? 'rotate(180deg)' : 'none', marginRight:'4px' }}>
+                  <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </button>
+              {mobileUpdOpen && (
+                <div style={{ paddingLeft:'38px', paddingBottom:'8px' }}>
+                  {updatesLinks.map(item => (
+                    <Link key={item.href} href={item.href} onClick={closeMenu} style={{
+                      display:'block', padding:'10px 0',
+                      fontFamily:"'DM Sans',sans-serif", fontSize:'13px',
+                      letterSpacing:'0.08em', textTransform:'uppercase',
+                      color:'rgba(201,168,76,0.7)', textDecoration:'none',
+                    }}>
+                      → {item.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
-          ))}
+          </div>
 
-          {/* Bottom bar — social + contact */}
+          {/* Social links */}
           <div style={{
-            borderTop: '1px solid rgba(201,168,76,0.12)',
-            marginTop: 'clamp(16px,2.5vw,32px)',
-            paddingTop: 'clamp(16px,2.5vw,28px)',
-            display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px',
+            marginTop:'32px', paddingLeft:'20px',
+            display:'flex', gap:'24px', flexWrap:'wrap',
             opacity: open ? 1 : 0,
-            transform: open ? 'translateY(0)' : 'translateY(16px)',
-            transitionProperty: 'opacity, transform',
-            transitionDuration: '0.6s',
-            transitionDelay: `${0.1 + navLinks.length * 0.05 + 0.06}s`,
+            transition:`opacity 0.5s 0.5s`,
           }}>
-            <div style={{ display:'flex', gap:'clamp(16px,2.5vw,32px)', flexWrap:'wrap' }}>
-              {[
-                { label: 'Instagram', url: 'https://www.instagram.com/thesolomonsteph' },
-                { label: 'YouTube',   url: 'https://www.youtube.com/@thesolomonsteph' },
-                { label: 'Facebook',  url: 'https://www.facebook.com/thesolomonsteph' },
-                { label: 'TikTok',    url: 'https://www.tiktok.com/@thesolomonsteph' },
-              ].map(s => (
-                <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" style={{
-                  fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.18em',
-                  textTransform:'uppercase', color:'rgba(250,247,242,0.35)', textDecoration:'none', transition:'color 0.3s',
-                }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#C9A84C'}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(250,247,242,0.35)'}
-                >{s.label}</a>
-              ))}
-            </div>
-            <Link href="/contact" style={{
-              fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:500, letterSpacing:'0.18em',
-              textTransform:'uppercase', color:'#C9A84C', textDecoration:'none',
-              padding:'11px 28px', border:'1px solid rgba(201,168,76,0.35)', transition:'border-color 0.3s',
-            }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.borderColor = '#C9A84C'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.35)'}
-            >Get In Touch →</Link>
+            {['Instagram','YouTube','Facebook','TikTok'].map((s, i) => (
+              <a key={s} href={`https://www.${s.toLowerCase() === 'youtube' ? 'youtube.com/@thesolomonsteph' : s.toLowerCase() === 'instagram' ? 'instagram.com/thesolomonsteph' : s.toLowerCase() === 'facebook' ? 'facebook.com/thesolomonsteph' : 'tiktok.com/@thesolomonsteph'}`}
+                target="_blank" rel="noopener noreferrer"
+                style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(250,247,242,0.3)', textDecoration:'none' }}>
+                {s}
+              </a>
+            ))}
           </div>
         </nav>
       </div>
