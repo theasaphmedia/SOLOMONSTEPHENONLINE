@@ -144,7 +144,7 @@ function NewsletterSection() {
 }
 
 
-const HERO_IMG = { src: '/images/solomon-green-suit-hero.png', pos: '55% 0%' }
+const HERO_IMG = { src: '/images/solomon-green-suit-hero.png', pos: '55% top' }
 
 const stats = [
   { value: 3,    suffix: '',  label: 'Monthly Gatherings' },
@@ -296,7 +296,7 @@ export default function HomePage() {
         />
 
         {/* Layer 1 — bottom vignette (deep, protects text) */}
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,18,8,0.97) 0%, rgba(8,18,8,0.80) 30%, rgba(8,18,8,0.30) 58%, transparent 82%)', zIndex:1 }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,18,8,1) 0%, rgba(8,18,8,0.97) 38%, rgba(8,18,8,0.5) 60%, transparent 80%)', zIndex:1 }} />
         {/* Layer 2 — left vignette (strong, text legibility) */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, rgba(8,18,8,0.82) 0%, rgba(8,18,8,0.50) 30%, rgba(8,18,8,0.10) 55%, transparent 72%)', zIndex:1 }} />
         {/* Layer 3 — top vignette (navbar area) */}
