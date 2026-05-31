@@ -136,6 +136,8 @@ export default function UpdatesPage() {
 
           {/* ── ANNOUNCEMENTS ── */}
 
+        </section>
+
         {/* Blog/Devotional modal */}
         {selected && (
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(8,14,8,0.97)', zIndex: 1000, overflowY: 'auto', padding: 'clamp(24px,5vw,64px) clamp(24px,5vw,96px)' }}
