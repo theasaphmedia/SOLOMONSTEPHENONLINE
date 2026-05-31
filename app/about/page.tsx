@@ -93,7 +93,9 @@ export default function AboutPage() {
       {/* ══ HERO ══ */}
       <section style={{ height:'100vh', minHeight:'640px', position:'relative', overflow:'hidden', background:'#070D07' }}>
         {/* Full-bleed photo */}
-        <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center 10%' }} />
+        <div style={{ position:'absolute', top:'-25%', left:0, right:0, bottom:0 }}>
+          <Image src="/images/gallery-solomon-kneeling-surrender.jpg" alt="" fill priority style={{ objectFit:'cover', objectPosition:'center top' }} />
+        </div>
         {/* Bottom-to-top fade */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(7,13,7,1) 0%, rgba(7,13,7,0.97) 42%, rgba(7,13,7,0.45) 65%, transparent 85%)', zIndex:1 }} />
         {/* Left-side fade */}
