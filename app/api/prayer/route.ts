@@ -13,6 +13,37 @@ function isRateLimited(ip: string): boolean {
   return record.count > 3
 }
 
+export async function GET() {
+  try {
+    const { sql } = await import('@/lib/db')
+    await sql`
+      CREATE TABLE IF NOT EXISTS ss_prayer_requests (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT DEFAULT '',
+        request TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        prayed BOOLEAN DEFAULT FALSE
+      )
+    `
+    const rows = await sql`SELECT * FROM ss_prayer_requests ORDER BY created_at DESC`
+    return NextResponse.json(rows)
+  } catch {
+    return NextResponse.json([], { status: 200 })
+  }
+}
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const { id } = await req.json()
+    const { sql } = await import('@/lib/db')
+    await sql`UPDATE ss_prayer_requests SET prayed = TRUE WHERE id = ${id}`
+    return NextResponse.json({ ok: true })
+  } catch {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
@@ -21,6 +52,19 @@ export async function POST(req: NextRequest) {
     const { name, email, request, _honeypot } = await req.json()
     if (_honeypot) return NextResponse.json({ ok: true })
     if (!name || !request || request.length < 5) return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+
+    const { sql } = await import('@/lib/db')
+    await sql`
+      CREATE TABLE IF NOT EXISTS ss_prayer_requests (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        email TEXT DEFAULT '',
+        request TEXT NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW(),
+        prayed BOOLEAN DEFAULT FALSE
+      )
+    `
+    await sql`INSERT INTO ss_prayer_requests (name, email, request) VALUES (${name}, ${email || ''}, ${request})`
 
     const { Resend } = await import('resend')
     const resend = new Resend(process.env.RESEND_API_KEY)
@@ -38,10 +82,7 @@ export async function POST(req: NextRequest) {
               <td style="padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.15);color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;width:120px;">Name</td>
               <td style="padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.15);color:white;">${name}</td>
             </tr>
-            ${email ? `<tr>
-              <td style="padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.15);color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Email</td>
-              <td style="padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.15);color:#C9A84C;">${email}</td>
-            </tr>` : ''}
+            ${email ? `<tr><td style="padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.15);color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;">Email</td><td style="padding:12px 0;border-bottom:1px solid rgba(201,168,76,0.15);color:#C9A84C;">${email}</td></tr>` : ''}
           </table>
           <div style="margin-top:28px;">
             <p style="color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">Prayer Request</p>

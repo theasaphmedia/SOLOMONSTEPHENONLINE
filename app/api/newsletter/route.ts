@@ -13,6 +13,14 @@ export async function POST(req: NextRequest) {
     try {
       const { sql } = await import('@/lib/db')
       await sql`
+        CREATE TABLE IF NOT EXISTS ss_newsletter (
+          id SERIAL PRIMARY KEY,
+          email TEXT UNIQUE NOT NULL,
+          name TEXT DEFAULT '',
+          subscribed_at TIMESTAMPTZ DEFAULT NOW()
+        )
+      `
+      await sql`
         INSERT INTO ss_newsletter (email, name, subscribed_at)
         VALUES (${email}, ${name || ''}, NOW())
         ON CONFLICT (email) DO NOTHING

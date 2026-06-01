@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 
-type Tab = 'events' | 'blog' | 'devotionals' | 'announcements'
+type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers'
 
 interface Event { id: string; title: string; date: string; time: string; location: string; description: string; type: string; is_online: boolean; link: string; flyer_url: string; published: boolean }
 interface BlogPost { id: string; title: string; excerpt: string; body: string; cover_url: string; category: string; published: boolean; published_at: string }
@@ -244,7 +244,7 @@ export default function AdminPage() {
 
       <div style={S.body}>
         <div style={S.tabs}>
-          {(['events', 'blog', 'devotionals', 'announcements'] as Tab[]).map(t => (
+          {(['events', 'blog', 'devotionals', 'announcements', 'prayer', 'subscribers'] as Tab[]).map(t => (
             <button key={t} style={S.tab(tab === t)} onClick={() => setTab(t)}>
               {t === 'events' ? '📅 Events' : t === 'blog' ? '✍️ Blog' : t === 'devotionals' ? '📖 Devotionals' : '📢 Announcements'}
             </button>
@@ -468,9 +468,115 @@ export default function AdminPage() {
             )}
           </div>
         )}
+
+        {/* ── PRAYER REQUESTS ── */}
+        {tab === 'prayer' && <PrayerTab />}
+
+        {/* ── SUBSCRIBERS ── */}
+        {tab === 'subscribers' && <SubscribersTab />}
+
       </div>
 
       {msg && <div style={S.flash}>{msg}</div>}
+    </div>
+  )
+}
+
+function PrayerTab() {
+  const [requests, setRequests] = useState<{id:string;name:string;email:string;request:string;created_at:string;prayed:boolean}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/prayer').then(r => r.json()).then(data => { setRequests(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+
+  const markPrayed = async (id: string) => {
+    await fetch('/api/prayer', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    setRequests(prev => prev.map(r => r.id === id ? { ...r, prayed: true } : r))
+  }
+
+  const S2 = {
+    card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
+    item: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', padding: '16px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={S2.card}>
+        <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Prayer Requests ({requests.length})</div>
+        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Mark as prayed when you've stood in agreement.</div>
+        {requests.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No prayer requests yet.</div>
+        ) : requests.map(r => (
+          <div key={r.id} style={{ ...S2.item, opacity: r.prayed ? 0.4 : 1 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '6px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#FAF7F2' }}>{r.name}</div>
+                {r.email && <div style={{ fontSize: '11px', color: 'rgba(201,168,76,0.6)' }}>{r.email}</div>}
+                {r.prayed && <div style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#7CB87C' }}>Prayed ✓</div>}
+              </div>
+              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.65)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{r.request}</div>
+              <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)', marginTop: '6px' }}>{new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+            </div>
+            {!r.prayed && (
+              <button onClick={() => markPrayed(r.id)} style={{ background: 'rgba(124,184,124,0.15)', border: '1px solid rgba(124,184,124,0.3)', color: '#7CB87C', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+                Mark Prayed
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SubscribersTab() {
+  const [subscribers, setSubscribers] = useState<{id:string;email:string;name:string;subscribed_at:string}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/admin/newsletter').then(r => r.json()).then(data => { setSubscribers(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+
+  const copyEmails = () => {
+    const emails = subscribers.map(s => s.email).join(', ')
+    navigator.clipboard.writeText(emails)
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={{ background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <div>
+            <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '4px' }}>Newsletter Subscribers</div>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: '#C9A84C' }}>{subscribers.length}</div>
+          </div>
+          {subscribers.length > 0 && (
+            <button onClick={copyEmails} style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              Copy All Emails
+            </button>
+          )}
+        </div>
+        {subscribers.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontSize: '13px' }}>No subscribers yet.</div>
+        ) : (
+          <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            {subscribers.map(s => (
+              <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
+                <div>
+                  <div style={{ fontSize: '14px', color: '#FAF7F2' }}>{s.email}</div>
+                  {s.name && <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.35)', marginTop: '2px' }}>{s.name}</div>}
+                </div>
+                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(s.subscribed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
