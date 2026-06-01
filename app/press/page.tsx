@@ -192,4 +192,32 @@ export default function PressPage() {
             <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(32px,5vw,60px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.05, margin:'0 0 24px', letterSpacing:'-.01em' }} className="rv d1">
               Let&apos;s tell the <em style={{ color:'#C9A84C' }}>story right.</em>
             </h2>
-            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.4vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)'
+            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.4vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)', margin:'0 0 40px' }} className="rv d2">
+              For interview requests, feature coverage, booking, or press assets — reach out.
+            </p>
+            <div style={{ display:'flex', gap:'16px', justifyContent:'center', flexWrap:'wrap' }} className="rv d3">
+              <Link href="/contact" className="press-dl-btn">
+                Send Enquiry
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
+    </>
+  )
+}
+            <div style={{ display:'flex', gap:'16px', justifyContent:'center', flexWrap:'wrap' }} className="rv d3">
+              <Link href="/contact" className="press-dl-btn">
+                Send Enquiry
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
+    </>
+  )
+}
