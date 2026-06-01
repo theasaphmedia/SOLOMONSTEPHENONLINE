@@ -221,3 +221,15 @@ export default function PressPage() {
     </>
   )
 }
+
+                Send Enquiry
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </main>
+    </>
+  )
+}
