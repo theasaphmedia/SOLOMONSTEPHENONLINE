@@ -291,9 +291,11 @@ export default function HomePage() {
       <section style={{ height:'100vh', minHeight:'600px', position:'relative', overflow:'hidden', background:'#0D1B0D' }}>
 
         {/* Single hero image — full bleed */}
-        <Image src={HERO_IMG.src} alt="Solomon Stephen" fill priority
-          style={{ objectFit:'cover', objectPosition: HERO_IMG.pos }}
-        />
+        <div style={{ position:'absolute', top:'-18%', left:0, right:0, bottom:0 }}>
+          <Image src={HERO_IMG.src} alt="Solomon Stephen" fill priority
+            style={{ objectFit:'cover', objectPosition: HERO_IMG.pos }}
+          />
+        </div>
 
         {/* Layer 1 — bottom vignette (deep, protects text) */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,18,8,0.97) 0%, rgba(8,18,8,0.80) 30%, rgba(8,18,8,0.30) 58%, transparent 82%)', zIndex:1 }} />
@@ -308,7 +310,7 @@ export default function HomePage() {
         </div>
 
         {/* Main content — bottom-left */}
-        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'0 clamp(24px,5vw,96px) clamp(56px,7vw,88px)' }}>
+        <div style={{ position:'absolute', inset:0, zIndex:2, display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:'0 clamp(24px,5vw,96px) clamp(24px,3vw,36px)' }}>
 
           {/* Name */}
           <h1 className="hero-h1">
@@ -335,11 +337,6 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* Scroll cue */}
-          <div style={{ marginTop:'clamp(32px,4vw,48px)', display:'flex', alignItems:'center', gap:'10px' }}>
-            <div style={{ width:'1px', height:'36px', background:'rgba(201,168,76,0.35)' }} />
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.32em', textTransform:'uppercase', color:'rgba(250,247,242,0.3)' }}>Scroll</span>
-          </div>
         </div>
       </section>
 
