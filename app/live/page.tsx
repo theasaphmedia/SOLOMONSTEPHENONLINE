@@ -72,8 +72,10 @@ export default function LivePage() {
             </div>
           </div>
           <h1 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(40px,7vw,80px)', fontWeight: 400, color: '#FAF7F2', margin: '0 0 16px', lineHeight: 1.05, letterSpacing: '-0.02em' }}>
-            {liveData.live ? <><em style={{ color: '#DC2626' }}>Live</em> Stream</> : 'Watch <em style={{ color: "#C9A84C" }}>Live</em>'}
-            {!liveData.live && <><br /><em style={{ color: '#C9A84C' }}>& Archive</em></>}
+            {liveData.live
+              ? <><em style={{ color: '#DC2626' }}>Live</em> Stream</>
+              : <>Watch <em style={{ color: '#C9A84C' }}>Live</em><br /><em style={{ color: '#C9A84C' }}>& Archive</em></>
+            }
           </h1>
           <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 'clamp(13px,1.3vw,15px)', color: 'rgba(250,247,242,0.45)', margin: 0, maxWidth: '480px' }}>
             {liveData.live ? `Streaming now — ${liveData.title ?? 'Live Worship'}` : 'Watch past gatherings or tune in when we go live. MDWE, TSH, and Synantesis — all here.'}
