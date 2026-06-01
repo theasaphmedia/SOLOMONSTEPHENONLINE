@@ -291,11 +291,9 @@ export default function HomePage() {
       <section style={{ height:'100vh', minHeight:'600px', position:'relative', overflow:'hidden', background:'#0D1B0D' }}>
 
         {/* Single hero image — full bleed */}
-        <div style={{ position:'absolute', top:'-18%', left:0, right:0, bottom:0 }}>
-          <Image src={HERO_IMG.src} alt="Solomon Stephen" fill priority
-            style={{ objectFit:'cover', objectPosition: HERO_IMG.pos }}
-          />
-        </div>
+        <Image src={HERO_IMG.src} alt="Solomon Stephen" fill priority
+          style={{ objectFit:'cover', objectPosition:'55% 12%' }}
+        />
 
         {/* Layer 1 — bottom vignette (deep, protects text) */}
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,18,8,0.97) 0%, rgba(8,18,8,0.80) 30%, rgba(8,18,8,0.30) 58%, transparent 82%)', zIndex:1 }} />
@@ -319,7 +317,7 @@ export default function HomePage() {
           </h1>
 
           {/* Role tags — replaces redundant eyebrow */}
-          <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', margin:'clamp(18px,2.2vw,28px) 0 clamp(28px,3.5vw,48px)' }}>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', margin:'clamp(8px,1vw,14px) 0 clamp(20px,2.5vw,32px)' }}>
             {['Worship Leader', 'Music Producer', 'Author', 'Studio Founder'].map(role => (
               <span key={role} style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(250,247,242,0.55)', padding:'6px 14px', border:'1px solid rgba(250,247,242,0.15)', display:'inline-block' }}>
                 {role}
