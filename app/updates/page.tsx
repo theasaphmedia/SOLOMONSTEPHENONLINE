@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import Footer from '@/components/Footer'
 
 type Tab = 'blog' | 'devotionals'
@@ -113,8 +114,8 @@ export default function UpdatesPage() {
             devotionals.length === 0 ? empty('Devotionals') : (
               <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                 {devotionals.map((d, i) => (
-                  <div key={d.id} onClick={() => setSelected(d)}
-                    style={{ borderTop: i === 0 ? '1px solid rgba(201,168,76,0.12)' : 'none', borderBottom: '1px solid rgba(201,168,76,0.08)', padding: 'clamp(24px,3vw,36px) 8px', display: 'grid', gridTemplateColumns: '80px 1fr 24px', gap: '24px 28px', alignItems: 'start', cursor: 'pointer', borderRadius: '2px', transition: 'background 0.2s' }}
+                  <Link key={d.id} href={`/updates/devotionals/${d.id}`}
+                    style={{ display: 'grid', gridTemplateColumns: '80px 1fr 24px', gap: '24px 28px', alignItems: 'start', textDecoration: 'none', borderTop: i === 0 ? '1px solid rgba(201,168,76,0.12)' : 'none', borderBottom: '1px solid rgba(201,168,76,0.08)', padding: 'clamp(24px,3vw,36px) 8px', cursor: 'pointer', borderRadius: '2px', transition: 'background 0.2s' }}
                     onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.02)'}
                     onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}
                   >
@@ -128,7 +129,7 @@ export default function UpdatesPage() {
                       <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '13px', lineHeight: 1.75, color: 'rgba(250,247,242,0.4)', margin: 0 }}>{d.body.slice(0, 120)}{d.body.length > 120 ? '...' : ''}</p>
                     </div>
                     <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '18px', color: 'rgba(201,168,76,0.4)', paddingTop: '4px' }}>→</div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )
