@@ -6,6 +6,7 @@ import { useState } from 'react'
 const pages = [
   { href: '/about',       label: 'About'       },
   { href: '/music',       label: 'Music'       },
+  { href: '/live',        label: 'Watch Live'  },
   { href: '/studios',     label: 'Studios'     },
   { href: '/books',       label: 'Books'       },
   { href: '/events',      label: 'Events'      },
@@ -13,6 +14,7 @@ const pages = [
   { href: '/contact',     label: 'Contact'     },
   { href: '/tai-digital', label: 'TAI Digital' },
   { href: '/press',       label: 'Press'       },
+  { href: '/updates',     label: 'Blog'        },
 ]
 
 const socials = [

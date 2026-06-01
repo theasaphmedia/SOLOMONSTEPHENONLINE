@@ -5,17 +5,23 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
+// Primary nav — always visible on desktop
 const navLinks = [
   { href: '/',            label: 'Home' },
   { href: '/about',       label: 'About' },
   { href: '/music',       label: 'Music' },
   { href: '/studios',     label: 'Studios' },
-  { href: '/books',       label: 'Books' },
   { href: '/events',      label: 'Events' },
+  { href: '/tai-digital', label: 'TAI Digital' },
+  { href: '/contact',     label: 'Contact' },
+]
+
+// More dropdown
+const moreLinks = [
+  { href: '/live',        label: 'Watch Live' },
+  { href: '/books',       label: 'Books' },
   { href: '/gallery',     label: 'Gallery' },
   { href: '/press',       label: 'Press' },
-  { href: '/contact',     label: 'Contact' },
-  { href: '/tai-digital', label: 'TAI Digital' },
 ]
 
 const updatesLinks = [
@@ -125,7 +131,7 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Blog & Updates dropdown */}
+          {/* More dropdown */}
           <div ref={dropRef} style={{ position:'relative' }}
             onMouseEnter={() => setDropOpen(true)}
             onMouseLeave={() => setDropOpen(false)}
@@ -134,16 +140,22 @@ export default function Navbar() {
               background:'none', border:'none', cursor:'pointer', padding:'0 0 4px',
               fontFamily:'DM Sans,sans-serif', fontSize:'11px', fontWeight:500,
               letterSpacing:'0.08em', textTransform:'uppercase',
-              color: pathname?.startsWith('/updates') ? '#C9A84C' : scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)',
+              color: scrolled ? '#3D4B3D' : 'rgba(250,247,242,0.88)',
               display:'flex', alignItems:'center', gap:'5px', transition:'color 0.3s',
             }}>
-              Blog & Updates
+              More
               <svg width="9" height="9" viewBox="0 0 9 9" fill="none" style={{ opacity:0.5, transition:'transform 0.2s', transform: dropOpen ? 'rotate(180deg)' : 'none' }}>
                 <path d="M1.5 3L4.5 6L7.5 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {dropOpen && (
               <div className="drop-menu">
+                {moreLinks.map(item => (
+                  <Link key={item.href} href={item.href} className="drop-item" onClick={() => setDropOpen(false)}>
+                    {item.label}
+                  </Link>
+                ))}
+                <div style={{ borderTop:'1px solid rgba(201,168,76,0.12)', margin:'4px 0' }} />
                 {updatesLinks.map(item => (
                   <Link key={item.href} href={item.href} className="drop-item" onClick={() => setDropOpen(false)}>
                     {item.label}
@@ -237,43 +249,28 @@ export default function Navbar() {
               </div>
             ))}
 
-            {/* Blog & Updates — expandable */}
-            <div style={{
-              borderBottom:'1px solid rgba(201,168,76,0.07)',
-              opacity: open ? 1 : 0,
-              transform: open ? 'translateY(0)' : 'translateY(16px)',
-              transition:`opacity 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + navLinks.length * 0.04}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + navLinks.length * 0.04}s`,
-            }}>
-              <button onClick={() => setMobileUpdOpen(!mobileUpdOpen)} style={{
-                background:'none', border:'none', cursor:'pointer', width:'100%',
-                display:'flex', alignItems:'center', gap:'16px', padding:'14px 0', textAlign:'left',
-                color: pathname?.startsWith('/updates') ? '#C9A84C' : 'rgba(250,247,242,0.85)',
+            {/* More links */}
+            {[...moreLinks, ...updatesLinks].map((link, i) => (
+              <div key={link.href} style={{
+                borderBottom:'1px solid rgba(201,168,76,0.07)',
+                opacity: open ? 1 : 0,
+                transform: open ? 'translateY(0)' : 'translateY(16px)',
+                transition:`opacity 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + (navLinks.length + i) * 0.04}s, transform 0.5s cubic-bezier(0.16,1,0.3,1) ${0.08 + (navLinks.length + i) * 0.04}s`,
               }}>
-                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.2em', color:'rgba(201,168,76,0.35)', minWidth:'22px' }}>
-                  {String(navLinks.length + 1).padStart(2,'0')}
-                </span>
-                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(16px,4vw,22px)', fontWeight:500, letterSpacing:'0.04em', textTransform:'uppercase', flex:1 }}>
-                  Blog & Updates
-                </span>
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ opacity:0.4, transition:'transform 0.3s', transform: mobileUpdOpen ? 'rotate(180deg)' : 'none', marginRight:'4px' }}>
-                  <path d="M2 4L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </button>
-              {mobileUpdOpen && (
-                <div style={{ paddingLeft:'38px', paddingBottom:'8px' }}>
-                  {updatesLinks.map(item => (
-                    <Link key={item.href} href={item.href} onClick={closeMenu} style={{
-                      display:'block', padding:'10px 0',
-                      fontFamily:"'DM Sans',sans-serif", fontSize:'13px',
-                      letterSpacing:'0.08em', textTransform:'uppercase',
-                      color:'rgba(201,168,76,0.7)', textDecoration:'none',
-                    }}>
-                      → {item.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
+                <Link href={link.href} onClick={closeMenu} style={{
+                  display:'flex', alignItems:'center', gap:'16px',
+                  padding:'14px 0', textDecoration:'none',
+                  color: pathname === link.href ? '#C9A84C' : 'rgba(250,247,242,0.55)',
+                }}>
+                  <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.2em', color:'rgba(201,168,76,0.25)', minWidth:'22px' }}>
+                    {String(navLinks.length + i + 1).padStart(2,'0')}
+                  </span>
+                  <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,3.5vw,18px)', fontWeight:500, letterSpacing:'0.04em', textTransform:'uppercase' }}>
+                    {link.label}
+                  </span>
+                </Link>
+              </div>
+            ))}
           </div>
 
           {/* Live link — mobile */}
