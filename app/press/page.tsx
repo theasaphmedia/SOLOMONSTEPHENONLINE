@@ -5,28 +5,35 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 
-const facts = [
-  { label: 'Ministry Name',   value: 'The Worship Nation (TWN)' },
-
-  { label: 'Based In',        value: 'Lagos, Nigeria' },
-  { label: 'Genres',          value: 'Gospel Worship · Afrobeats Gospel · Contemporary Christian' },
-  { label: 'Published Books', value: '4 Titles (Selar, Amazon)' },
-  { label: 'Monthly Events',  value: 'MDWE · TSH · Synantesis' },
-  { label: 'Studios',         value: 'TWN Studios — Ajah, Lagos' },
-  { label: 'Streaming',       value: 'Spotify · Apple Music · YouTube' },
+const DEFAULT_FACTS = [
+  { id: 0, label: 'Ministry Name',   value: 'The Worship Nation (TWN)' },
+  { id: 1, label: 'Based In',        value: 'Lagos, Nigeria' },
+  { id: 2, label: 'Genres',          value: 'Gospel Worship · Afrobeats Gospel · Contemporary Christian' },
+  { id: 3, label: 'Published Books', value: '4 Titles (Selar, Amazon)' },
+  { id: 4, label: 'Monthly Events',  value: 'MDWE · TSH · Synantesis' },
+  { id: 5, label: 'Studios',         value: 'TWN Studios — Ajah, Lagos' },
+  { id: 6, label: 'Streaming',       value: 'Spotify · Apple Music · YouTube' },
 ]
 
-const releases = [
-  { year: '2024', title: 'Resolute',       type: 'Single', desc: 'A bold declaration of unwavering faith — standing firm when the storm rages.' },
-  { year: '2024', title: 'Alaabo Mi',      type: 'Single', desc: 'My Praise — a Yoruba-language offering of pure adoration to the Most High.' },
-  { year: '2017', title: 'The Mighty God', type: 'Single', desc: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
-  { year: '',     title: 'CROSSOVER',      type: 'EP',     desc: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
-  { year: '',     title: 'AIKU',           type: 'Single', desc: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
+const DEFAULT_RELEASES = [
+  { id: 0, year: '2024', title: 'Resolute',       type: 'Single', description: 'A bold declaration of unwavering faith — standing firm when the storm rages.' },
+  { id: 1, year: '2024', title: 'Alaabo Mi',      type: 'Single', description: 'My Praise — a Yoruba-language offering of pure adoration to the Most High.' },
+  { id: 2, year: '2017', title: 'The Mighty God', type: 'Single', description: 'An encounter with the power and majesty of God — unstoppable, unshakeable, reigning above all.' },
+  { id: 3, year: '',     title: 'CROSSOVER',      type: 'EP',     description: 'A declaration of transition and divine momentum. Multiple tracks, one trajectory — forward.' },
+  { id: 4, year: '',     title: 'AIKU',           type: 'Single', description: 'A love letter from the spirit — the simplicity of devotion when all else fades.' },
 ]
-
 
 export default function PressPage() {
   const [entered, setEntered] = useState(false)
+  const [facts, setFacts] = useState(DEFAULT_FACTS)
+  const [releases, setReleases] = useState(DEFAULT_RELEASES)
+
+  useEffect(() => {
+    fetch('/api/press').then(r => r.json()).then(data => {
+      if (data.facts?.length) setFacts(data.facts)
+      if (data.releases?.length) setReleases(data.releases)
+    }).catch(() => {})
+  }, [])
 
   useEffect(() => {
     setTimeout(() => setEntered(true), 80)
@@ -120,7 +127,7 @@ export default function PressPage() {
           <div style={{ maxWidth:'900px', margin:'0 auto' }}>
             <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.45)', marginBottom:'40px' }} className="rv">Fast Facts</div>
             {facts.map((f, i) => (
-              <div key={i} className={`fact-row rv d${(i % 4) + 1}`}>
+              <div key={f.id} className={`fact-row rv d${(i % 4) + 1}`}>
                 <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'.15em', textTransform:'uppercase', color:'rgba(201,168,76,0.5)' }}>{f.label}</div>
                 <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.3vw,15px)', color:'rgba(250,247,242,0.7)' }}>{f.value}</div>
               </div>
@@ -134,14 +141,14 @@ export default function PressPage() {
           <div style={{ maxWidth:'900px', margin:'0 auto' }}>
             <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.4em', textTransform:'uppercase', color:'rgba(201,168,76,0.45)', marginBottom:'40px' }} className="rv">Discography</div>
             {releases.map((r, i) => (
-              <div key={i} className={`rv d${i + 1}`} style={{ borderTop:'1px solid rgba(250,247,242,.07)', padding:'clamp(24px,3vw,40px) 0', display:'grid', gridTemplateColumns:'80px 1fr', gap:'24px 40px', alignItems:'start' }}>
+              <div key={r.id} className={`rv d${(i % 4) + 1}`} style={{ borderTop:'1px solid rgba(250,247,242,.07)', padding:'clamp(24px,3vw,40px) 0', display:'grid', gridTemplateColumns:'80px 1fr', gap:'24px 40px', alignItems:'start' }}>
                 <div>
                   <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'.1em', color:'rgba(201,168,76,0.55)', marginBottom:'4px' }}>{r.year}</div>
                   <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'.15em', textTransform:'uppercase', color:'rgba(250,247,242,.25)' }}>{r.type}</div>
                 </div>
                 <div>
                   <div style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(22px,3vw,36px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.1, marginBottom:'12px' }}>{r.title}</div>
-                  <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', lineHeight:1.8, color:'rgba(250,247,242,0.42)', margin:0 }}>{r.desc}</p>
+                  <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'13px', lineHeight:1.8, color:'rgba(250,247,242,0.42)', margin:0 }}>{r.description}</p>
                 </div>
               </div>
             ))}
@@ -185,19 +192,4 @@ export default function PressPage() {
             <h2 style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(32px,5vw,60px)', fontWeight:400, color:'#FAF7F2', lineHeight:1.05, margin:'0 0 24px', letterSpacing:'-.01em' }} className="rv d1">
               Let&apos;s tell the <em style={{ color:'#C9A84C' }}>story right.</em>
             </h2>
-            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.4vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)', margin:'0 0 40px' }} className="rv d2">
-              For interview requests, feature coverage, booking, or press assets — reach out.
-            </p>
-            <div style={{ display:'flex', gap:'16px', justifyContent:'center', flexWrap:'wrap' }} className="rv d3">
-              <Link href="/contact" className="press-dl-btn">
-                Send Enquiry
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <Footer />
-      </main>
-    </>
-  )
-}
+            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.4vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.4)'

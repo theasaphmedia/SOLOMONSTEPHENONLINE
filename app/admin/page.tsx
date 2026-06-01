@@ -3,12 +3,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 
-type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers'
+type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers' | 'press'
 
 interface Event { id: string; title: string; date: string; time: string; location: string; description: string; type: string; is_online: boolean; link: string; flyer_url: string; published: boolean }
 interface BlogPost { id: string; title: string; excerpt: string; body: string; cover_url: string; category: string; published: boolean; published_at: string }
 interface Devotional { id: string; title: string; scripture: string; body: string; published: boolean; published_at: string }
 interface Announcement { id: string; title: string; body: string; link: string; link_label: string; expires_at: string; published: boolean }
+interface PressFact { id: string; label: string; value: string; sort_order: number }
+interface PressRelease { id: string; year: string; title: string; type: string; description: string; sort_order: number }
 
 function CharCounter({ value, max }: { value: string; max: number }) {
   const len = value.length
@@ -101,6 +103,10 @@ export default function AdminPage() {
   const [bl, setBl] = useState({ title: '', excerpt: '', body: '', cover_url: '', category: 'article', published_at: new Date().toISOString().split('T')[0] })
   const [dv, setDv] = useState({ title: '', scripture: '', body: '', published_at: new Date().toISOString().split('T')[0] })
   const [an, setAn] = useState({ title: '', body: '', link: '', link_label: '', expires_at: '' })
+  const [pressFacts, setPressFacts] = useState<PressFact[]>([])
+  const [pressReleases, setPressReleases] = useState<PressRelease[]>([])
+  const [newFact, setNewFact] = useState({ label: '', value: '' })
+  const [newRelease, setNewRelease] = useState({ year: '', title: '', release_type: 'Single', description: '' })
 
   const load = useCallback(async (t: Tab) => {
     const res = await fetch(`/api/admin/${t}`)
@@ -109,6 +115,7 @@ export default function AdminPage() {
       if (t === 'events') setEvents(data)
       else if (t === 'blog') setBlog(data)
       else if (t === 'devotionals') setDevotionals(data)
+      else if (t === 'press') { setPressFacts(data.facts || []); setPressReleases(data.releases || []) }
       else setAnnouncements(data)
     }
   }, [])
@@ -193,6 +200,38 @@ export default function AdminPage() {
     flash('Deleted')
   }
 
+  const saveFact = async () => {
+    if (!newFact.label || !newFact.value) return flash('Label and value are required')
+    setSaving(true)
+    await fetch('/api/admin/press', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'fact', ...newFact }) })
+    setNewFact({ label: '', value: '' })
+    await load('press')
+    flash('Fact saved!')
+    setSaving(false)
+  }
+
+  const deleteFact = async (id: string) => {
+    await fetch('/api/admin/press', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, type: 'fact' }) })
+    await load('press')
+    flash('Deleted')
+  }
+
+  const saveRelease = async () => {
+    if (!newRelease.title) return flash('Title is required')
+    setSaving(true)
+    await fetch('/api/admin/press', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ type: 'release', ...newRelease }) })
+    setNewRelease({ year: '', title: '', release_type: 'Single', description: '' })
+    await load('press')
+    flash('Release saved!')
+    setSaving(false)
+  }
+
+  const deleteRelease = async (id: string) => {
+    await fetch('/api/admin/press', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, type: 'release' }) })
+    await load('press')
+    flash('Deleted')
+  }
+
   const S = {
     page: { minHeight: '100vh', background: '#080E08', color: '#FAF7F2', fontFamily: "'DM Sans',sans-serif" } as React.CSSProperties,
     header: { background: '#0D1B0D', borderBottom: '1px solid rgba(201,168,76,0.12)', padding: '16px clamp(20px,4vw,48px)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' } as React.CSSProperties,
@@ -244,9 +283,9 @@ export default function AdminPage() {
 
       <div style={S.body}>
         <div style={S.tabs}>
-          {(['events', 'blog', 'devotionals', 'announcements', 'prayer', 'subscribers'] as Tab[]).map(t => (
+          {(['events', 'blog', 'devotionals', 'announcements', 'prayer', 'subscribers', 'press'] as Tab[]).map(t => (
             <button key={t} style={S.tab(tab === t)} onClick={() => setTab(t)}>
-              {t === 'events' ? '📅 Events' : t === 'blog' ? '✍️ Blog' : t === 'devotionals' ? '📖 Devotionals' : '📢 Announcements'}
+              {t === 'events' ? '📅 Events' : t === 'blog' ? '✍️ Blog' : t === 'devotionals' ? '📖 Devotionals' : t === 'announcements' ? '📢 Announcements' : t === 'press' ? '🎙️ Press' : t === 'prayer' ? '🙏 Prayer' : '📧 Subscribers'}
             </button>
           ))}
         </div>
@@ -433,150 +472,4 @@ export default function AdminPage() {
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <label style={S.label}>Body <CharCounter value={an.body} max={300} /></label>
-                <textarea style={{ ...S.textarea, minHeight: '100px' }} value={an.body} onChange={e => setAn({ ...an, body: e.target.value })} placeholder="Announcement details..." maxLength={600} />
-              </div>
-              <div style={{ ...S.row, marginBottom: '14px' }}>
-                <div>
-                  <label style={S.label}>Link URL (optional)</label>
-                  <input style={S.input} value={an.link} onChange={e => setAn({ ...an, link: e.target.value })} placeholder="https://" />
-                </div>
-                <div>
-                  <label style={S.label}>Link Label</label>
-                  <input style={S.input} value={an.link_label} onChange={e => setAn({ ...an, link_label: e.target.value })} placeholder="e.g. Listen Now" />
-                </div>
-              </div>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={S.label}>Expires On (optional)</label>
-                <input style={{ ...S.input, maxWidth: '240px' }} type="date" value={an.expires_at} onChange={e => setAn({ ...an, expires_at: e.target.value })} />
-              </div>
-              <button style={S.btn} onClick={saveAnnouncement} disabled={saving}>{saving ? 'Publishing...' : 'Publish Announcement'}</button>
-            </div>
-
-            {announcements.length > 0 && (
-              <div style={S.card}>
-                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Published Announcements ({announcements.length})</div>
-                {announcements.map(a => (
-                  <div key={a.id} style={S.item}>
-                    <div>
-                      <div style={{ fontSize: '15px', marginBottom: '4px' }}>{a.title}</div>
-                      <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.4)' }}>{a.body?.slice(0, 80)}{a.body?.length > 80 ? '...' : ''}</div>
-                    </div>
-                    <button style={S.btnDel} onClick={() => deleteAnnouncement(a.id)}>Delete</button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ── PRAYER REQUESTS ── */}
-        {tab === 'prayer' && <PrayerTab />}
-
-        {/* ── SUBSCRIBERS ── */}
-        {tab === 'subscribers' && <SubscribersTab />}
-
-      </div>
-
-      {msg && <div style={S.flash}>{msg}</div>}
-    </div>
-  )
-}
-
-function PrayerTab() {
-  const [requests, setRequests] = useState<{id:string;name:string;email:string;request:string;created_at:string;prayed:boolean}[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch('/api/prayer').then(r => r.json()).then(data => { setRequests(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
-  }, [])
-
-  const markPrayed = async (id: string) => {
-    await fetch('/api/prayer', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
-    setRequests(prev => prev.map(r => r.id === id ? { ...r, prayed: true } : r))
-  }
-
-  const S2 = {
-    card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
-    item: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', padding: '16px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
-  }
-
-  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
-
-  return (
-    <div>
-      <div style={S2.card}>
-        <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Prayer Requests ({requests.length})</div>
-        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Mark as prayed when you've stood in agreement.</div>
-        {requests.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No prayer requests yet.</div>
-        ) : requests.map(r => (
-          <div key={r.id} style={{ ...S2.item, opacity: r.prayed ? 0.4 : 1 }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '6px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#FAF7F2' }}>{r.name}</div>
-                {r.email && <div style={{ fontSize: '11px', color: 'rgba(201,168,76,0.6)' }}>{r.email}</div>}
-                {r.prayed && <div style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#7CB87C' }}>Prayed ✓</div>}
-              </div>
-              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.65)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{r.request}</div>
-              <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)', marginTop: '6px' }}>{new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
-            </div>
-            {!r.prayed && (
-              <button onClick={() => markPrayed(r.id)} style={{ background: 'rgba(124,184,124,0.15)', border: '1px solid rgba(124,184,124,0.3)', color: '#7CB87C', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
-                Mark Prayed
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
-
-function SubscribersTab() {
-  const [subscribers, setSubscribers] = useState<{id:string;email:string;name:string;subscribed_at:string}[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch('/api/admin/newsletter').then(r => r.json()).then(data => { setSubscribers(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
-  }, [])
-
-  const copyEmails = () => {
-    const emails = subscribers.map(s => s.email).join(', ')
-    navigator.clipboard.writeText(emails)
-  }
-
-  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
-
-  return (
-    <div>
-      <div style={{ background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <div>
-            <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '4px' }}>Newsletter Subscribers</div>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: '#C9A84C' }}>{subscribers.length}</div>
-          </div>
-          {subscribers.length > 0 && (
-            <button onClick={copyEmails} style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              Copy All Emails
-            </button>
-          )}
-        </div>
-        {subscribers.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontSize: '13px' }}>No subscribers yet.</div>
-        ) : (
-          <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-            {subscribers.map(s => (
-              <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
-                <div>
-                  <div style={{ fontSize: '14px', color: '#FAF7F2' }}>{s.email}</div>
-                  {s.name && <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.35)', marginTop: '2px' }}>{s.name}</div>}
-                </div>
-                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(s.subscribed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+                <textarea style={{ ...S.textarea, minHeight: '100px' }} value={an.body} o
