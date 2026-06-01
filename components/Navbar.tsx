@@ -28,9 +28,17 @@ export default function Navbar() {
   const [scrolled, setScrolled]   = useState(false)
   const [dropOpen, setDropOpen]   = useState(false)
   const [mobileUpdOpen, setMobileUpdOpen] = useState(false)
+  const [isLive, setIsLive]       = useState(false)
   const dropRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const router = useRouter()
+
+  useEffect(() => {
+    const checkLive = () => fetch('/api/live').then(r => r.json()).then(d => setIsLive(d.live)).catch(() => {})
+    checkLive()
+    const interval = setInterval(checkLive, 60000)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -74,6 +82,9 @@ export default function Navbar() {
           transition:background 0.15s,color 0.15s; white-space:nowrap;
         }
         .drop-item:hover { background:rgba(201,168,76,0.08); color:#C9A84C; }
+        @keyframes livePulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+        .live-badge { display:flex; align-items:center; gap:6px; background:rgba(220,38,38,0.12); border:1px solid rgba(220,38,38,0.35); border-radius:3px; padding:5px 12px; text-decoration:none; transition:background 0.2s; }
+        .live-badge:hover { background:rgba(220,38,38,0.22); }
       `}</style>
 
       {/* ── Main bar ── */}
@@ -141,6 +152,13 @@ export default function Navbar() {
               </div>
             )}
           </div>
+
+          {isLive && (
+            <Link href="/live" className="live-badge">
+              <span style={{ width:'8px', height:'8px', borderRadius:'50%', background:'#DC2626', display:'inline-block', animation:'livePulse 1.5s ease-in-out infinite' }} />
+              <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.16em', textTransform:'uppercase', color:'#DC2626' }}>Live</span>
+            </Link>
+          )}
 
           <Link href="/contact" className="nav-cta" style={{
             fontFamily:"'DM Sans',sans-serif", fontSize:'10px', fontWeight:500,
@@ -257,6 +275,14 @@ export default function Navbar() {
               )}
             </div>
           </div>
+
+          {/* Live link — mobile */}
+          {isLive && (
+            <Link href="/live" onClick={closeMenu} style={{ display:'flex', alignItems:'center', gap:'10px', margin:'8px 0 0', padding:'12px 0', textDecoration:'none' }}>
+              <span style={{ width:'8px', height:'8px', borderRadius:'50%', background:'#DC2626', animation:'livePulse 1.5s ease-in-out infinite', flexShrink:0 }} />
+              <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'14px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'#DC2626' }}>We're Live Now — Watch</span>
+            </Link>
+          )}
 
           {/* Social links */}
           <div style={{
