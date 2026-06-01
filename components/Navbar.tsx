@@ -97,7 +97,7 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="nav-desktop">
-          {navLinks.filter(l => l.href !== '/' && l.href !== '/contact').map(link => (
+          {navLinks.filter(l => l.href !== '/').map(link => (
             <Link key={link.href} href={link.href} style={{
               fontFamily:'DM Sans,sans-serif', fontSize:'11px', fontWeight:500,
               letterSpacing:'0.08em', textTransform:'uppercase',
@@ -193,7 +193,7 @@ export default function Navbar() {
         {/* Scrollable nav area — starts below header */}
         <nav style={{
           position:'absolute', top:'80px', left:0, right:0, bottom:0,
-          overflowY:'auto', padding:'40px 32px 40px',
+          overflowY:'auto', padding:'16px 32px 40px',
           display:'flex', flexDirection:'column', justifyContent:'flex-start',
         }}>
           <div style={{ borderLeft:'1px solid rgba(201,168,76,0.12)', paddingLeft:'20px' }}>
