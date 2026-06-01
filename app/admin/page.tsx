@@ -472,4 +472,460 @@ export default function AdminPage() {
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <label style={S.label}>Body <CharCounter value={an.body} max={300} /></label>
-                <textarea style={{ ...S.textarea, minHeight: '100px' }} value={an.body} o
+                <textarea style={{ ...S.textarea, minHeight: '100px' }} value={an.body} onChange={e => setAn({ ...an, body: e.target.value })} placeholder="Announcement details..." maxLength={600}></textarea>
+              </div>
+              <div style={{ ...S.row, marginBottom: '14px' }}>
+                <div>
+                  <label style={S.label}>Link URL (optional)</label>
+                  <input style={S.input} value={an.link} onChange={e => setAn({ ...an, link: e.target.value })} placeholder="https://" />
+                </div>
+                <div>
+                  <label style={S.label}>Link Label</label>
+                  <input style={S.input} value={an.link_label} onChange={e => setAn({ ...an, link_label: e.target.value })} placeholder="e.g. Listen Now" />
+                </div>
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={S.label}>Expires On (optional)</label>
+                <input style={{ ...S.input, maxWidth: '240px' }} type="date" value={an.expires_at} onChange={e => setAn({ ...an, expires_at: e.target.value })} />
+              </div>
+              <button style={S.btn} onClick={saveAnnouncement} disabled={saving}>{saving ? 'Publishing...' : 'Publish Announcement'}</button>
+            </div>
+
+            {announcements.length > 0 && (
+              <div style={S.card}>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Published Announcements ({announcements.length})</div>
+                {announcements.map(a => (
+                  <div key={a.id} style={S.item}>
+                    <div>
+                      <div style={{ fontSize: '15px', marginBottom: '4px' }}>{a.title}</div>
+                      <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.4)' }}>{a.body?.slice(0, 80)}{a.body?.length > 80 ? '...' : ''}</div>
+                    </div>
+                    <button style={S.btnDel} onClick={() => deleteAnnouncement(a.id)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── PRAYER REQUESTS ── */}
+        {tab === 'prayer' && <PrayerTab />}
+
+        {/* ── SUBSCRIBERS ── */}
+        {tab === 'subscribers' && <SubscribersTab />}
+
+        {/* ── PRESS ── */}
+        {tab === 'press' && (
+          <div>
+            {/* Fast Facts */}
+            <div style={S.card}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '20px' }}>Add Fast Fact</div>
+              <div style={{ ...S.row, marginBottom: '14px' }}>
+                <div>
+                  <label style={S.label}>Label</label>
+                  <input style={S.input} value={newFact.label} onChange={e => setNewFact({ ...newFact, label: e.target.value })} placeholder="e.g. Based In" />
+                </div>
+                <div>
+                  <label style={S.label}>Value</label>
+                  <input style={S.input} value={newFact.value} onChange={e => setNewFact({ ...newFact, value: e.target.value })} placeholder="e.g. Lagos, Nigeria" />
+                </div>
+              </div>
+              <button style={S.btn} onClick={saveFact} disabled={saving}>{saving ? 'Saving...' : 'Add Fact'}</button>
+            </div>
+
+            {pressFacts.length > 0 && (
+              <div style={S.card}>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Current Facts ({pressFacts.length})</div>
+                {pressFacts.map(f => (
+                  <div key={f.id} style={S.item}>
+                    <div>
+                      <div style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '3px' }}>{f.label}</div>
+                      <div style={{ fontSize: '14px', color: 'rgba(250,247,242,0.75)' }}>{f.value}</div>
+                    </div>
+                    <button style={S.btnDel} onClick={() => deleteFact(f.id)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Releases */}
+            <div style={{ ...S.card, marginTop: '24px' }}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '20px' }}>Add Release / Single</div>
+              <div style={{ ...S.row, marginBottom: '14px' }}>
+                <div>
+                  <label style={S.label}>Title</label>
+                  <input style={S.input} value={newRelease.title} onChange={e => setNewRelease({ ...newRelease, title: e.target.value })} placeholder="e.g. CROSSOVER" />
+                </div>
+                <div>
+                  <label style={S.label}>Type</label>
+                  <select style={S.input} value={newRelease.release_type} onChange={e => setNewRelease({ ...newRelease, release_type: e.target.value })}>
+                    <option value="Single">Single</option>
+                    <option value="EP">EP</option>
+                    <option value="Album">Album</option>
+                    <option value="Live">Live</option>
+                  </select>
+                </div>
+              </div>
+              <div style={{ marginBottom: '14px' }}>
+                <label style={S.label}>Year (optional)</label>
+                <input style={{ ...S.input, maxWidth: '160px' }} value={newRelease.year} onChange={e => setNewRelease({ ...newRelease, year: e.target.value })} placeholder="e.g. 2024" />
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={S.label}>Description</label>
+                <textarea style={{ ...S.textarea, minHeight: '80px' }} value={newRelease.description} onChange={e => setNewRelease({ ...newRelease, description: e.target.value })} placeholder="Short description of the release..." />
+              </div>
+              <button style={S.btn} onClick={saveRelease} disabled={saving}>{saving ? 'Saving...' : 'Add Release'}</button>
+            </div>
+
+            {pressReleases.length > 0 && (
+              <div style={S.card}>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Discography ({pressReleases.length})</div>
+                {pressReleases.map(r => (
+                  <div key={r.id} style={S.item}>
+                    <div>
+                      <div style={{ display: 'flex', gap: '10px', alignItems: 'baseline', marginBottom: '3px' }}>
+                        <div style={{ fontSize: '15px', color: '#FAF7F2' }}>{r.title}</div>
+                        <div style={{ fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)' }}>{r.type}{r.year ? ` · ${r.year}` : ''}</div>
+                      </div>
+                      {r.description && <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.35)' }}>{r.description.slice(0, 80)}{r.description.length > 80 ? '...' : ''}</div>}
+                    </div>
+                    <button style={S.btnDel} onClick={() => deleteRelease(r.id)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
+      {msg && <div style={S.flash}>{msg}</div>}
+    </div>
+  )
+}
+
+function PrayerTab() {
+  const [requests, setRequests] = useState<{id:string;name:string;email:string;request:string;created_at:string;prayed:boolean}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/prayer').then(r => r.json()).then(data => { setRequests(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+
+  const markPrayed = async (id: string) => {
+    await fetch('/api/prayer', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    setRequests(prev => prev.map(r => r.id === id ? { ...r, prayed: true } : r))
+  }
+
+  const S2 = {
+    card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
+    item: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', padding: '16px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={S2.card}>
+        <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Prayer Requests ({requests.length})</div>
+        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Mark as prayed when you've stood in agreement.</div>
+        {requests.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No prayer requests yet.</div>
+        ) : requests.map(r => (
+          <div key={r.id} style={{ ...S2.item, opacity: r.prayed ? 0.4 : 1 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '6px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#FAF7F2' }}>{r.name}</div>
+                {r.email && <div style={{ fontSize: '11px', color: 'rgba(201,168,76,0.6)' }}>{r.email}</div>}
+                {r.prayed && <div style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#7CB87C' }}>Prayed ✓</div>}
+              </div>
+              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.65)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{r.request}</div>
+              <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)', marginTop: '6px' }}>{new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+            </div>
+            {!r.prayed && (
+              <button onClick={() => markPrayed(r.id)} style={{ background: 'rgba(124,184,124,0.15)', border: '1px solid rgba(124,184,124,0.3)', color: '#7CB87C', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+                Mark Prayed
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SubscribersTab() {
+  const [subscribers, setSubscribers] = useState<{id:string;email:string;name:string;subscribed_at:string}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/admin/newsletter').then(r => r.json()).then(data => { setSubscribers(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+
+  const copyEmails = () => {
+    const emails = subscribers.map(s => s.email).join(', ')
+    navigator.clipboard.writeText(emails)
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={{ background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <div>
+            <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '4px' }}>Newsletter Subscribers</div>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: '#C9A84C' }}>{subscribers.length}</div>
+          </div>
+          {subscribers.length > 0 && (
+            <button onClick={copyEmails} style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              Copy All Emails
+            </button>
+          )}
+        </div>
+        {subscribers.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontSize: '13px' }}>No subscribers yet.</div>
+        ) : (
+          <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            {subscribers.map(s => (
+              <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
+                <div>
+                  <div style={{ fontSize: '14px', color: '#FAF7F2' }}>{s.email}</div>
+                  {s.name && <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.35)', marginTop: '2px' }}>{s.name}</div>}
+                </div>
+                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(s.subscribed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+              </div>
+              <div style={{ ...S.row, marginBottom: '14px' }}>
+                <div>
+                  <label style={S.label}>Link URL (optional)</label>
+                  <input style={S.input} value={an.link} onChange={e => setAn({ ...an, link: e.target.value })} placeholder="https://" />
+                </div>
+                <div>
+                  <label style={S.label}>Link Label</label>
+                  <input style={S.input} value={an.link_label} onChange={e => setAn({ ...an, link_label: e.target.value })} placeholder="e.g. Listen Now" />
+                </div>
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={S.label}>Expires On (optional)</label>
+                <input style={{ ...S.input, maxWidth: '240px' }} type="date" value={an.expires_at} onChange={e => setAn({ ...an, expires_at: e.target.value })} />
+              </div>
+              <button style={S.btn} onClick={saveAnnouncement} disabled={saving}>{saving ? 'Publishing...' : 'Publish Announcement'}</button>
+            </div>
+
+            {announcements.length > 0 && (
+              <div style={S.card}>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Published Announcements ({announcements.length})</div>
+                {announcements.map(a => (
+                  <div key={a.id} style={S.item}>
+                    <div>
+                      <div style={{ fontSize: '15px', marginBottom: '4px' }}>{a.title}</div>
+                      <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.4)' }}>{a.body?.slice(0, 80)}{a.body?.length > 80 ? '...' : ''}</div>
+                    </div>
+                    <button style={S.btnDel} onClick={() => deleteAnnouncement(a.id)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* PRAYER REQUESTS */}
+        {tab === 'prayer' && <PrayerTab />}
+
+        {/* SUBSCRIBERS */}
+        {tab === 'subscribers' && <SubscribersTab />}
+
+        {/* PRESS */}
+        {tab === 'press' && (
+          <div>
+            <div style={S.card}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '20px' }}>Add Fast Fact</div>
+              <div style={{ ...S.row, marginBottom: '14px' }}>
+                <div>
+                  <label style={S.label}>Label</label>
+                  <input style={S.input} value={newFact.label} onChange={e => setNewFact({ ...newFact, label: e.target.value })} placeholder="e.g. Based In" />
+                </div>
+                <div>
+                  <label style={S.label}>Value</label>
+                  <input style={S.input} value={newFact.value} onChange={e => setNewFact({ ...newFact, value: e.target.value })} placeholder="e.g. Lagos, Nigeria" />
+                </div>
+              </div>
+              <button style={S.btn} onClick={saveFact} disabled={saving}>{saving ? 'Saving...' : 'Add Fact'}</button>
+            </div>
+
+            {pressFacts.length > 0 && (
+              <div style={S.card}>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Current Facts ({pressFacts.length})</div>
+                {pressFacts.map(f => (
+                  <div key={f.id} style={S.item}>
+                    <div>
+                      <div style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '3px' }}>{f.label}</div>
+                      <div style={{ fontSize: '14px', color: 'rgba(250,247,242,0.75)' }}>{f.value}</div>
+                    </div>
+                    <button style={S.btnDel} onClick={() => deleteFact(f.id)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div style={{ ...S.card, marginTop: '24px' }}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '20px' }}>Add Release / Single</div>
+              <div style={{ ...S.row, marginBottom: '14px' }}>
+                <div>
+                  <label style={S.label}>Title</label>
+                  <input style={S.input} value={newRelease.title} onChange={e => setNewRelease({ ...newRelease, title: e.target.value })} placeholder="e.g. CROSSOVER" />
+                </div>
+                <div>
+                  <label style={S.label}>Type</label>
+                  <select style={S.input} value={newRelease.release_type} onChange={e => setNewRelease({ ...newRelease, release_type: e.target.value })}>
+                    <option value="Single">Single</option>
+                    <option value="EP">EP</option>
+                    <option value="Album">Album</option>
+                    <option value="Live">Live</option>
+                  </select>
+                </div>
+              </div>
+              <div style={{ marginBottom: '14px' }}>
+                <label style={S.label}>Year (optional)</label>
+                <input style={{ ...S.input, maxWidth: '160px' }} value={newRelease.year} onChange={e => setNewRelease({ ...newRelease, year: e.target.value })} placeholder="e.g. 2024" />
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={S.label}>Description</label>
+                <textarea style={{ ...S.textarea, minHeight: '80px' }} value={newRelease.description} onChange={e => setNewRelease({ ...newRelease, description: e.target.value })} placeholder="Short description of the release..."></textarea>
+              </div>
+              <button style={S.btn} onClick={saveRelease} disabled={saving}>{saving ? 'Saving...' : 'Add Release'}</button>
+            </div>
+
+            {pressReleases.length > 0 && (
+              <div style={S.card}>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Discography ({pressReleases.length})</div>
+                {pressReleases.map(r => (
+                  <div key={r.id} style={S.item}>
+                    <div>
+                      <div style={{ display: 'flex', gap: '10px', alignItems: 'baseline', marginBottom: '3px' }}>
+                        <div style={{ fontSize: '15px', color: '#FAF7F2' }}>{r.title}</div>
+                        <div style={{ fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)' }}>{r.type}{r.year ? ` · ${r.year}` : ''}</div>
+                      </div>
+                      {r.description && <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.35)' }}>{r.description.slice(0, 80)}{r.description.length > 80 ? '...' : ''}</div>}
+                    </div>
+                    <button style={S.btnDel} onClick={() => deleteRelease(r.id)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+      </div>
+
+      {msg && <div style={S.flash}>{msg}</div>}
+    </div>
+  )
+}
+
+function PrayerTab() {
+  const [requests, setRequests] = useState<{id:string;name:string;email:string;request:string;created_at:string;prayed:boolean}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/prayer').then(r => r.json()).then(data => { setRequests(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+
+  const markPrayed = async (id: string) => {
+    await fetch('/api/prayer', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    setRequests(prev => prev.map(r => r.id === id ? { ...r, prayed: true } : r))
+  }
+
+  const S2 = {
+    card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
+    item: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', padding: '16px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={S2.card}>
+        <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Prayer Requests ({requests.length})</div>
+        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Mark as prayed when you have stood in agreement.</div>
+        {requests.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No prayer requests yet.</div>
+        ) : requests.map(r => (
+          <div key={r.id} style={{ ...S2.item, opacity: r.prayed ? 0.4 : 1 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '6px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#FAF7F2' }}>{r.name}</div>
+                {r.email && <div style={{ fontSize: '11px', color: 'rgba(201,168,76,0.6)' }}>{r.email}</div>}
+                {r.prayed && <div style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#7CB87C' }}>Prayed</div>}
+              </div>
+              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.65)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{r.request}</div>
+              <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)', marginTop: '6px' }}>{new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+            </div>
+            {!r.prayed && (
+              <button onClick={() => markPrayed(r.id)} style={{ background: 'rgba(124,184,124,0.15)', border: '1px solid rgba(124,184,124,0.3)', color: '#7CB87C', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+                Mark Prayed
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function SubscribersTab() {
+  const [subscribers, setSubscribers] = useState<{id:string;email:string;name:string;subscribed_at:string}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch('/api/admin/newsletter').then(r => r.json()).then(data => { setSubscribers(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }, [])
+
+  const copyEmails = () => {
+    const emails = subscribers.map(s => s.email).join(', ')
+    navigator.clipboard.writeText(emails)
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={{ background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <div>
+            <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '4px' }}>Newsletter Subscribers</div>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: '#C9A84C' }}>{subscribers.length}</div>
+          </div>
+          {subscribers.length > 0 && (
+            <button onClick={copyEmails} style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              Copy All Emails
+            </button>
+          )}
+        </div>
+        {subscribers.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontSize: '13px' }}>No subscribers yet.</div>
+        ) : (
+          <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            {subscribers.map(s => (
+              <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
+                <div>
+                  <div style={{ fontSize: '14px', color: '#FAF7F2' }}>{s.email}</div>
+                  {s.name && <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.35)', marginTop: '2px' }}>{s.name}</div>}
+                </div>
+                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(s.subscribed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
