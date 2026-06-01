@@ -14,6 +14,59 @@ const CAT_COLORS: Record<string, string> = {
   article: '#C9A84C', testimony: '#7CB87C', update: '#7CA8C9', teaching: '#C97C7C',
 }
 
+function ShareButton({ title, excerpt }: { title: string; excerpt: string }) {
+  const [copied, setCopied] = useState(false)
+  const [open, setOpen] = useState(false)
+  const url = typeof window !== 'undefined' ? window.location.href : 'https://solomonstephen.com/updates'
+  const text = `"${title}" — Solomon Stephen`
+
+  const nativeShare = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title, text: excerpt || text, url }); return } catch {}
+    }
+    setOpen(o => !o)
+  }
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => { setCopied(false); setOpen(false) }, 2000)
+  }
+
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <button onClick={nativeShare} style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C', borderRadius: '3px', padding: '8px 18px', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'background 0.2s' }}
+        onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.08)'}
+        onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'none'}>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', top: '44px', right: 0, background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.15)', borderRadius: '4px', padding: '8px', zIndex: 10, minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <button onClick={copyLink} style={{ background: 'none', border: 'none', color: copied ? '#7CB87C' : 'rgba(250,247,242,0.7)', cursor: 'pointer', padding: '10px 14px', textAlign: 'left', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', borderRadius: '3px', transition: 'background 0.2s' }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.06)'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'none'}>
+            {copied ? '✓ Copied!' : '🔗 Copy link'}
+          </button>
+          <a href={tweetUrl} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{ color: 'rgba(250,247,242,0.7)', textDecoration: 'none', padding: '10px 14px', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', borderRadius: '3px', transition: 'background 0.2s', display: 'block' }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.06)'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'none'}>
+            𝕏 Share on X
+          </a>
+          <a href={waUrl} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} style={{ color: 'rgba(250,247,242,0.7)', textDecoration: 'none', padding: '10px 14px', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', borderRadius: '3px', transition: 'background 0.2s', display: 'block' }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.06)'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'none'}>
+            WhatsApp
+          </a>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function UpdatesPage() {
   const [tab, setTab] = useState<Tab>('blog')
   const [posts, setPosts] = useState<Post[]>([])
@@ -144,7 +197,10 @@ export default function UpdatesPage() {
           <div style={{ position: 'fixed', inset: 0, background: 'rgba(8,14,8,0.97)', zIndex: 1000, overflowY: 'auto', padding: 'clamp(24px,5vw,64px) clamp(24px,5vw,96px)' }}
             onClick={e => { if (e.target === e.currentTarget) setSelected(null) }}>
             <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-              <button onClick={() => setSelected(null)} style={{ background: 'none', border: '1px solid rgba(201,168,76,0.2)', color: 'rgba(250,247,242,0.5)', borderRadius: '3px', padding: '8px 16px', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', marginBottom: '40px' }}>← Back</button>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', flexWrap: 'wrap', gap: '12px' }}>
+                <button onClick={() => setSelected(null)} style={{ background: 'none', border: '1px solid rgba(201,168,76,0.2)', color: 'rgba(250,247,242,0.5)', borderRadius: '3px', padding: '8px 16px', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: '12px' }}>← Back</button>
+                <ShareButton title={selected.title} excerpt={'excerpt' in selected ? (selected as Post).excerpt : ('scripture' in selected ? (selected as Devotional).scripture : '')} />
+              </div>
 
               {'cover_url' in selected && selected.cover_url && (
                 <div style={{ position: 'relative', height: 'clamp(200px,35vw,400px)', borderRadius: '4px', overflow: 'hidden', marginBottom: '32px' }}>
