@@ -208,28 +208,3 @@ export default function PressPage() {
     </>
   )
 }
-            <div style={{ display:'flex', gap:'16px', justifyContent:'center', flexWrap:'wrap' }} className="rv d3">
-              <Link href="/contact" className="press-dl-btn">
-                Send Enquiry
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <Footer />
-      </main>
-    </>
-  )
-}
-
-                Send Enquiry
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <Footer />
-      </main>
-    </>
-  )
-}
