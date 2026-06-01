@@ -37,6 +37,27 @@ export default function AboutPage() {
     return () => obs.disconnect()
   }, [])
 
+  const handleTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const cx = rect.width / 2
+    const cy = rect.height / 2
+    const rotX = ((y - cy) / cy) * -8
+    const rotY = ((x - cx) / cx) * 8
+    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`
+    const glow = card.querySelector('.card-glow') as HTMLElement
+    if (glow) { glow.style.opacity = '1'; glow.style.left = `${x}px`; glow.style.top = `${y}px` }
+  }
+
+  const resetTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget
+    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)'
+    const glow = card.querySelector('.card-glow') as HTMLElement
+    if (glow) glow.style.opacity = '0'
+  }
+
   return (
     <main style={{ background: '#FAF7F2', overflowX: 'hidden' }}>
       <style>{`
@@ -69,10 +90,11 @@ export default function AboutPage() {
         .calling-strip:hover .gold-reveal{transform:scaleX(1)}
         .stat-block{text-align:center;padding:clamp(28px,3.5vw,52px) clamp(16px,2vw,32px);border-right:1px solid rgba(201,168,76,.1)}
         .stat-block:last-child{border-right:none}
-        .ministry-card{background:#0D1B0D;padding:clamp(32px,4vw,56px) clamp(24px,3vw,48px);position:relative;overflow:hidden;transition:background .4s}
+        .ministry-card{background:#0D1B0D;padding:clamp(32px,4vw,56px) clamp(24px,3vw,48px);position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.16,1,.3,1),background .4s;will-change:transform;transform:perspective(900px) rotateX(0) rotateY(0) scale(1)}
         .ministry-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:#C9A84C;transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.16,1,.3,1)}
-        .ministry-card:hover{background:#121f12}
         .ministry-card:hover::before{transform:scaleX(1)}
+        .card-glow{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.12) 0%,transparent 70%);transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .3s}
+        .ministry-card:hover{background:#121f12}
         .about-hero{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
         @media(max-width:768px){.about-hero{grid-template-columns:1fr}.about-hero-photo{min-height:65vw!important}}
         @media(max-width:900px){
@@ -220,7 +242,8 @@ export default function AboutPage() {
           </div>
           <div className="ministry-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'1px', background:'rgba(201,168,76,.08)' }}>
             {ministries.map((g, i) => (
-              <div key={g.title} className={`ministry-card rv d${i + 1}`}>
+              <div key={g.title} className={`ministry-card rv d${i + 1}`} onMouseMove={handleTilt} onMouseLeave={resetTilt}>
+                <div className="card-glow" />
                 {/* Ambient glow */}
                 <div style={{ position:'absolute', top:0, left:0, right:0, height:'2px', background:`linear-gradient(to right, #C9A84C, transparent)`, opacity: i === 0 ? 1 : 0.4 }} />
                 <div style={{ fontFamily:'Cormorant Garamond,serif', fontSize:'clamp(44px,5.5vw,72px)', fontWeight:400, color:'#C9A84C', lineHeight:1, marginBottom:'14px' }}>{g.title}</div>

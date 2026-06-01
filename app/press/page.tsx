@@ -39,10 +39,13 @@ export default function PressPage() {
     setTimeout(() => setEntered(true), 80)
     const obs = new IntersectionObserver(
       es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target) } }),
-      { threshold: 0.04, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.04, rootMargin: '0px 0px -20px 0px' }
     )
-    document.querySelectorAll('.rv,.rv-left,.rv-right').forEach(el => obs.observe(el))
-    return () => obs.disconnect()
+    // slight delay so all elements are in the DOM
+    const t = setTimeout(() => {
+      document.querySelectorAll('.rv,.rv-left,.rv-right').forEach(el => obs.observe(el))
+    }, 100)
+    return () => { obs.disconnect(); clearTimeout(t) }
   }, [])
 
   return (
@@ -59,8 +62,12 @@ export default function PressPage() {
           .fact-row{display:grid;grid-template-columns:200px 1fr;gap:16px 32px;padding:18px 0;border-bottom:1px solid rgba(250,247,242,.06);align-items:baseline}
           .press-dl-btn{display:inline-flex;align-items:center;gap:10px;font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;padding:14px 32px;border:1px solid rgba(201,168,76,0.4);color:#C9A84C;text-decoration:none;transition:all .3s;cursor:pointer;background:transparent}
           .press-dl-btn:hover{background:rgba(201,168,76,.08);border-color:#C9A84C}
+          .photo-wrap{aspect-ratio:3/4;position:relative;overflow:hidden;cursor:pointer}
+          .photo-wrap img{transition:transform .5s cubic-bezier(.16,1,.3,1)!important}
+          .photo-wrap:hover img{transform:scale(1.05)!important}
           @media(max-width:640px){.fact-row{grid-template-columns:1fr;gap:4px 0;padding:14px 0}}
           @media(max-width:640px){.press-grid{grid-template-columns:1fr!important}}
+          @media(prefers-reduced-motion:reduce){.rv,.rv-left,.rv-right{opacity:1!important;transform:none!important;transition:none!important}}
         `}</style>
 
         {/* HERO */}
@@ -168,11 +175,8 @@ export default function PressPage() {
                 { src:'/images/gallery-solomon-kneeling-surrender.jpg', label:'Worship — Kneeling' },
               ].map((photo, i) => (
                 <div key={i} className={`rv d${(i % 4) + 1}`}>
-                  <div style={{ aspectRatio:'3/4', position:'relative', overflow:'hidden' }}>
-                    <Image src={photo.src} alt={photo.label} fill style={{ objectFit:'cover', objectPosition:'center top', transition:'transform .5s cubic-bezier(.16,1,.3,1)' }}
-                      onMouseEnter={e => ((e.target as HTMLImageElement).style.transform='scale(1.04)')}
-                      onMouseLeave={e => ((e.target as HTMLImageElement).style.transform='none')}
-                    />
+                  <div className="photo-wrap">
+                    <Image src={photo.src} alt={photo.label} fill style={{ objectFit:'cover', objectPosition:'center top' }} />
                     <div style={{ position:'absolute', inset:0, background:'rgba(10,26,10,0.2)' }} />
                   </div>
                   <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'.12em', textTransform:'uppercase', color:'rgba(250,247,242,0.35)', marginTop:'10px' }}>{photo.label}</div>
