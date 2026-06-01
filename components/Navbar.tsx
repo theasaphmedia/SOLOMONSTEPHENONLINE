@@ -47,6 +47,14 @@ export default function Navbar() {
   }, [])
 
   useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropRef.current && !dropRef.current.contains(e.target as Node)) setDropOpen(false)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -132,11 +140,8 @@ export default function Navbar() {
           ))}
 
           {/* More dropdown */}
-          <div ref={dropRef} style={{ position:'relative' }}
-            onMouseEnter={() => setDropOpen(true)}
-            onMouseLeave={() => setDropOpen(false)}
-          >
-            <button style={{
+          <div ref={dropRef} style={{ position:'relative' }}>
+            <button onClick={() => setDropOpen(!dropOpen)} style={{
               background:'none', border:'none', cursor:'pointer', padding:'0 0 4px',
               fontFamily:'DM Sans,sans-serif', fontSize:'11px', fontWeight:500,
               letterSpacing:'0.08em', textTransform:'uppercase',
