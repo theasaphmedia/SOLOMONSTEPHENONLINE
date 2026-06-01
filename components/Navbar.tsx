@@ -192,7 +192,7 @@ export default function Navbar() {
 
         {/* Scrollable nav area — starts below header */}
         <nav style={{
-          position:'absolute', top:'80px', left:0, right:0, bottom:0,
+          position:'absolute', top:'60px', left:0, right:0, bottom:0,
           overflowY:'auto', padding:'0px 32px 40px',
           display:'flex', flexDirection:'column', justifyContent:'flex-start',
         }}>
