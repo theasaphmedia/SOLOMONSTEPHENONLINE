@@ -155,7 +155,7 @@ export default function Footer() {
       <div className="ft-bar">
         <div className="ft-bar-inner">
           <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
-            © {new Date().getFullYear()} Solomon Stephen. All rights reserved.
+            © {new Date().getFullYear()} Solomon Stephen. All rights reserved. · <a href="/privacy" style={{ color:'rgba(201,168,76,0.45)', textDecoration:'none', transition:'color 0.3s' }} onMouseEnter={e => (e.currentTarget as HTMLElement).style.color='#C9A84C'} onMouseLeave={e => (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,0.45)'}>Privacy Policy</a>
           </p>
           <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
             Crafted by{' '}

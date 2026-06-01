@@ -24,6 +24,7 @@ const personSchema = {
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import NavbarConditional from "@/components/NavbarConditional";
+import CookieBanner from "@/components/CookieBanner";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import AnimationEngine from "@/components/AnimationEngine";
 
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <NavbarConditional />
         {children}
         <WhatsAppFloat />
+        <CookieBanner />
         <AnimationEngine />
       </body>
     </html>
