@@ -159,7 +159,7 @@ export default function Footer() {
           </p>
           <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.18)', margin:0 }}>
             Crafted by{' '}
-            <a href="https://theasaphmedia.com" target="_blank" rel="noopener noreferrer"
+            <a href="/tai-digital"
               style={{ color:'rgba(201,168,76,0.45)', transition:'color 0.3s' }}
               onMouseEnter={e => (e.currentTarget as HTMLElement).style.color='#C9A84C'}
               onMouseLeave={e => (e.currentTarget as HTMLElement).style.color='rgba(201,168,76,0.45)'}
