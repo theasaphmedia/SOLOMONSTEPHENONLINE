@@ -195,8 +195,67 @@ export default function LivePage() {
           </div>
         </section>
 
+        {/* Prayer Request */}
+        <section style={{ padding: '0 clamp(24px,5vw,96px) clamp(64px,8vw,96px)' }}>
+          <div style={{ maxWidth: '640px', margin: '0 auto', background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.12)', borderRadius: '4px', padding: 'clamp(32px,4vw,56px)' }}>
+            <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '10px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.5)', marginBottom: '12px' }}>Prayer</div>
+            <h2 style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(24px,3vw,36px)', fontWeight: 400, color: '#FAF7F2', margin: '0 0 8px' }}>Send a Prayer Request</h2>
+            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '13px', color: 'rgba(250,247,242,0.4)', lineHeight: 1.7, margin: '0 0 28px' }}>Share your request and we will stand in agreement with you in prayer.</p>
+            <PrayerForm />
+          </div>
+        </section>
+
         <Footer />
       </main>
     </>
+  )
+}
+
+function PrayerForm() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [request, setRequest] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true); setError('')
+    try {
+      const res = await fetch('/api/prayer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, request }),
+      })
+      if (res.ok) { setSent(true) }
+      else { setError('Something went wrong. Please try again.') }
+    } catch { setError('Something went wrong. Please try again.') }
+    setLoading(false)
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', background: 'rgba(250,247,242,0.04)', border: '1px solid rgba(201,168,76,0.15)',
+    borderRadius: '3px', padding: '12px 16px', color: '#FAF7F2',
+    fontFamily: "'DM Sans',sans-serif", fontSize: '14px', outline: 'none', boxSizing: 'border-box',
+  }
+
+  if (sent) return (
+    <div style={{ textAlign: 'center', padding: '32px 0' }}>
+      <div style={{ fontFamily: "'Cormorant Garamond',serif", fontSize: '24px', color: '#C9A84C', marginBottom: '8px' }}>Received.</div>
+      <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '13px', color: 'rgba(250,247,242,0.4)' }}>We will pray with you. God hears.</p>
+    </div>
+  )
+
+  return (
+    <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <input style={inputStyle} placeholder="Your name *" value={name} onChange={e => setName(e.target.value)} required />
+      <input style={inputStyle} placeholder="Email (optional)" value={email} onChange={e => setEmail(e.target.value)} type="email" />
+      <textarea style={{ ...inputStyle, minHeight: '120px', resize: 'vertical' }} placeholder="Your prayer request *" value={request} onChange={e => setRequest(e.target.value)} required />
+      {error && <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '12px', color: '#ef4444', margin: 0 }}>{error}</p>}
+      <button type="submit" disabled={loading} style={{ background: '#C9A84C', color: '#0D1B0D', border: 'none', padding: '14px', fontFamily: "'DM Sans',sans-serif", fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, borderRadius: '3px' }}>
+        {loading ? 'Sending...' : 'Send Prayer Request'}
+      </button>
+    </form>
   )
 }

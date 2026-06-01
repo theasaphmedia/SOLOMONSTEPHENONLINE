@@ -56,6 +56,7 @@ export default function ContactPage() {
           email,
           subject: selected || '',
           message,
+          _honeypot: '',
         }),
       })
       if (!res.ok) throw new Error('Failed to send')

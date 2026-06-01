@@ -9,6 +9,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Valid email required' }, { status: 400 })
     }
 
+    // Save to database
+    try {
+      const { sql } = await import('@/lib/db')
+      await sql`
+        INSERT INTO ss_newsletter (email, name, subscribed_at)
+        VALUES (${email}, ${name || ''}, NOW())
+        ON CONFLICT (email) DO NOTHING
+      `
+    } catch (dbErr) {
+      console.error('DB insert error (non-fatal):', dbErr)
+    }
+
     const { Resend } = await import('resend')
     const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -56,8 +68,11 @@ export async function POST(req: NextRequest) {
             at 12 PM at TWN Studios, Ajah, Lagos. Come as you are.
           </p>
           <div style="border-top: 1px solid rgba(201,168,76,0.2); padding-top: 28px;">
-            <p style="font-size: 13px; color: rgba(255,255,255,0.25); margin: 0;">
+            <p style="font-size: 13px; color: rgba(255,255,255,0.25); margin: 0 0 8px;">
               Solomon Stephen · <a href="https://solomonstephen.com" style="color: rgba(201,168,76,0.5); text-decoration: none;">solomonstephen.com</a>
+            </p>
+            <p style="font-size: 11px; color: rgba(255,255,255,0.15); margin: 0;">
+              <a href="https://solomonstephen.com/unsubscribe?email=${encodeURIComponent(email)}" style="color: rgba(255,255,255,0.25); text-decoration: underline;">Unsubscribe</a>
             </p>
           </div>
         </div>
