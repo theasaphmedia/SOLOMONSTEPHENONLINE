@@ -190,14 +190,6 @@ export default function Navbar() {
         {/* Ambient glow */}
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 60% 55% at 8% 90%, rgba(201,168,76,0.09) 0%, transparent 65%)', pointerEvents:'none' }} />
 
-        {/* Close button */}
-        <button onClick={closeMenu} style={{
-          position:'absolute', top:'28px', right:'24px', zIndex:10,
-          background:'none', border:'none', cursor:'pointer',
-          fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'0.15em',
-          textTransform:'uppercase', color:'rgba(250,247,242,0.5)', padding:'8px',
-        }}>✕ Close</button>
-
         {/* Scrollable nav area — starts below header */}
         <nav style={{
           position:'absolute', top:'80px', left:0, right:0, bottom:0,
