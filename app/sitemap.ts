@@ -10,12 +10,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/music`,              lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/events`,             lastModified: now, changeFrequency: "weekly",  priority: 0.9 },
     { url: `${base}/studios`,            lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/live`,               lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
     { url: `${base}/books`,              lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/teaching`,           lastModified: now, changeFrequency: "weekly",  priority: 0.8 },
     { url: `${base}/gallery`,            lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/contact`,            lastModified: now, changeFrequency: "yearly",  priority: 0.7 },
+    { url: `${base}/updates`,            lastModified: now, changeFrequency: "weekly",  priority: 0.7 },
     { url: `${base}/press`,              lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/tai-digital`,        lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${base}/youtube-live`,       lastModified: now, changeFrequency: "weekly",  priority: 0.7 },
+    { url: `${base}/privacy`,            lastModified: now, changeFrequency: "yearly",  priority: 0.3 },
   ];
 }

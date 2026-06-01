@@ -1,12 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+const contactAttempts = new Map<string, { count: number; resetAt: number }>()
+
+function isSpam(ip: string): boolean {
+  const now = Date.now()
+  const record = contactAttempts.get(ip)
+  if (!record || now > record.resetAt) {
+    contactAttempts.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 })
+    return false
+  }
+  record.count++
+  return record.count > 5 // max 5 submissions per hour
+}
+
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown'
+    if (isSpam(ip)) return NextResponse.json({ error: 'Too many submissions' }, { status: 429 })
+
     const body = await req.json()
-    const { firstName, lastName, email, subject, message } = body
+    const { firstName, lastName, email, subject, message, _honeypot } = body
+
+    // Honeypot — bots fill hidden fields
+    if (_honeypot) return NextResponse.json({ ok: true })
 
     if (!firstName || !email || !message) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    if (!email.includes('@') || message.length < 10) {
+      return NextResponse.json({ error: 'Invalid submission' }, { status: 400 })
     }
 
     const { Resend } = await import('resend')
