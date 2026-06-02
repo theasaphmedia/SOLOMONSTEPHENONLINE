@@ -99,8 +99,25 @@ export default function BlogPage() {
   return (
     <>
       <main style={{ background: '#080E08', minHeight: '100vh', color: '#FAF7F2' }}>
-        <section style={{ paddingTop: 'clamp(120px,14vw,180px)', paddingBottom: 'clamp(48px,6vw,72px)', paddingLeft: 'clamp(24px,5vw,96px)', paddingRight: 'clamp(24px,5vw,96px)', background: 'linear-gradient(to bottom, #0D1B0D, #080E08)', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
-          <div style={{ maxWidth: '800px' }}>
+        <section style={{ position: 'relative', overflow: 'hidden', paddingTop: 'clamp(120px,14vw,180px)', paddingBottom: 'clamp(48px,6vw,72px)', paddingLeft: 'clamp(24px,5vw,96px)', paddingRight: 'clamp(24px,5vw,96px)', background: 'linear-gradient(135deg, #0D1B0D 0%, #071407 60%, #0A1A0A 100%)', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
+          {/* Grain overlay */}
+          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.18, pointerEvents: 'none' }} aria-hidden="true">
+            <filter id="blog-grain"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <rect width="100%" height="100%" filter="url(#blog-grain)" />
+          </svg>
+          {/* Radial glow — top right */}
+          <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 'clamp(300px,45vw,600px)', height: 'clamp(300px,45vw,600px)', background: 'radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          {/* Radial glow — bottom left */}
+          <div style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: 'clamp(200px,35vw,500px)', height: 'clamp(200px,35vw,500px)', background: 'radial-gradient(circle, rgba(13,50,13,0.6) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          {/* Ghost watermark */}
+          <div style={{ position: 'absolute', right: '-2%', top: '50%', transform: 'translateY(-50%)', fontFamily: "'Cormorant Garamond',serif", fontSize: 'clamp(180px,28vw,380px)', fontWeight: 700, color: 'transparent', WebkitTextStroke: '1px rgba(201,168,76,0.06)', lineHeight: 1, pointerEvents: 'none', userSelect: 'none', letterSpacing: '-0.04em' }} aria-hidden="true">Blog</div>
+          {/* Fine grid lines */}
+          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', opacity: 0.04, pointerEvents: 'none' }} aria-hidden="true">
+            <defs><pattern id="blog-grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M 48 0 L 0 0 0 48" fill="none" stroke="#C9A84C" strokeWidth="0.5"/></pattern></defs>
+            <rect width="100%" height="100%" fill="url(#blog-grid)" />
+          </svg>
+          {/* Content */}
+          <div style={{ position: 'relative', zIndex: 1, maxWidth: '800px' }}>
             <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '10px', letterSpacing: '0.35em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ width: '28px', height: '1px', background: '#C9A84C', display: 'inline-block' }} />
               Solomon Stephen
