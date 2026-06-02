@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import BlogPostClient from './BlogPostClient'
+import BlogPostClient from '@/app/updates/blog/[id]/BlogPostClient'
 
 interface Props { params: Promise<{ id: string }> }
 

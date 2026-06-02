@@ -87,7 +87,7 @@ export default function DevotionalPage() {
 
         {/* Hero bar */}
         <div style={{ background: 'linear-gradient(to bottom, #0D1B0D, #080E08)', paddingTop: 'clamp(100px,12vw,140px)', paddingBottom: 'clamp(40px,5vw,64px)', paddingLeft: 'clamp(24px,5vw,96px)', paddingRight: 'clamp(24px,5vw,96px)', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
-          <Link href="/updates#devotionals" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.4)', textDecoration: 'none', marginBottom: '32px' }}>
+          <Link href="/devotionals" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.4)', textDecoration: 'none', marginBottom: '32px' }}>
             ← Devotionals
           </Link>
 
@@ -180,7 +180,7 @@ export default function DevotionalPage() {
 
           {/* Back link */}
           <div style={{ marginTop: 'clamp(48px,6vw,72px)' }}>
-            <Link href="/updates#devotionals" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.35)', textDecoration: 'none' }}>
+            <Link href="/devotionals" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.35)', textDecoration: 'none' }}>
               ← More Devotionals
             </Link>
           </div>

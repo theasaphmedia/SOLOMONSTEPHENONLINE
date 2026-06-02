@@ -25,8 +25,8 @@ const moreLinks = [
 ]
 
 const updatesLinks = [
-  { href: '/updates',     label: 'Blog' },
-  { href: '/updates#devotionals', label: 'Devotionals' },
+  { href: '/blog',        label: 'Blog' },
+  { href: '/devotionals', label: 'Devotionals' },
 ]
 
 export default function Navbar() {

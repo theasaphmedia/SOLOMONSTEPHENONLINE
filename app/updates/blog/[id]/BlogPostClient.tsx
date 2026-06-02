@@ -249,7 +249,7 @@ export default function BlogPostClient({ params }: { params: Promise<{ id: strin
           </div>
 
           <div style={{ marginTop: 'clamp(48px,6vw,72px)' }}>
-            <Link href="/updates" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.35)', textDecoration: 'none' }}>
+            <Link href="/blog" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(250,247,242,0.35)', textDecoration: 'none' }}>
               ← More Posts
             </Link>
           </div>
