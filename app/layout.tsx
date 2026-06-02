@@ -27,6 +27,7 @@ import NavbarConditional from "@/components/NavbarConditional";
 import CookieBanner from "@/components/CookieBanner";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import AnimationEngine from "@/components/AnimationEngine";
+import LAVISHBanner from "@/components/LAVISHBanner";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://solomonstephen.com"),
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <LAVISHBanner />
         {/* Google Analytics GA4 */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-B7SEC9YF6Q"
