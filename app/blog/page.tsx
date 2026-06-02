@@ -20,20 +20,68 @@ const CAT_COLORS: Record<string, string> = {
 }
 
 function ShareButton({ post }: { post: Post }) {
-  const share = (e: React.MouseEvent) => {
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const toggle = (e: React.MouseEvent) => {
     e.preventDefault(); e.stopPropagation()
-    const url = `${window.location.origin}/blog/${post.id}`
-    if (navigator.share) { navigator.share({ title: post.title, text: post.excerpt || '', url }) }
-    else { navigator.clipboard.writeText(url) }
+    setOpen(o => !o)
   }
+
+  const url = typeof window !== 'undefined' ? `${window.location.origin}/blog/${post.id}` : `https://solomonstephen.com/blog/${post.id}`
+  const text = `"${post.title}" — Solomon Stephen`
+
+  const copyLink = (e: React.MouseEvent) => {
+    e.preventDefault(); e.stopPropagation()
+    navigator.clipboard.writeText(url)
+    setCopied(true)
+    setTimeout(() => { setCopied(false); setOpen(false) }, 2000)
+  }
+
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(text + '\n' + url)}`
+  const twUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`
+  const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+
+  const btnStyle = { background: 'none', border: 'none', color: 'rgba(250,247,242,0.7)', cursor: 'pointer', padding: '9px 14px', textAlign: 'left' as const, fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.1em', borderRadius: '3px', transition: 'background 0.15s', display: 'block', width: '100%', whiteSpace: 'nowrap' as const }
+
   return (
-    <button onClick={share} style={{ background: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)', color: '#C9A84C', borderRadius: '3px', padding: '6px 12px', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }}
-      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.18)' }}
-      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.08)' }}
-    >
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      Share
-    </button>
+    <div style={{ position: 'relative' }} onClick={e => e.stopPropagation()}>
+      <button onClick={toggle} style={{ background: 'rgba(201,168,76,0.08)', border: '1px solid rgba(201,168,76,0.2)', color: '#C9A84C', borderRadius: '3px', padding: '6px 12px', cursor: 'pointer', fontFamily: "'DM Sans',sans-serif", fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }}
+        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.18)' }}
+        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.08)' }}
+      >
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', bottom: '36px', right: 0, background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.15)', borderRadius: '4px', padding: '6px', zIndex: 20, minWidth: '160px', display: 'flex', flexDirection: 'column', gap: '2px', boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}>
+          <a href={waUrl} target="_blank" rel="noopener noreferrer" onClick={e => { e.stopPropagation(); setOpen(false) }}
+            style={{ ...btnStyle, textDecoration: 'none' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.07)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'none' }}>
+            WhatsApp
+          </a>
+          <a href={twUrl} target="_blank" rel="noopener noreferrer" onClick={e => { e.stopPropagation(); setOpen(false) }}
+            style={{ ...btnStyle, textDecoration: 'none' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.07)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'none' }}>
+            X / Twitter
+          </a>
+          <a href={fbUrl} target="_blank" rel="noopener noreferrer" onClick={e => { e.stopPropagation(); setOpen(false) }}
+            style={{ ...btnStyle, textDecoration: 'none' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.07)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'none' }}>
+            Facebook
+          </a>
+          <div style={{ height: '1px', background: 'rgba(201,168,76,0.1)', margin: '2px 0' }} />
+          <button onClick={copyLink} style={{ ...btnStyle, color: copied ? '#7CB87C' : 'rgba(250,247,242,0.7)' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(201,168,76,0.07)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'none' }}>
+            {copied ? '✓ Copied!' : 'Copy Link'}
+          </button>
+        </div>
+      )}
+    </div>
   )
 }
 
