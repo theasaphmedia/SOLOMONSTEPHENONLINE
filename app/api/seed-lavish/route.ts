@@ -24,7 +24,7 @@ export async function GET() {
       await sql`INSERT INTO ss_press_releases (year, title, type, description, sort_order) VALUES (${r.year}, ${r.title}, ${r.type}, ${r.desc}, ${r.sort_order})`
     }
 
-    return NextResponse.json({ ok: true, seeded: releases.length })
+    return NextResponse.json({ ok: true, seeded: releases.length, v: 2 })
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 })
   }
