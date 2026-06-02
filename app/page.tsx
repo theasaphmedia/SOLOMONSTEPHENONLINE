@@ -414,40 +414,48 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════ NEW RELEASE — LAVISH ══════════════ */}
-      <section style={{ background:'#0D1B0D', padding:'clamp(56px,7vw,88px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(201,168,76,0.08)' }}>
-        <div style={{ maxWidth:'1200px', margin:'0 auto', display:'flex', flexWrap:'wrap', gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
-          {/* Cover */}
-          <div className="rv" style={{ flexShrink:0, width:'clamp(160px,22vw,280px)', height:'clamp(160px,22vw,280px)', position:'relative', borderRadius:'4px', overflow:'hidden', boxShadow:'0 24px 64px rgba(0,0,0,0.5)' }}>
-            <Image src="/images/LAVISH - SOLOMON STEPHEN.jpg" alt="LAVISH — Solomon Stephen" fill style={{ objectFit:'cover' }} />
-          </div>
-          {/* Info */}
-          <div style={{ flex:1, minWidth:'240px' }}>
-            <div className="rv" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.38em', textTransform:'uppercase', color:'rgba(201,168,76,0.7)', marginBottom:'14px', display:'flex', alignItems:'center', gap:'10px' }}>
-              <span style={{ display:'inline-block', width:'6px', height:'6px', background:'#C9A84C', borderRadius:'50%', animation:'livePulse 1.5s ease-in-out infinite' }} />
-              New Release · June 6, 2026
+      <section className="lavish-section" style={{ position:'relative', overflow:'hidden', background:'#080E08', padding:'clamp(72px,10vw,120px) clamp(24px,4vw,80px)' }}>
+        {/* Animated background layers */}
+        <div className="lavish-glow-1" />
+        <div className="lavish-glow-2" />
+        <div className="lavish-glow-3" />
+        {/* Sparkle dots */}
+        {[...Array(12)].map((_,i) => <div key={i} className={`lavish-spark lavish-spark-${i+1}`} />)}
+
+        <div style={{ maxWidth:'1200px', margin:'0 auto', position:'relative', zIndex:2, display:'flex', flexWrap:'wrap', gap:'clamp(40px,6vw,80px)', alignItems:'center' }}>
+
+          {/* Cover — floating + glow */}
+          <div className="lavish-cover-wrap rv">
+            <div className="lavish-cover-glow" />
+            <div style={{ position:'relative', width:'clamp(200px,28vw,340px)', height:'clamp(200px,28vw,340px)', borderRadius:'6px', overflow:'hidden', boxShadow:'0 40px 80px rgba(0,0,0,0.7), 0 0 60px rgba(201,168,76,0.12)' }}>
+              <Image src="/images/LAVISH - SOLOMON STEPHEN.jpg" alt="LAVISH" fill style={{ objectFit:'cover' }} />
             </div>
-            <h2 className="rv d1" style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(48px,8vw,96px)', fontWeight:400, color:'#FAF7F2', lineHeight:0.9, margin:'0 0 16px', letterSpacing:'-0.02em' }}>
+          </div>
+
+          {/* Text */}
+          <div style={{ flex:1, minWidth:'260px' }}>
+            <div className="rv" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.42em', textTransform:'uppercase', color:'rgba(201,168,76,0.8)', marginBottom:'16px', display:'flex', alignItems:'center', gap:'10px' }}>
+              <span style={{ display:'inline-block', width:'7px', height:'7px', background:'#C9A84C', borderRadius:'50%', animation:'livePulse 1.4s ease-in-out infinite' }} />
+              New Release &nbsp;·&nbsp; June 6, 2026
+            </div>
+
+            <h2 className="rv d1 lavish-title" style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(64px,11vw,130px)', fontWeight:400, lineHeight:0.88, margin:'0 0 20px', letterSpacing:'-0.02em' }}>
               LAVISH
             </h2>
-            <p className="rv d2" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.5)', maxWidth:'440px', margin:'0 0 28px' }}>
-              A new single meditating on the relentless, inexplicable love of Jesus — His coming, His death, His resurrection. Available everywhere Friday.
+
+            <div className="rv d2" style={{ width:'48px', height:'2px', background:'linear-gradient(to right, #C9A84C, transparent)', marginBottom:'20px' }} />
+
+            <p className="rv d2" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.3vw,16px)', lineHeight:2, color:'rgba(250,247,242,0.5)', maxWidth:'420px', margin:'0 0 32px' }}>
+              A new single about the love that came, died, rose — and still came for you. Available everywhere this Friday.
             </p>
-            <div className="rv d3" style={{ display:'flex', flexWrap:'wrap', gap:'12px', alignItems:'center' }}>
-              <a href="https://play.yivera.com/lavish-solomon-stephen" target="_blank" rel="noopener noreferrer" style={{
-                display:'inline-flex', alignItems:'center', gap:'8px',
-                background:'#C9A84C', color:'#0D1B0D', textDecoration:'none',
-                fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:700,
-                letterSpacing:'0.14em', textTransform:'uppercase',
-                padding:'14px 32px', borderRadius:'2px', transition:'opacity 0.2s',
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='0.88' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
-              >
-                Pre-Save Now
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+
+            <div className="rv d3" style={{ display:'flex', flexWrap:'wrap', gap:'14px', alignItems:'center' }}>
+              <a href="https://play.yivera.com/lavish-solomon-stephen" target="_blank" rel="noopener noreferrer" className="lavish-btn">
+                <span>Pre-Save Now</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
-              <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.3)', letterSpacing:'0.08em' }}>
-                play.yivera.com/lavish-solomon-stephen
+              <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.22)', letterSpacing:'0.06em' }}>
+                Solomon Stephen · 2026
               </span>
             </div>
           </div>
