@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 
-type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers' | 'press'
+type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers' | 'press' | 'comments'
 
 interface Event { id: string; title: string; date: string; time: string; location: string; description: string; type: string; is_online: boolean; link: string; flyer_url: string; published: boolean }
 interface BlogPost { id: string; title: string; excerpt: string; body: string; cover_url: string; category: string; published: boolean; published_at: string }
@@ -283,9 +283,9 @@ export default function AdminPage() {
 
       <div style={S.body}>
         <div style={S.tabs}>
-          {(['events', 'blog', 'devotionals', 'announcements', 'prayer', 'subscribers', 'press'] as Tab[]).map(t => (
+          {(['events', 'blog', 'devotionals', 'announcements', 'prayer', 'subscribers', 'press', 'comments'] as Tab[]).map(t => (
             <button key={t} style={S.tab(tab === t)} onClick={() => setTab(t)}>
-              {t === 'events' ? '📅 Events' : t === 'blog' ? '✍️ Blog' : t === 'devotionals' ? '📖 Devotionals' : t === 'announcements' ? '📢 Announcements' : t === 'press' ? '🎙️ Press' : t === 'prayer' ? '🙏 Prayer' : '📧 Subscribers'}
+              {t === 'events' ? '📅 Events' : t === 'blog' ? '✍️ Blog' : t === 'devotionals' ? '📖 Devotionals' : t === 'announcements' ? '📢 Announcements' : t === 'press' ? '🎙️ Press' : t === 'prayer' ? '🙏 Prayer' : t === 'comments' ? '💬 Comments' : '📧 Subscribers'}
             </button>
           ))}
         </div>
@@ -514,6 +514,9 @@ export default function AdminPage() {
         {/* ── SUBSCRIBERS ── */}
         {tab === 'subscribers' && <SubscribersTab />}
 
+        {/* ── COMMENTS ── */}
+        {tab === 'comments' && <CommentsTab />}
+
         {/* ── PRESS ── */}
         {tab === 'press' && (
           <div>
@@ -698,6 +701,56 @@ function SubscribersTab() {
             ))}
           </div>
         )}
+      </div>
+    </div>
+  )
+}
+
+function CommentsTab() {
+  const [comments, setComments] = useState<{id:string;post_id:string;name:string;body:string;created_at:string}[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const load = () => {
+    fetch('/api/admin/comments').then(r => r.json()).then(data => { setComments(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
+  }
+
+  useEffect(() => { load() }, [])
+
+  const del = async (id: string) => {
+    const postId = comments.find(c => c.id === id)?.post_id
+    if (!postId) return
+    await fetch(`/api/blog/${postId}/comments`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    setComments(prev => prev.filter(c => c.id !== id))
+  }
+
+  const S2 = {
+    card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
+    item: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', padding: '16px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
+    btnDel: { background: 'none', border: '1px solid rgba(239,68,68,0.3)', color: 'rgba(239,68,68,0.7)', borderRadius: '3px', padding: '6px 14px', fontFamily: "'DM Sans',sans-serif", fontSize: '11px', cursor: 'pointer' },
+  }
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
+
+  return (
+    <div>
+      <div style={S2.card}>
+        <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Blog Comments ({comments.length})</div>
+        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Delete any inappropriate comments.</div>
+        {comments.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No comments yet.</div>
+        ) : comments.map(c => (
+          <div key={c.id} style={S2.item}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '6px' }}>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#FAF7F2' }}>{c.name}</div>
+                <div style={{ fontSize: '11px', color: 'rgba(201,168,76,0.5)' }}>Post #{c.post_id}</div>
+                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(c.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+              </div>
+              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.65)', lineHeight: 1.7 }}>{c.body}</div>
+            </div>
+            <button style={S2.btnDel} onClick={() => del(c.id)}>Delete</button>
+          </div>
+        ))}
       </div>
     </div>
   )
