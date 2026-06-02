@@ -112,9 +112,29 @@ export default function DevotionalPage() {
 
         {/* Body */}
         <article style={{ maxWidth: '720px', margin: '0 auto', padding: 'clamp(48px,6vw,80px) clamp(24px,5vw,96px)' }}>
-          <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 'clamp(15px,1.5vw,17px)', lineHeight: 2, color: 'rgba(250,247,242,0.78)', whiteSpace: 'pre-wrap' }}>
-            {devotional.body}
-          </div>
+          {devotional.body?.includes('<') ? (
+            <>
+              <style>{`
+                .dev-body h2{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,2.5vw,30px);font-weight:400;color:#FAF7F2;margin:1.6em 0 0.5em;}
+                .dev-body h3{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,2vw,24px);font-weight:400;color:#FAF7F2;margin:1.4em 0 0.4em;}
+                .dev-body p{margin:0 0 1.1em;}
+                .dev-body strong{font-weight:700;color:#FAF7F2;}
+                .dev-body em{font-style:italic;}
+                .dev-body blockquote{border-left:3px solid #C9A84C;padding:4px 0 4px 20px;margin:1.4em 0;color:rgba(250,247,242,0.6);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:1.1em;}
+                .dev-body ul{padding-left:1.6em;margin:0.6em 0 1em;list-style:disc;}
+                .dev-body ol{padding-left:1.6em;margin:0.6em 0 1em;list-style:decimal;}
+                .dev-body li{margin:6px 0;}
+                .dev-body a{color:#C9A84C;text-decoration:underline;}
+                .dev-body font[size="4"]{font-size:1.2em;}
+                .dev-body font[size="2"]{font-size:0.88em;}
+              `}</style>
+              <div className="dev-body" style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 'clamp(15px,1.5vw,17px)', lineHeight: 2, color: 'rgba(250,247,242,0.78)' }} dangerouslySetInnerHTML={{ __html: devotional.body }} />
+            </>
+          ) : (
+            <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 'clamp(15px,1.5vw,17px)', lineHeight: 2, color: 'rgba(250,247,242,0.78)', whiteSpace: 'pre-wrap' }}>
+              {devotional.body}
+            </div>
+          )}
 
           {/* Divider */}
           <div style={{ margin: 'clamp(48px,6vw,72px) 0', display: 'flex', alignItems: 'center', gap: '16px' }}>

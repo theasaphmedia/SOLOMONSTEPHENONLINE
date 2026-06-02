@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
+import RichTextEditor from './RichTextEditor'
 
 type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers' | 'press' | 'comments'
 
@@ -393,7 +394,7 @@ export default function AdminPage() {
               </div>
               <div style={{ marginBottom: '14px' }}>
                 <label style={S.label}>Body</label>
-                <textarea style={{ ...S.textarea, minHeight: '220px' }} value={bl.body} onChange={e => setBl({ ...bl, body: e.target.value })} placeholder="Full post content..." />
+                <RichTextEditor value={bl.body} onChange={html => setBl({ ...bl, body: html })} placeholder="Full post content..." minHeight="240px" />
               </div>
               <div style={{ marginBottom: '20px' }}>
                 <ImageUploader value={bl.cover_url} onChange={url => setBl({ ...bl, cover_url: url })} label="Cover Image" />
@@ -439,7 +440,7 @@ export default function AdminPage() {
               </div>
               <div style={{ marginBottom: '20px' }}>
                 <label style={S.label}>Body</label>
-                <textarea style={{ ...S.textarea, minHeight: '220px' }} value={dv.body} onChange={e => setDv({ ...dv, body: e.target.value })} placeholder="Devotional content..." />
+                <RichTextEditor value={dv.body} onChange={html => setDv({ ...dv, body: html })} placeholder="Devotional content..." minHeight="240px" />
               </div>
               <button style={S.btn} onClick={saveDevotional} disabled={saving}>{saving ? 'Publishing...' : 'Publish Devotional'}</button>
             </div>
