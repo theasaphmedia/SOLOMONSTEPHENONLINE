@@ -138,7 +138,8 @@ export default function UpdatesPage() {
             posts.length === 0 ? empty('Blog posts') : (
               <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 'clamp(20px,3vw,32px)' }}>
                 {posts.map(post => (
-                  <article key={post.id} onClick={() => setSelected(post)}
+                  <Link key={post.id} href={`/updates/blog/${post.id}`} style={{ textDecoration: 'none' }}>
+                  <article
                     style={{ background: '#0D1B0D', border: '1px solid rgba(201,168,76,0.1)', borderRadius: '4px', overflow: 'hidden', cursor: 'pointer', transition: 'border-color 0.3s, transform 0.3s' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.3)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(-4px)' }}
                     onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'rgba(201,168,76,0.1)'; (e.currentTarget as HTMLElement).style.transform = 'translateY(0)' }}
@@ -157,6 +158,7 @@ export default function UpdatesPage() {
                       <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#C9A84C' }}>Read →</div>
                     </div>
                   </article>
+                  </Link>
                 ))}
               </div>
             )
