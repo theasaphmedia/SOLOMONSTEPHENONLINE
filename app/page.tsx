@@ -418,7 +418,7 @@ export default function HomePage() {
         <div style={{ maxWidth:'1200px', margin:'0 auto', display:'flex', flexWrap:'wrap', gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
           {/* Cover */}
           <div className="rv" style={{ flexShrink:0, width:'clamp(160px,22vw,280px)', height:'clamp(160px,22vw,280px)', position:'relative', borderRadius:'4px', overflow:'hidden', boxShadow:'0 24px 64px rgba(0,0,0,0.5)' }}>
-            <Image src="/images/lavish-cover.jpg" alt="LAVISH — Solomon Stephen" fill style={{ objectFit:'cover' }} />
+            <Image src="/images/LAVISH - SOLOMON STEPHEN.jpg" alt="LAVISH — Solomon Stephen" fill style={{ objectFit:'cover' }} />
           </div>
           {/* Info */}
           <div style={{ flex:1, minWidth:'240px' }}>
