@@ -446,7 +446,7 @@ export default function HomePage() {
             <div className="rv d2" style={{ width:'48px', height:'2px', background:'linear-gradient(to right, #C9A84C, transparent)', marginBottom:'20px' }} />
 
             <p className="rv d2" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.3vw,16px)', lineHeight:2, color:'rgba(250,247,242,0.5)', maxWidth:'420px', margin:'0 0 32px' }}>
-              A new single about the love that came, died, rose — and still came for you. Available everywhere this Friday.
+              All glory. All power. All-sufficient in Himself — yet He came, died, and rose for you. This Friday, everywhere.
             </p>
 
             <div className="rv d3" style={{ display:'flex', flexWrap:'wrap', gap:'14px', alignItems:'center' }}>
@@ -627,18 +627,20 @@ export default function HomePage() {
           <h2 className="rv d1" style={{ fontFamily:'Cormorant Garamond, serif', fontSize:'clamp(44px,8vw,96px)', fontWeight:400, color:'#FAF7F2', lineHeight:1, marginBottom:'clamp(20px,2.5vw,36px)', letterSpacing:'-0.01em' }}>
             His <em style={{ color:'#C9A84C' }}>Presence.</em>
           </h2>
-          <p className="rv d2" style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.5vw,16px)', lineHeight:1.8, color:'rgba(250,247,242,0.55)', marginBottom:'clamp(32px,4vw,56px)' }}>
+          <p className="rv d2" style={{ fontFamily:'DM Sans, sans-serif', fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.9, color:'rgba(250,247,242,0.5)', maxWidth:'480px', margin:'0 auto clamp(32px,4vw,48px)' }}>
             Every great work begins with a conversation. Whether ministry, music, studio, or digital — reach out.
           </p>
-          <Link href="/contact" className="rv d3 cta-outline">Get In Touch</Link>
+          <Link href="/contact" className="rv d3" style={{
+            display:'inline-block', fontFamily:'DM Sans, sans-serif', fontSize:'10px',
+            letterSpacing:'0.2em', textTransform:'uppercase', fontWeight:600,
+            padding:'16px 44px', background:'#C9A84C', color:'#0D1B0D',
+            textDecoration:'none', transition:'opacity 0.2s',
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='0.85' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
+          >Get In Touch</Link>
         </div>
       </section>
-
-      {/* ══ TESTIMONIALS ══ */}
-      <TestimonialsSection />
-
-      {/* ══ NEWSLETTER ══ */}
-      <NewsletterSection />
 
       <Footer />
     </main>
