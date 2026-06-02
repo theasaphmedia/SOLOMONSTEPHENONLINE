@@ -7,18 +7,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { id } = await params
     const { sql } = await import('@/lib/db')
-    const rows = await sql`SELECT * FROM ss_blog WHERE id = ${id} AND published = true LIMIT 1`
-    if (!rows.length) return { title: 'Blog — Solomon Stephen' }
+    const rows = await sql`SELECT * FROM ss_blog WHERE (slug = ${id} OR CAST(id AS TEXT) = ${id}) AND published = true ORDER BY (slug = ${id}) DESC LIMIT 1`
+    if (!rows.length) return { title: 'Blog - Solomon Stephen' }
     const post = rows[0]
     const description = post.excerpt || post.body?.slice(0, 155) || 'A blog post by Solomon Stephen.'
     const image = post.cover_url || `https://solomonstephen.com/api/og?title=${encodeURIComponent(post.title)}&sub=${encodeURIComponent(post.category || 'Solomon Stephen')}&category=${encodeURIComponent(post.category || '')}`
     return {
-      title: `${post.title} — Solomon Stephen`,
+      title: `${post.title} - Solomon Stephen`,
       description,
       openGraph: {
         title: post.title,
         description,
-        url: `https://solomonstephen.com/blog/${id}`,
+        url: `https://solomonstephen.com/blog/${post.slug || id}`,
         siteName: 'Solomon Stephen',
         images: [{ url: image, width: 1200, height: 630, alt: post.title }],
         type: 'article',
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     }
   } catch {
-    return { title: 'Blog — Solomon Stephen' }
+    return { title: 'Blog - Solomon Stephen' }
   }
 }
 

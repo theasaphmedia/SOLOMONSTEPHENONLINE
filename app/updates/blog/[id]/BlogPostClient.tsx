@@ -50,24 +50,23 @@ export default function BlogPostClient({ params }: { params: Promise<{ id: strin
       .catch(() => { setNotFound(true); setLoading(false) })
   }, [id])
 
+  // Use post.id (UUID) for likes/comments so data is keyed consistently regardless of URL format
   useEffect(() => {
-    if (!id) return
-    // Load likes
-    fetch(`/api/blog/${id}/likes`).then(r => r.json()).then(d => setLikeCount(d.count || 0)).catch(() => {})
-    // Check if this browser liked
+    if (!post?.id) return
+    const pid = post.id
+    fetch(`/api/blog/${pid}/likes`).then(r => r.json()).then(d => setLikeCount(d.count || 0)).catch(() => {})
     const fp = getFingerprint()
     if (fp) {
-      fetch(`/api/blog/${id}/likes/check?fp=${fp}`).then(r => r.json()).then(d => setLiked(d.liked || false)).catch(() => {})
+      fetch(`/api/blog/${pid}/likes/check?fp=${fp}`).then(r => r.json()).then(d => setLiked(d.liked || false)).catch(() => {})
     }
-    // Load comments
-    fetch(`/api/blog/${id}/comments`).then(r => r.json()).then(d => setComments(Array.isArray(d) ? d : [])).catch(() => {})
-  }, [id])
+    fetch(`/api/blog/${pid}/comments`).then(r => r.json()).then(d => setComments(Array.isArray(d) ? d : [])).catch(() => {})
+  }, [post?.id])
 
   const handleLike = async () => {
-    if (liking) return
+    if (liking || !post?.id) return
     setLiking(true)
     const fp = getFingerprint()
-    const res = await fetch(`/api/blog/${id}/likes`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fingerprint: fp }) })
+    const res = await fetch(`/api/blog/${post.id}/likes`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ fingerprint: fp }) })
     if (res.ok) {
       const d = await res.json()
       setLikeCount(d.count)
@@ -77,9 +76,9 @@ export default function BlogPostClient({ params }: { params: Promise<{ id: strin
   }
 
   const handleComment = async () => {
-    if (!name.trim() || !body.trim() || submitting) return
+    if (!name.trim() || !body.trim() || submitting || !post?.id) return
     setSubmitting(true)
-    const res = await fetch(`/api/blog/${id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name.trim(), body: body.trim() }) })
+    const res = await fetch(`/api/blog/${post.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: name.trim(), body: body.trim() }) })
     if (res.ok) {
       const comment = await res.json()
       setComments(prev => [...prev, comment])

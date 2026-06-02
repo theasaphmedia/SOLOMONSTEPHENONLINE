@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { id } = await params
     const { sql } = await import('@/lib/db')
-    const rows = await sql`SELECT * FROM ss_blog WHERE id = ${id} AND published = true LIMIT 1`
+    const rows = await sql`SELECT * FROM ss_blog WHERE (slug = ${id} OR CAST(id AS TEXT) = ${id}) AND published = true ORDER BY (slug = ${id}) DESC LIMIT 1`
     if (!rows.length) return { title: 'Blog — Solomon Stephen' }
     const post = rows[0]
     const description = post.excerpt || post.body?.slice(0, 155) || 'A blog post by Solomon Stephen.'

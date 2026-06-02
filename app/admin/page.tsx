@@ -7,7 +7,7 @@ import RichTextEditor from './RichTextEditor'
 type Tab = 'events' | 'blog' | 'devotionals' | 'announcements' | 'prayer' | 'subscribers' | 'press' | 'comments'
 
 interface Event { id: string; title: string; date: string; time: string; location: string; description: string; type: string; is_online: boolean; link: string; flyer_url: string; published: boolean }
-interface BlogPost { id: string; title: string; excerpt: string; body: string; cover_url: string; category: string; published: boolean; published_at: string }
+interface BlogPost { id: string; slug: string; title: string; excerpt: string; body: string; cover_url: string; category: string; published: boolean; published_at: string }
 interface Devotional { id: string; title: string; scripture: string; body: string; published: boolean; published_at: string }
 interface Announcement { id: string; title: string; body: string; link: string; link_label: string; expires_at: string; published: boolean }
 interface PressFact { id: string; label: string; value: string; sort_order: number }
@@ -101,7 +101,9 @@ export default function AdminPage() {
   const [msg, setMsg] = useState('')
 
   const [ev, setEv] = useState({ title: '', date: '', time: '', location: '', description: '', type: 'special', is_online: false, link: '', flyer_url: '' })
-  const [bl, setBl] = useState({ title: '', excerpt: '', body: '', cover_url: '', category: 'article', published_at: new Date().toISOString().split('T')[0] })
+  const [bl, setBl] = useState({ title: '', slug: '', excerpt: '', body: '', cover_url: '', category: 'article', published_at: new Date().toISOString().split('T')[0] })
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
+  const [editBl, setEditBl] = useState<BlogPost | null>(null)
   const [dv, setDv] = useState({ title: '', scripture: '', body: '', published_at: new Date().toISOString().split('T')[0] })
   const [an, setAn] = useState({ title: '', body: '', link: '', link_label: '', expires_at: '' })
   const [pressFacts, setPressFacts] = useState<PressFact[]>([])
@@ -157,13 +159,25 @@ export default function AdminPage() {
     if (!bl.title || !bl.body) return flash('Title and body are required')
     setSaving(true)
     await fetch('/api/admin/blog', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(bl) })
-    setBl({ title: '', excerpt: '', body: '', cover_url: '', category: 'article', published_at: new Date().toISOString().split('T')[0] })
+    setBl({ title: '', slug: '', excerpt: '', body: '', cover_url: '', category: 'article', published_at: new Date().toISOString().split('T')[0] })
     await load('blog')
     flash('Post published!')
     setSaving(false)
   }
 
+  const updateBlog = async () => {
+    if (!editBl) return
+    if (!editBl.title || !editBl.body) return flash('Title and body are required')
+    setSaving(true)
+    await fetch('/api/admin/blog', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editBl) })
+    setEditingPost(null); setEditBl(null)
+    await load('blog')
+    flash('Post updated!')
+    setSaving(false)
+  }
+
   const deleteBlog = async (id: string) => {
+    if (!confirm('Delete this post?')) return
     await fetch('/api/admin/blog', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
     await load('blog')
     flash('Deleted')
@@ -373,6 +387,10 @@ export default function AdminPage() {
                 <label style={S.label}>Title <CharCounter value={bl.title} max={80} /></label>
                 <input style={S.input} value={bl.title} onChange={e => setBl({ ...bl, title: e.target.value })} placeholder="Post title" maxLength={120} />
               </div>
+              <div style={{ marginBottom: '14px' }}>
+                <label style={S.label}>Slug <span style={{ color: 'rgba(201,168,76,0.5)', fontWeight: 400 }}>(URL-friendly, auto-generated if blank)</span></label>
+                <input style={S.input} value={bl.slug} onChange={e => setBl({ ...bl, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') })} placeholder="e.g. my-post-title" maxLength={200} />
+              </div>
               <div style={{ ...S.row, marginBottom: '14px' }}>
                 <div>
                   <label style={S.label}>Category</label>
@@ -402,16 +420,70 @@ export default function AdminPage() {
               <button style={S.btn} onClick={saveBlog} disabled={saving}>{saving ? 'Publishing...' : 'Publish Post'}</button>
             </div>
 
+            {/* Published posts list */}
             {blog.length > 0 && (
               <div style={S.card}>
-                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>Published Posts ({blog.length})</div>
+                <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '16px' }}>All Posts ({blog.length})</div>
                 {blog.map(p => (
-                  <div key={p.id} style={S.item}>
-                    <div>
-                      <div style={{ fontSize: '15px', marginBottom: '4px' }}>{p.title}</div>
-                      <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.4)' }}>{p.published_at} · {p.category}</div>
+                  <div key={p.id}>
+                    <div style={{ ...S.item, flexDirection: 'column', alignItems: 'stretch', gap: '0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ fontSize: '15px', marginBottom: '4px', fontWeight: 500 }}>{p.title}</div>
+                          <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.4)', wordBreak: 'break-all' }}>
+                            /blog/{p.slug || p.id} · {p.published_at} · {p.category}
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+                          <button style={{ ...S.btn, fontSize: '11px', padding: '6px 14px' }} onClick={() => { setEditingPost(p); setEditBl({ ...p }) }}>Edit</button>
+                          <button style={S.btnDel} onClick={() => deleteBlog(p.id)}>Delete</button>
+                        </div>
+                      </div>
+
+                      {/* Inline edit form */}
+                      {editingPost?.id === p.id && editBl && (
+                        <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(201,168,76,0.1)' }}>
+                          <div style={{ marginBottom: '12px' }}>
+                            <label style={S.label}>Title</label>
+                            <input style={S.input} value={editBl.title} onChange={e => setEditBl({ ...editBl, title: e.target.value })} />
+                          </div>
+                          <div style={{ marginBottom: '12px' }}>
+                            <label style={S.label}>Slug <span style={{ color: 'rgba(201,168,76,0.5)', fontWeight: 400 }}>(URL path)</span></label>
+                            <input style={S.input} value={editBl.slug || ''} onChange={e => setEditBl({ ...editBl, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') })} placeholder="e.g. my-post-title" />
+                          </div>
+                          <div style={{ ...S.row, marginBottom: '12px' }}>
+                            <div>
+                              <label style={S.label}>Category</label>
+                              <select style={S.input} value={editBl.category} onChange={e => setEditBl({ ...editBl, category: e.target.value })}>
+                                <option value="article">Article</option>
+                                <option value="testimony">Testimony</option>
+                                <option value="update">Ministry Update</option>
+                                <option value="teaching">Teaching</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label style={S.label}>Date</label>
+                              <input style={S.input} type="date" value={editBl.published_at?.split('T')[0] || ''} onChange={e => setEditBl({ ...editBl, published_at: e.target.value })} />
+                            </div>
+                          </div>
+                          <div style={{ marginBottom: '12px' }}>
+                            <label style={S.label}>Excerpt</label>
+                            <input style={S.input} value={editBl.excerpt || ''} onChange={e => setEditBl({ ...editBl, excerpt: e.target.value })} />
+                          </div>
+                          <div style={{ marginBottom: '12px' }}>
+                            <label style={S.label}>Body</label>
+                            <RichTextEditor value={editBl.body || ''} onChange={html => setEditBl({ ...editBl, body: html })} placeholder="Post content..." minHeight="200px" />
+                          </div>
+                          <div style={{ marginBottom: '16px' }}>
+                            <ImageUploader value={editBl.cover_url || ''} onChange={url => setEditBl({ ...editBl, cover_url: url })} label="Cover Image" />
+                          </div>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <button style={S.btn} onClick={updateBlog} disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
+                            <button style={{ ...S.btnDel, background: 'none' }} onClick={() => { setEditingPost(null); setEditBl(null) }}>Cancel</button>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <button style={S.btnDel} onClick={() => deleteBlog(p.id)}>Delete</button>
                   </div>
                 ))}
               </div>
@@ -666,42 +738,28 @@ function SubscribersTab() {
     fetch('/api/admin/newsletter').then(r => r.json()).then(data => { setSubscribers(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
   }, [])
 
-  const copyEmails = () => {
-    const emails = subscribers.map(s => s.email).join(', ')
-    navigator.clipboard.writeText(emails)
+  const S2 = {
+    card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
+    item: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', padding: '14px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
   }
 
   if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
 
   return (
     <div>
-      <div style={{ background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <div>
-            <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '4px' }}>Newsletter Subscribers</div>
-            <div style={{ fontSize: '28px', fontWeight: 700, color: '#C9A84C' }}>{subscribers.length}</div>
-          </div>
-          {subscribers.length > 0 && (
-            <button onClick={copyEmails} style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.3)', color: '#C9A84C', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              Copy All Emails
-            </button>
-          )}
-        </div>
+      <div style={S2.card}>
+        <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Newsletter Subscribers ({subscribers.length})</div>
+        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>People who have opted in to ministry updates.</div>
         {subscribers.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontSize: '13px' }}>No subscribers yet.</div>
-        ) : (
-          <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-            {subscribers.map(s => (
-              <div key={s.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' }}>
-                <div>
-                  <div style={{ fontSize: '14px', color: '#FAF7F2' }}>{s.email}</div>
-                  {s.name && <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.35)', marginTop: '2px' }}>{s.name}</div>}
-                </div>
-                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(s.subscribed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
-              </div>
-            ))}
+          <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No subscribers yet.</div>
+        ) : subscribers.map(s => (
+          <div key={s.id} style={S2.item}>
+            <div>
+              <div style={{ fontSize: '14px', color: '#FAF7F2', marginBottom: '3px' }}>{s.email}</div>
+              <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.35)' }}>{s.name || 'No name'} &middot; {new Date(s.subscribed_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+            </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   )
@@ -711,23 +769,19 @@ function CommentsTab() {
   const [comments, setComments] = useState<{id:string;post_id:string;name:string;body:string;created_at:string}[]>([])
   const [loading, setLoading] = useState(true)
 
-  const load = () => {
+  useEffect(() => {
     fetch('/api/admin/comments').then(r => r.json()).then(data => { setComments(Array.isArray(data) ? data : []); setLoading(false) }).catch(() => setLoading(false))
-  }
+  }, [])
 
-  useEffect(() => { load() }, [])
-
-  const del = async (id: string) => {
-    const postId = comments.find(c => c.id === id)?.post_id
-    if (!postId) return
-    await fetch(`/api/blog/${postId}/comments`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+  const deleteComment = async (id: string) => {
+    await fetch('/api/admin/comments', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
     setComments(prev => prev.filter(c => c.id !== id))
   }
 
   const S2 = {
     card: { background: '#1A2E1A', borderRadius: '8px', padding: '24px', marginBottom: '16px' } as React.CSSProperties,
     item: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', padding: '16px 0', borderBottom: '1px solid rgba(201,168,76,0.08)' } as React.CSSProperties,
-    btnDel: { background: 'none', border: '1px solid rgba(239,68,68,0.3)', color: 'rgba(239,68,68,0.7)', borderRadius: '3px', padding: '6px 14px', fontFamily: "'DM Sans',sans-serif", fontSize: '11px', cursor: 'pointer' },
+    btnDel: { background: 'rgba(220,38,38,0.12)', border: '1px solid rgba(220,38,38,0.25)', color: '#F87171', borderRadius: '4px', padding: '6px 14px', cursor: 'pointer', fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', flexShrink: 0 } as React.CSSProperties,
   }
 
   if (loading) return <div style={{ textAlign: 'center', padding: '40px', color: 'rgba(250,247,242,0.3)', fontFamily: "'DM Sans',sans-serif", fontSize: '12px', letterSpacing: '0.2em' }}>LOADING...</div>
@@ -736,20 +790,20 @@ function CommentsTab() {
     <div>
       <div style={S2.card}>
         <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(201,168,76,0.6)', marginBottom: '8px' }}>Blog Comments ({comments.length})</div>
-        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Delete any inappropriate comments.</div>
+        <div style={{ fontSize: '12px', color: 'rgba(250,247,242,0.3)', marginBottom: '20px' }}>Moderate comments left on blog posts.</div>
         {comments.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '32px 0', color: 'rgba(250,247,242,0.2)', fontFamily: "'DM Sans',sans-serif", fontSize: '13px' }}>No comments yet.</div>
         ) : comments.map(c => (
           <div key={c.id} style={S2.item}>
             <div style={{ flex: 1 }}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '6px' }}>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#FAF7F2' }}>{c.name}</div>
-                <div style={{ fontSize: '11px', color: 'rgba(201,168,76,0.5)' }}>Post #{c.post_id}</div>
-                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.2)' }}>{new Date(c.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+              <div style={{ display: 'flex', gap: '10px', alignItems: 'baseline', marginBottom: '4px' }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#C9A84C' }}>{c.name}</div>
+                <div style={{ fontSize: '11px', color: 'rgba(250,247,242,0.25)' }}>{new Date(c.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
               </div>
-              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.65)', lineHeight: 1.7 }}>{c.body}</div>
+              <div style={{ fontSize: '13px', color: 'rgba(250,247,242,0.6)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>{c.body}</div>
+              <div style={{ fontSize: '10px', color: 'rgba(250,247,242,0.2)', marginTop: '4px', letterSpacing: '0.1em' }}>Post ID: {c.post_id.slice(0, 8)}...</div>
             </div>
-            <button style={S2.btnDel} onClick={() => del(c.id)}>Delete</button>
+            <button style={S2.btnDel} onClick={() => deleteComment(c.id)}>Delete</button>
           </div>
         ))}
       </div>

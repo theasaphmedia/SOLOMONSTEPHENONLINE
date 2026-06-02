@@ -19,8 +19,8 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  const { title, excerpt, body, cover_url, category, published_at } = await req.json()
-  const slug = slugify(title) + '-' + Date.now().toString(36)
+  const { title, slug: rawSlug, excerpt, body, cover_url, category, published_at } = await req.json()
+  const slug = rawSlug ? slugify(rawSlug) : slugify(title)
   const rows = await sql`
     INSERT INTO ss_blog (title, slug, excerpt, body, cover_url, category, published_at)
     VALUES (${title}, ${slug}, ${excerpt}, ${body}, ${cover_url}, ${category || 'article'}, ${published_at || new Date().toISOString().split('T')[0]})
@@ -39,11 +39,18 @@ export async function DELETE(req: NextRequest) {
 export async function PUT(req: NextRequest) {
   if (!await isAdmin()) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id, ...fields } = await req.json()
+  const slug = fields.slug ? slugify(fields.slug) : slugify(fields.title)
+  const published = fields.published !== undefined ? fields.published : true
   await sql`
     UPDATE ss_blog SET
-      title = ${fields.title}, excerpt = ${fields.excerpt}, body = ${fields.body},
-      cover_url = ${fields.cover_url}, category = ${fields.category},
-      published = ${fields.published}, published_at = ${fields.published_at}
+      title = ${fields.title},
+      slug = ${slug},
+      excerpt = ${fields.excerpt},
+      body = ${fields.body},
+      cover_url = ${fields.cover_url},
+      category = ${fields.category},
+      published = ${published},
+      published_at = ${fields.published_at}
     WHERE id = ${id}
   `
   return NextResponse.json({ ok: true })
