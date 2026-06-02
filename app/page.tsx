@@ -38,7 +38,7 @@ function TestimonialsSection() {
             Changed by <em style={{ color:'#C9A84C' }}>presence.</em>
           </h2>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'clamp(20px,3vw,36px)' }}>
+        <div className="testimonials-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'clamp(20px,3vw,36px)' }}>
           {testimonials.map((t, i) => (
             <div key={i} style={{
               background:'#FFFFFF',
@@ -413,6 +413,47 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ══════════════ NEW RELEASE — LAVISH ══════════════ */}
+      <section style={{ background:'#0D1B0D', padding:'clamp(56px,7vw,88px) clamp(24px,4vw,80px)', borderTop:'1px solid rgba(201,168,76,0.08)' }}>
+        <div style={{ maxWidth:'1200px', margin:'0 auto', display:'flex', flexWrap:'wrap', gap:'clamp(32px,5vw,72px)', alignItems:'center' }}>
+          {/* Cover */}
+          <div className="rv" style={{ flexShrink:0, width:'clamp(160px,22vw,280px)', height:'clamp(160px,22vw,280px)', position:'relative', borderRadius:'4px', overflow:'hidden', boxShadow:'0 24px 64px rgba(0,0,0,0.5)' }}>
+            <Image src="/images/lavish-cover.jpg" alt="LAVISH — Solomon Stephen" fill style={{ objectFit:'cover' }} />
+          </div>
+          {/* Info */}
+          <div style={{ flex:1, minWidth:'240px' }}>
+            <div className="rv" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', letterSpacing:'0.38em', textTransform:'uppercase', color:'rgba(201,168,76,0.7)', marginBottom:'14px', display:'flex', alignItems:'center', gap:'10px' }}>
+              <span style={{ display:'inline-block', width:'6px', height:'6px', background:'#C9A84C', borderRadius:'50%', animation:'livePulse 1.5s ease-in-out infinite' }} />
+              New Release · June 6, 2026
+            </div>
+            <h2 className="rv d1" style={{ fontFamily:"'Cormorant Garamond',serif", fontSize:'clamp(48px,8vw,96px)', fontWeight:400, color:'#FAF7F2', lineHeight:0.9, margin:'0 0 16px', letterSpacing:'-0.02em' }}>
+              LAVISH
+            </h2>
+            <p className="rv d2" style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(13px,1.3vw,15px)', lineHeight:1.85, color:'rgba(250,247,242,0.5)', maxWidth:'440px', margin:'0 0 28px' }}>
+              A new single meditating on the relentless, inexplicable love of Jesus — His coming, His death, His resurrection. Available everywhere Friday.
+            </p>
+            <div className="rv d3" style={{ display:'flex', flexWrap:'wrap', gap:'12px', alignItems:'center' }}>
+              <a href="https://play.yivera.com/lavish-solomon-stephen" target="_blank" rel="noopener noreferrer" style={{
+                display:'inline-flex', alignItems:'center', gap:'8px',
+                background:'#C9A84C', color:'#0D1B0D', textDecoration:'none',
+                fontFamily:"'DM Sans',sans-serif", fontSize:'11px', fontWeight:700,
+                letterSpacing:'0.14em', textTransform:'uppercase',
+                padding:'14px 32px', borderRadius:'2px', transition:'opacity 0.2s',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='0.88' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
+              >
+                Pre-Save Now
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.3)', letterSpacing:'0.08em' }}>
+                play.yivera.com/lavish-solomon-stephen
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ══════════════ MUSIC ══════════════ */}
       <section style={{ background:'#FAF7F2', padding:'clamp(72px,9vw,120px) clamp(24px,4vw,80px)' }}>
         <div style={{ maxWidth:'1200px', margin:'0 auto' }}>
@@ -431,7 +472,7 @@ export default function HomePage() {
           </div>
 
           {/* Track grid — 3 columns on desktop */}
-          <div className="rv" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:'clamp(10px,1.5vw,16px)' }}>
+          <div className="rv music-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:'clamp(10px,1.5vw,16px)' }}>
             {tracks.map((t, i) => (
               <a key={t.id} href={`https://www.youtube.com/watch?v=${t.id}`} target="_blank" rel="noopener noreferrer"
                 className="rv-scale"
@@ -509,7 +550,7 @@ export default function HomePage() {
             >Browse on Selar →</a>
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px,1fr))', gap:'clamp(16px,2.5vw,28px)' }}>
+          <div className="books-grid" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(200px,1fr))', gap:'clamp(16px,2.5vw,28px)' }}>
             {books.map((b, i) => (
               b.comingSoon ? (
                 <div key={b.title}
