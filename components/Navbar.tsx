@@ -102,7 +102,7 @@ export default function Navbar() {
       `}</style>
 
       {/* ── Main bar ── */}
-      <header style={{
+      <header className="site-navbar" style={{
         position:'fixed', top:0, left:0, right:0, zIndex:1000,
         padding:'0 clamp(20px,4vw,56px)',
         height: scrolled ? '64px' : '80px',

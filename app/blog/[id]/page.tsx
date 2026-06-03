@@ -11,7 +11,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!rows.length) return { title: 'Blog - Solomon Stephen' }
     const post = rows[0]
     const description = post.excerpt || post.body?.slice(0, 155) || 'A blog post by Solomon Stephen.'
-    const image = post.cover_url || `https://solomonstephen.com/api/og?title=${encodeURIComponent(post.title)}&sub=${encodeURIComponent(post.category || 'Solomon Stephen')}&category=${encodeURIComponent(post.category || '')}`
+    const rawImage = post.cover_url || `/api/og?title=${encodeURIComponent(post.title)}&sub=${encodeURIComponent(post.category || 'Solomon Stephen')}&category=${encodeURIComponent(post.category || '')}`
+    const image = rawImage.startsWith('http') ? rawImage : `https://solomonstephen.com${rawImage.startsWith('/') ? '' : '/'}${rawImage}`.replace(/ /g, '%20')
     return {
       title: `${post.title} - Solomon Stephen`,
       description,

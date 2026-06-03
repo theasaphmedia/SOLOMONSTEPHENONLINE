@@ -830,3 +830,17 @@ body:has(button:hover) .cursor-ring {
   .lavish-cover-wrap { width: 200px !important; }
   .lavish-title { font-size: clamp(56px, 18vw, 80px) !important; }
 }
+
+/* LAVISH Banner offset — push navbar down when banner is showing */
+body.has-lavish-banner .site-navbar {
+  top: 36px !important;
+  transition: top 0.2s ease;
+}
+.site-navbar {
+  transition: top 0.2s ease, background 0.3s, height 0.3s;
+}
+.banner-short { display: none; }
+@media (max-width: 600px) {
+  .banner-full  { display: none; }
+  .banner-short { display: inline; }
+}
