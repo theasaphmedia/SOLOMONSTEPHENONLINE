@@ -9,5 +9,12 @@ export const metadata: Metadata = {
     title: "About Solomon Stephen",
     description: "Gospel minister, worship leader, music producer, author, and founder of TWN Studios — Lagos, Nigeria.",
     images: [{ url: 'https://solomonstephen.com/images/solomon-photo.png', width: 1200, height: 630, alt: 'Solomon Stephen — Gospel Minister' }]
-  }
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Solomon Stephen",
+    description: "Gospel minister, worship leader, music producer, author, and founder of TWN Studios — Lagos, Nigeria.",
+    images: ["https://solomonstephen.com/images/solomon-photo.png"],
+    creator: "@theasaphmedia",
+  },
 }

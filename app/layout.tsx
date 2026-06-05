@@ -46,13 +46,13 @@ export const metadata: Metadata = {
     url: "https://solomonstephen.com",
     siteName: "Solomon Stephen",
     locale: "en_NG",
-    images: [{ url: "https://solomonstephen.com/api/og?title=Solomon%20Stephen&sub=Gospel%20Minister%20%C2%B7%20Worship%20Leader%20%C2%B7%20Author", width: 1200, height: 630, alt: "Solomon Stephen" }],
+    images: [{ url: "https://solomonstephen.com/images/og-image.png", width: 1200, height: 630, alt: "Solomon Stephen" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Solomon Stephen — Gospel Minister · Worship Leader · Author",
     description: "Gospel minister, worship leader, music producer, and published author. Founder of The Worship Nation and TWN Studios.",
-    images: ["https://solomonstephen.com/api/og?title=Solomon%20Stephen&sub=Gospel%20Minister%20%C2%B7%20Worship%20Leader%20%C2%B7%20Author"],
+    images: ["https://solomonstephen.com/images/og-image.png"],
     creator: "@theasaphmedia",
   },
   icons: {
