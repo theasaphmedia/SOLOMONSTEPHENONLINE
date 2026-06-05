@@ -8,4 +8,6 @@ export const metadata: Metadata = {
     url: "https://solomonstephen.com/about",
     title: "About Solomon Stephen",
     description: "Gospel minister, worship leader, music producer, author, and founder of TWN Studios — Lagos, Nigeria.",
-    images: [{ url: 'https://solomonstephen.com/images/solomon-photo.png', width: 1200, height: 630, alt: 'Solomon Stephen — Gos
+    images: [{ url: 'https://solomonstephen.com/images/solomon-photo.png', width: 1200, height: 630, alt: 'Solomon Stephen — Gospel Minister' }]
+  }
+}
