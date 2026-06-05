@@ -449,11 +449,12 @@ export default function HomePage() {
               All glory. All power. All-sufficient in Himself — yet He came, died, and rose for you. This Friday, everywhere.
             </p>
 
-            <div className="rv d3" style={{ display:'flex', flexWrap:'wrap', gap:'14px', alignItems:'center' }}>
-              <a href="https://play.yivera.com/lavish-solomon-stephen" target="_blank" rel="noopener noreferrer" className="lavish-btn">
-                <span>Pre-Save Now</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
+            <div className="rv d3" style={{ display:'flex', alignItems:'center', gap:'16px' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+                <span style={{ display:'inline-block', width:'6px', height:'6px', background:'#C9A84C', borderRadius:'50%', animation:'livePulse 1.4s ease-in-out infinite' }} />
+                <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', letterSpacing:'0.18em', textTransform:'uppercase', color:'#C9A84C' }}>Out Friday, June 6</span>
+              </div>
+              <span style={{ width:'1px', height:'14px', background:'rgba(201,168,76,0.2)', display:'inline-block' }} />
               <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'11px', color:'rgba(250,247,242,0.22)', letterSpacing:'0.06em' }}>
                 Solomon Stephen · 2026
               </span>

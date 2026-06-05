@@ -1,12 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 
 export default function LAVISHBanner() {
   const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
-    // Push navbar down by banner height on mobile
     document.body.classList.toggle('has-lavish-banner', !dismissed)
     return () => document.body.classList.remove('has-lavish-banner')
   }, [dismissed])
@@ -24,13 +22,10 @@ export default function LAVISHBanner() {
       overflow: 'hidden',
     }}>
       <span style={{ display:'inline-block', width:'5px', height:'5px', background:'#C9A84C', borderRadius:'50%', animation:'livePulse 1.4s ease-in-out infinite', flexShrink:0 }} />
-      <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.13em', textTransform:'uppercase', color:'rgba(250,247,242,0.65)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
-        <span className="banner-full">New Release · LAVISH — Out Friday, June 6</span>
+      <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'10px', letterSpacing:'0.16em', textTransform:'uppercase', color:'rgba(250,247,242,0.7)', whiteSpace:'nowrap' }}>
+        <span className="banner-full">New Single · LAVISH — Out Friday, June 6, 2026</span>
         <span className="banner-short">LAVISH — Out Friday</span>
       </span>
-      <Link href="https://play.yivera.com/lavish-solomon-stephen" target="_blank" rel="noopener noreferrer"
-        style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'9px', fontWeight:700, letterSpacing:'0.14em', textTransform:'uppercase', color:'#0D1B0D', background:'#C9A84C', padding:'5px 12px', textDecoration:'none', borderRadius:'2px', flexShrink:0, whiteSpace:'nowrap' }}
-      >Pre-Save →</Link>
       <button onClick={() => setDismissed(true)}
         style={{ position:'absolute', right:'8px', top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:'rgba(250,247,242,0.4)', cursor:'pointer', fontSize:'16px', lineHeight:1, padding:'4px 6px' }}
         aria-label="Dismiss">×</button>
