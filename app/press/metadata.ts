@@ -8,6 +8,6 @@ export const metadata: Metadata = {
     url: "https://solomonstephen.com/press",
     title: "Press & Media Kit — Solomon Stephen",
     description: "Official press resources and media kit for Solomon Stephen — gospel minister, worship leader, music producer, and author.",
-    images: [{ url: '/images/solomon-green-suit-hero.png', width: 1200, height: 630, alt: 'Solomon Stephen — Press Kit' }]
+    images: [{ url: 'https://solomonstephen.com/images/solomon-green-suit-hero.png', width: 1200, height: 630, alt: 'Solomon Stephen — Press Kit' }]
   }
 }

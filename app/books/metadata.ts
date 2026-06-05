@@ -8,6 +8,6 @@ export const metadata: Metadata = {
     url: "https://solomonstephen.com/books",
     title: "Books — Solomon Stephen",
     description: "The Cost of Ignorance and Sons, Not Slaves devotional series by Solomon Stephen.",
-    images: [{ url: '/images/book-cost-of-ignorance.png', width: 1200, height: 630, alt: 'Books by Solomon Stephen' }]
+    images: [{ url: 'https://solomonstephen.com/images/book-cost-of-ignorance.png', width: 1200, height: 630, alt: 'Books by Solomon Stephen' }]
   }
 }

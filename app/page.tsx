@@ -638,12 +638,4 @@ export default function HomePage() {
             textDecoration:'none', transition:'opacity 0.2s',
           }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity='0.85' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity='1' }}
-          >Get In Touch</Link>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  )
-}
+            onMouseLeav

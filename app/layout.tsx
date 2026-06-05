@@ -55,6 +55,14 @@ export const metadata: Metadata = {
     images: ["https://solomonstephen.com/api/og?title=Solomon%20Stephen&sub=Gospel%20Minister%20%C2%B7%20Worship%20Leader%20%C2%B7%20Author"],
     creator: "@theasaphmedia",
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
   robots: { index: true, follow: true },
   alternates: { canonical: "https://solomonstephen.com" },
 };
@@ -89,13 +97,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
         {/* Custom LERP cursor — hidden on mobile via CSS */}
         <div className="cursor-dot" aria-hidden="true" />
-        <div className="cursor-ring" aria-hidden="true" />
-        <NavbarConditional />
-        {children}
-        <WhatsAppFloat />
-        <CookieBanner />
-        <AnimationEngine />
-      </body>
-    </html>
-  );
-}
+        <div clas

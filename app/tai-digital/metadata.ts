@@ -9,6 +9,4 @@ export const metadata: Metadata = {
     url: "https://solomonstephen.com/tai-digital",
     title: "TAI Digital - Creative Agency",
     description: "Premium digital experiences for ministries, brands, and visionaries. Design, development, and strategy - Lagos, Nigeria.",
-    images: [{ url: 'https://solomonstephen.com/api/og?title=TAI%20Digital&sub=Creative%20Technology%20Agency%20%C2%B7%20Lagos', width: 1200, height: 630, alt: 'TAI Digital - Creative Agency' }]
-  }
-}
+    images: [{ url: 'https://solomonstephen.com/api/og?title=TAI%20Digital&sub=Creative%20Technology%20Agency%20%C
