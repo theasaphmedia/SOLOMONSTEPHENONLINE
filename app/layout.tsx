@@ -97,4 +97,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
         {/* Custom LERP cursor — hidden on mobile via CSS */}
         <div className="cursor-dot" aria-hidden="true" />
-        <div clas
+        <div className="cursor-ring" aria-hidden="true" />
+        <NavbarConditional />
+        {children}
+        <WhatsAppFloat />
+        <CookieBanner />
+        <AnimationEngine />
+      </body>
+    </html>
+  );
+}
